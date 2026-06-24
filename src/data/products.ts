@@ -222,6 +222,14 @@ export const products: Product[] = [
 
   // ==================== BOPET 4.5微米 ====================
   {
+    id: '28', slug: 'bopet-4.5-ttr', name: { zh: 'BOPET TTR薄膜 4.5微米', en: 'BOPET TTR Film 4.5 Micron', ar: 'فيلم BOPET TTR 4.5 ميكرون', es: 'Película BOPET TTR 4.5 Micras', pt: 'Filme BOPET TTR 4.5 Microns' }, category: 'bopet',
+    description: { zh: '超薄BOPET TTR薄膜，厚度4.5微米，具有卓越的透明度和热转印性能。适用于高速印刷和标签应用，提供出色的印刷适性和防潮性能。', en: 'Ultra-thin BOPET TTR film with 4.5 micron thickness, featuring excellent transparency and thermal transfer properties. Ideal for high-speed printing and label applications, providing excellent printability and moisture barrier properties.', ar: 'فيلم BOPET TTR فائق الرقة بسماكة 4.5 ميكرون، يتميز بشفافية ممتازة وخصائص نقل حراري. مثالي للطباعة عالية السرعة وتطبيقات الملصقات.', es: 'Película BOPET TTR ultra delgada con grosor de 4.5 micras, con excelente transparencia y propiedades de transferencia térmica.', pt: 'Filme BOPET TTR ultra-fino com espessura de 4.5 micrômetros, com excelente transparência e propriedades de transferência térmica.' },
+    specifications: { thickness: '4.5 microns', width: '200-1200mm', length: '4000-8000m', weight: 'Customized', color: 'Transparent', material: 'Polyethylene Terephthalate' },
+    features: { zh: ['超薄设计', '高透明度', '优异热转印性能', '高速印刷适用', '优异防潮性能'], en: ['Ultra-thin design', 'High transparency', 'Excellent thermal transfer properties', 'High-speed printing', 'Superior moisture barrier'], ar: ['تصميم فائق الرقة', 'شفافية عالية', 'خصائص نقل حراري ممتازة', 'طباعة عالية السرعة', 'حاجز رطوبة فائق'], es: ['Diseño ultra delgado', 'Alta transparencia', 'Excelentes propiedades de transferencia térmica', 'Impresión de alta velocidad', 'Barrera de humedad superior'], pt: ['Design ultra-fino', 'Alta transparência', 'Excelentes propriedades de transferência térmica', 'Impressão de alta velocidade', 'Barreira de umidade superior'] },
+    applications: { zh: ['热转印标签', '高速印刷', '食品包装', '药品包装', '电子产品标签'], en: ['Thermal transfer labels', 'High-speed printing', 'Food packaging', 'Pharmaceutical packaging', 'Electronics labels'], ar: ['ملصقات النقل الحراري', 'طباعة عالية السرعة', 'تغليف المواد الغذائية', 'تغليف المستحضرات الصيدلانية', 'ملصقات الإلكترونيات'], es: ['Etiquetas de transferencia térmica', 'Impresión de alta velocidad', 'Empaquetado de alimentos', 'Empaquetado farmacéutico', 'Etiquetas de electrónicos'], pt: ['Etiquetas de transferência térmica', 'Impressão de alta velocidade', 'Embalagem de alimentos', 'Embalagem farmacêutica', 'Etiquetas de eletrônicos'] },
+    certifications: ['ISO 9001', 'FDA', 'SGS', 'RoHS'], images: ['/images/products/bopet-4.5-ttr.jpg'], featured: true
+  },
+  {
     id: '29', slug: 'bopet-4.5', name: { zh: 'BOPET薄膜 4.5微米', en: 'BOPET Film 4.5 Micron', ar: 'فيلم BOPET 4.5 ميكرون', es: 'Película BOPET 4.5 Micras', pt: 'Filme BOPET 4.5 Microns' }, category: 'bopet',
     description: { zh: '超薄BOPET薄膜，厚度4.5微米，具有卓越的透明度和光泽度。适用于高速印刷和精密包装，提供出色的印刷适性和防潮性能。', en: 'Ultra-thin BOPET film with 4.5 micron thickness, featuring exceptional transparency and gloss. Ideal for high-speed printing and precision packaging, providing excellent printability and moisture barrier properties.', ar: 'فيلم BOPET فائق الرقة بسماكة 4.5 ميكرون، يتميز بشفافية وتلألؤ استثنائيين.', es: 'Película BOPET ultra delgada con grosor de 4.5 micras, con transparencia y brillo excepcionales.', pt: 'Filme BOPET ultra-fino com espessura de 4.5 micrômetros, com transparência e brilho excepcionais.' },
     specifications: { thickness: '4.5 microns', width: '200-1000mm', length: '4000-8000m', weight: 'Customized', color: 'Transparent', material: 'Polyethylene Terephthalate' },
@@ -431,6 +439,8 @@ export const categories = [
     { id: 'bopp-tape-25', name: { zh: '25微米', en: '25 Micron', ar: '25 ميكرون', es: '25 Micras', pt: '25 Microns' } },
   ]},
   { id: 'bopet', name: { zh: 'BOPET薄膜', en: 'BOPET Film', ar: 'فيلم BOPET', es: 'Película BOPET', pt: 'Filme BOPET' }, subcategories: [
+    { id: 'bopet-4.5-ttr', name: { zh: '4.5微米TTR', en: '4.5 Micron TTR', ar: '4.5 ميكرون TTR', es: '4.5 Micras TTR', pt: '4.5 Microns TTR' } },
+    { id: 'bopet-4.5', name: { zh: '4.5微米', en: '4.5 Micron', ar: '4.5 ميكرون', es: '4.5 Micras', pt: '4.5 Microns' } },
     { id: 'bopet-12', name: { zh: '12微米', en: '12 Micron', ar: '12 ميكرون', es: '12 Micras', pt: '12 Microns' } },
     { id: 'bopet-15', name: { zh: '15微米', en: '15 Micron', ar: '15 ميكرون', es: '15 Micras', pt: '15 Microns' } },
     { id: 'bopet-18', name: { zh: '18微米', en: '18 Micron', ar: '18 ميكرون', es: '18 Micras', pt: '18 Microns' } },
@@ -508,6 +518,8 @@ export const categories = [
     { id: 'bopp-tape-25', name: { zh: '25微米', en: '25 Micron', ar: '25 ميكرون', es: '25 Micras', pt: '25 Microns' } },
   ]},
   { id: 'bopet', name: { zh: 'BOPET薄膜', en: 'BOPET Film', ar: 'فيلم BOPET', es: 'Película BOPET', pt: 'Filme BOPET' }, subcategories: [
+    { id: 'bopet-4.5-ttr', name: { zh: '4.5微米TTR', en: '4.5 Micron TTR', ar: '4.5 ميكرون TTR', es: '4.5 Micras TTR', pt: '4.5 Microns TTR' } },
+    { id: 'bopet-4.5', name: { zh: '4.5微米', en: '4.5 Micron', ar: '4.5 ميكرون', es: '4.5 Micras', pt: '4.5 Microns' } },
     { id: 'bopet-12', name: { zh: '12微米', en: '12 Micron', ar: '12 ميكرون', es: '12 Micras', pt: '12 Microns' } },
     { id: 'bopet-15', name: { zh: '15微米', en: '15 Micron', ar: '15 ميكرون', es: '15 Micras', pt: '15 Microns' } },
     { id: 'bopet-18', name: { zh: '18微米', en: '18 Micron', ar: '18 ميكرون', es: '18 Micras', pt: '18 Microns' } },
