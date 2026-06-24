@@ -220,7 +220,83 @@ export const products: Product[] = [
     certifications: ['ISO 9001', 'FDA', 'SGS', 'RoHS'], images: ['/images/products/cpp-50.jpg'], featured: false
   },
 
-  // ==================== 胶带产品系列 ====================
+  // ==================== BOPET 扩展系列 ====================
+  {
+    id: '80', slug: 'bopet-metalized-12', name: { zh: 'BOPET镀铝膜 12微米', en: 'BOPET Metalized Film 12 Micron', ar: 'فيلم BOPET معدني 12 ميكرون', es: 'Película BOPET Metalizada 12 Micras', pt: 'Filme BOPET Metalizado 12 Microns' }, category: 'bopet',
+    description: { zh: '超薄BOPET镀铝膜，具有优异的阻隔性能和金属光泽。适用于高端食品包装和药品包装。', en: 'Ultra-thin BOPET metalized film with excellent barrier properties and metallic luster. Suitable for high-end food packaging and pharmaceutical packaging.', ar: 'فيلم BOPET معدني فائق الرقة بخصائص حاجزة ممتازة وبريق معدني.', es: 'Película BOPET metalizada ultra delgada con excelentes propiedades de barrera y brillo metálico.', pt: 'Filme BOPET metalizado ultra-fino com excelentes propriedades de barreira e brilho metálico.' },
+    specifications: { thickness: '12 microns', width: '200-1200mm', length: '3000-6000m', weight: 'Customized', color: 'Silver/Metallic', material: 'Polyethylene Terephthalate + Aluminum' },
+    features: { zh: ['超薄设计', '优异阻隔性能', '金属光泽效果', '良好热封性能'], en: ['Ultra-thin design', 'Excellent barrier properties', 'Metallic luster effect', 'Good heat sealability'], ar: ['تصميم فائق الرقة', 'خصائص حاجزة ممتازة', 'تأثير بريق معدني', 'قابلية إغلاق حراري جيدة'], es: ['Diseño ultra delgado', 'Excelentes propiedades de barrera', 'Efecto de brillo metálico', 'Buena termosellabilidad'], pt: ['Design ultra-fino', 'Excelentes propriedades de barreira', 'Efeito de brilho metálico', 'Boa selabilidade a quente'] },
+    applications: { zh: ['高端食品包装', '药品包装', '化妆品包装', '电子产品包装'], en: ['High-end food packaging', 'Pharmaceutical packaging', 'Cosmetic packaging', 'Electronics packaging'], ar: ['تغليف المواد الغذائية عالية الجودة', 'تغليف المستحضرات الصيدلانية', 'تغليف مستحضرات التجميل', 'تغليف الإلكترونيات'], es: ['Empaquetado de alimentos de alta gama', 'Empaquetado farmacéutico', 'Empaquetado de cosméticos', 'Empaquetado de electrónicos'], pt: ['Embalagem de alimentos de alta qualidade', 'Embalagem farmacêutica', 'Embalagem de cosméticos', 'Embalagem de eletrônicos'] },
+    certifications: ['ISO 9001', 'FDA', 'SGS', 'RoHS'], images: ['/images/products/bopet-metalized-12.jpg'], featured: true
+  },
+  {
+    id: '81', slug: 'bopet-metalized-18', name: { zh: 'BOPET镀铝膜 18微米', en: 'BOPET Metalized Film 18 Micron', ar: 'فيلم BOPET معدني 18 ميكرون', es: 'Película BOPET Metalizada 18 Micras', pt: 'Filme BOPET Metalizado 18 Microns' }, category: 'bopet',
+    description: { zh: '标准BOPET镀铝膜，平衡了阻隔性能和强度。适用于多种包装应用。', en: 'Standard BOPET metalized film balancing barrier properties and strength. Suitable for various packaging applications.', ar: 'فيلم BOPET معدني قياسي يوازن بين خصائص الحاجزة والقوة.', es: 'Película BOPET metalizada estándar equilibrando propiedades de barrera y resistencia.', pt: 'Filme BOPET metalizado padrão equilibrando propriedades de barreira e resistência.' },
+    specifications: { thickness: '18 microns', width: '200-1400mm', length: '2500-5000m', weight: 'Customized', color: 'Silver/Metallic', material: 'Polyethylene Terephthalate + Aluminum' },
+    features: { zh: ['标准厚度', '优异阻隔性能', '金属光泽效果', '良好热封性能'], en: ['Standard thickness', 'Excellent barrier properties', 'Metallic luster effect', 'Good heat sealability'], ar: ['سماكة قياسية', 'خصائص حاجزة ممتازة', 'تأثير بريق معدني', 'قابلية إغلاق حراري جيدة'], es: ['Grosor estándar', 'Excelentes propiedades de barrera', 'Efecto de brillo metálico', 'Buena termosellabilidad'], pt: ['Espessura padrão', 'Excelentes propriedades de barreira', 'Efeito de brilho metálico', 'Boa selabilidade a quente'] },
+    applications: { zh: ['食品包装', '药品包装', '化妆品包装', '电子产品包装'], en: ['Food packaging', 'Pharmaceutical packaging', 'Cosmetic packaging', 'Electronics packaging'], ar: ['تغليف المواد الغذائية', 'تغليف المستحضرات الصيدلانية', 'تغليف مستحضرات التجميل', 'تغليف الإلكترونيات'], es: ['Empaquetado de alimentos', 'Empaquetado farmacéutico', 'Empaquetado de cosméticos', 'Empaquetado de electrónicos'], pt: ['Embalagem de alimentos', 'Embalagem farmacêutica', 'Embalagem de cosméticos', 'Embalagem de eletrônicos'] },
+    certifications: ['ISO 9001', 'FDA', 'SGS', 'RoHS'], images: ['/images/products/bopet-metalized-18.jpg'], featured: false
+  },
+  {
+    id: '82', slug: 'bopet-white-25', name: { zh: 'BOPET白膜 25微米', en: 'BOPET White Film 25 Micron', ar: 'فيلم BOPET أبيض 25 ميكرون', es: 'Película BOPET Blanca 25 Micras', pt: 'Filme BOPET Branco 25 Microns' }, category: 'bopet',
+    description: { zh: '标准BOPET白膜，具有良好的遮光性和耐热性。适用于标签和包装应用。', en: 'Standard BOPET white film with good opacity and heat resistance. Suitable for label and packaging applications.', ar: 'فيلم BOPET أبيض قياسي بعتامة جيدة ومقاومة حرارية.', es: 'Película BOPET blanca estándar con buena opacidad y resistencia al calor.', pt: 'Filme BOPET branco padrão com boa opacidade e resistência ao calor.' },
+    specifications: { thickness: '25 microns', width: '200-1600mm', length: '1500-3500m', weight: 'Customized', color: 'White', material: 'Polyethylene Terephthalate + Titanium Dioxide' },
+    features: { zh: ['标准厚度', '良好遮光性', '耐热性好', '优异印刷适性'], en: ['Standard thickness', 'Good opacity', 'Good heat resistance', 'Excellent printability'], ar: ['سماكة قياسية', 'عتامة جيدة', 'مقاومة حرارية جيدة', 'قابلية طباعة ممتازة'], es: ['Grosor estándar', 'Buena opacidad', 'Buena resistencia al calor', 'Imprimibilidad excelente'], pt: ['Espessura padrão', 'Boa opacidade', 'Boa resistência ao calor', 'Imprimibilidade excelente'] },
+    applications: { zh: ['标签制作', '食品包装', '药品包装', '化妆品包装'], en: ['Label making', 'Food packaging', 'Pharmaceutical packaging', 'Cosmetic packaging'], ar: ['صنع الملصقات', 'تغليف المواد الغذائية', 'تغليف المستحضرات الصيدلانية', 'تغليف مستحضرات التجميل'], es: ['Fabricación de etiquetas', 'Empaquetado de alimentos', 'Empaquetado farmacéutico', 'Empaquetado de cosméticos'], pt: ['Fabricação de etiquetas', 'Embalagem de alimentos', 'Embalagem farmacêutica', 'Embalagem de cosméticos'] },
+    certifications: ['ISO 9001', 'FDA', 'SGS', 'RoHS'], images: ['/images/products/bopet-white-25.jpg'], featured: false
+  },
+  {
+    id: '83', slug: 'bopet-white-35', name: { zh: 'BOPET白膜 35微米', en: 'BOPET White Film 35 Micron', ar: 'فيلم BOPET أبيض 35 ميكرون', es: 'Película BOPET Blanca 35 Micras', pt: 'Filme BOPET Branco 35 Microns' }, category: 'bopet',
+    description: { zh: '厚型BOPET白膜，提供最佳的强度和遮光性。适用于重型包装和高品质应用。', en: 'Thick BOPET white film with optimal strength and opacity. Suitable for heavy-duty packaging and high-quality applications.', ar: 'فيلم BOPET أبيض سميك بقوة وعتامة مثلى.', es: 'Película BOPET blanca gruesa con resistencia y opacidad óptimas.', pt: 'Filme BOPET branco grosso com resistência e opacidade ideais.' },
+    specifications: { thickness: '35 microns', width: '200-1600mm', length: '1000-3000m', weight: 'Customized', color: 'White', material: 'Polyethylene Terephthalate + Titanium Dioxide' },
+    features: { zh: ['厚型设计', '最佳强度', '良好遮光性', '优异印刷适性'], en: ['Thick design', 'Optimal strength', 'Good opacity', 'Excellent printability'], ar: ['تصميم سميك', 'قوة مثلى', 'عتامة جيدة', 'قابلية طباعة ممتازة'], es: ['Diseño grueso', 'Resistencia óptima', 'Buena opacidad', 'Imprimibilidad excelente'], pt: ['Design grosso', 'Resistência ideal', 'Boa opacidade', 'Imprimibilidade excelente'] },
+    applications: { zh: ['重型包装', '高品质印刷', '工业包装', '建筑材料包装'], en: ['Heavy-duty packaging', 'High-quality printing', 'Industrial packaging', 'Building materials packaging'], ar: ['تغليف ثقيل', 'طباعة عالية الجودة', 'تغليف صناعي', 'تغليف مواد البناء'], es: ['Empaquetado de alta resistencia', 'Impresión de alta calidad', 'Empaquetado industrial', 'Empaquetado de materiales de construcción'], pt: ['Embalagem pesada', 'Impressão de alta qualidade', 'Embalagem industrial', 'Embalagem de materiais de construção'] },
+    certifications: ['ISO 9001', 'FDA', 'SGS', 'RoHS'], images: ['/images/products/bopet-white-35.jpg'], featured: false
+  },
+  {
+    id: '84', slug: 'bopet-black-25', name: { zh: 'BOPET黑膜 25微米', en: 'BOPET Black Film 25 Micron', ar: 'فيلم BOPET أسود 25 ميكرون', es: 'Película BOPET Negra 25 Micras', pt: 'Filme BOPET Preto 25 Microns' }, category: 'bopet',
+    description: { zh: '标准BOPET黑膜，具有良好的遮光性和抗静电性能。适用于电子包装和特殊应用。', en: 'Standard BOPET black film with good opacity and anti-static properties. Suitable for electronics packaging and special applications.', ar: 'فيلم BOPET أسود قياسي بعتامة جيدة وخصائص مضادة للكهرباء.', es: 'Película BOPET negra estándar con buena opacidad y propiedades antiestáticas.', pt: 'Filme BOPET preto padrão com boa opacidade e propriedades antiestáticas.' },
+    specifications: { thickness: '25 microns', width: '200-1600mm', length: '1500-3500m', weight: 'Customized', color: 'Black', material: 'Polyethylene Terephthalate + Carbon Black' },
+    features: { zh: ['标准厚度', '良好遮光性', '抗静电性能', '优异强度'], en: ['Standard thickness', 'Good opacity', 'Anti-static properties', 'Excellent strength'], ar: ['سماكة قياسية', 'عتامة جيدة', 'خصائص مضادة للكهرباء', 'قوة ممتازة'], es: ['Grosor estándar', 'Buena opacidad', 'Propiedades antiestáticas', 'Excelente resistencia'], pt: ['Espessura padrão', 'Boa opacidade', 'Propriedades antiestáticas', 'Excelente resistência'] },
+    applications: { zh: ['电子包装', '防静电应用', '特殊应用', '工业包装'], en: ['Electronics packaging', 'Anti-static applications', 'Special applications', 'Industrial packaging'], ar: ['تغليف الإلكترونيات', 'تطبيقات مضادة للكهرباء', 'تطبيقات خاصة', 'تغليف صناعي'], es: ['Empaquetado de electrónicos', 'Aplicaciones antiestáticas', 'Aplicaciones especiales', 'Empaquetado industrial'], pt: ['Embalagem de eletrônicos', 'Aplicações antiestáticas', 'Aplicações especiais', 'Embalagem industrial'] },
+    certifications: ['ISO 9001', 'FDA', 'SGS', 'RoHS'], images: ['/images/products/bopet-black-25.jpg'], featured: false
+  },
+
+  // ==================== Tape 扩展系列 ====================
+  {
+    id: '90', slug: 'bopp-tape-strong', name: { zh: 'BOPP强力胶带', en: 'BOPP Heavy Duty Tape', ar: 'شريط BOPP عالي القوة', es: 'Cinta BOPP de alta resistencia', pt: 'Fita BOPP de alta resistência' }, category: 'tape',
+    description: { zh: 'BOPP强力胶带，具有超高的拉伸强度和粘性。适用于重型包装和固定应用。', en: 'BOPP heavy duty tape with ultra-high tensile strength and adhesion. Suitable for heavy-duty packaging and fixing applications.', ar: 'شريط BOPP عالي القوة بقوة شد فائقة والتصاق.', es: 'Cinta BOPP de alta resistencia con resistencia a la tracción ultra alta y adhesión.', pt: 'Fita BOPP de alta resistência com resistência à tração ultra alta e adesão.' },
+    specifications: { thickness: '25-35 microns', width: '12-48mm', length: '50-500m', weight: 'Customized', color: 'Transparent/Brown', material: 'Polypropylene + Strong Adhesive' },
+    features: { zh: ['超高拉伸强度', '超强粘性', '耐热性好', '适合重型应用'], en: ['Ultra-high tensile strength', 'Super strong adhesion', 'Good heat resistance', 'Suitable for heavy-duty applications'], ar: ['قوة شد فائقة', 'تصاق قوي جداً', 'مقاومة حرارية جيدة', 'مناسب للتطبيقات الثقيلة'], es: ['Resistencia a la tracción ultra alta', 'Adhesión súper fuerte', 'Buena resistencia al calor', 'Adecuado para aplicaciones de alta resistencia'], pt: ['Resistência à tração ultra alta', 'Adesão super forte', 'Boa resistência ao calor', 'Adequado para aplicações de alta resistência'] },
+    applications: { zh: ['重型包装', '固定应用', '工业应用', '特殊应用'], en: ['Heavy-duty packaging', 'Fixing applications', 'Industrial applications', 'Special applications'], ar: ['تغليف ثقيل', 'تطبيقات تثبيت', 'تطبيقات صناعية', 'تطبيقات خاصة'], es: ['Empaquetado de alta resistencia', 'Aplicaciones de fijación', 'Aplicaciones industriales', 'Aplicaciones especiales'], pt: ['Embalagem pesada', 'Aplicações de fixação', 'Aplicações industriais', 'Aplicações especiais'] },
+    certifications: ['ISO 9001', 'FDA', 'SGS', 'RoHS'], images: ['/images/products/bopp-tape-strong.jpg'], featured: true
+  },
+  {
+    id: '91', slug: 'bopp-tape-clear', name: { zh: 'BOPP透明胶带', en: 'BOPP Clear Tape', ar: 'شريط BOPP شفاف', es: 'Cinta BOPP transparente', pt: 'Fita BOPP transparente' }, category: 'tape',
+    description: { zh: 'BOPP透明胶带，具有优异的透明度。适用于包装和展示应用。', en: 'BOPP clear tape with excellent transparency. Suitable for packaging and display applications.', ar: 'شريط BOPP شفاف بشفافية ممتازة.', es: 'Cinta BOPP transparente con excelente transparencia.', pt: 'Fita BOPP transparente com excelente transparência.' },
+    specifications: { thickness: '18-25 microns', width: '12-48mm', length: '50-1000m', weight: 'Customized', color: 'Clear/Transparent', material: 'Polypropylene + Clear Adhesive' },
+    features: { zh: ['优异透明度', '良好粘性', '耐热性好', '适合展示应用'], en: ['Excellent transparency', 'Good adhesion', 'Good heat resistance', 'Suitable for display applications'], ar: ['شفافية ممتازة', 'التصاق جيد', 'مقاومة حرارية جيدة', 'مناسب لتطبيقات العرض'], es: ['Excelente transparencia', 'Buena adhesión', 'Buena resistencia al calor', 'Adecuado para aplicaciones de exhibición'], pt: ['Excelente transparência', 'Boa adesão', 'Boa resistência ao calor', 'Adequado para aplicações de exibição'] },
+    applications: { zh: ['包装应用', '展示应用', '文具应用', '办公应用'], en: ['Packaging applications', 'Display applications', 'Stationery applications', 'Office applications'], ar: ['تطبيقات تغليف', 'تطبيقات عرض', 'تطبيقات قرطاسية', 'تطبيقات مكتبية'], es: ['Aplicaciones de empaquetado', 'Aplicaciones de exhibición', 'Aplicaciones de papelería', 'Aplicaciones de oficina'], pt: ['Aplicações de embalagem', 'Aplicações de exibição', 'Aplicações de papelaria', 'Aplicações de escritório'] },
+    certifications: ['ISO 9001', 'FDA', 'SGS', 'RoHS'], images: ['/images/products/bopp-tape-clear.jpg'], featured: false
+  },
+  {
+    id: '92', slug: 'pet-tape-high-temp', name: { zh: 'PET耐高温胶带', en: 'PET High Temperature Tape', ar: 'شريط PET مقاوم للحرارة', es: 'Cinta PET resistente al calor', pt: 'Fita PET resistente ao calor' }, category: 'tape',
+    description: { zh: 'PET耐高温胶带，具有优异的耐高温性能。适用于高温环境包装和电子应用。', en: 'PET high temperature tape with excellent high temperature resistance. Suitable for high temperature environment packaging and electronics applications.', ar: 'شريط PET مقاوم للحرارة بمقاومة حرارية ممتازة.', es: 'Cinta PET resistente al calor con excelente resistencia a alta temperatura.', pt: 'Fita PET resistente ao calor com excelente resistência a altas temperaturas.' },
+    specifications: { thickness: '15-25 microns', width: '12-48mm', length: '50-500m', weight: 'Customized', color: 'Transparent/Amber', material: 'Polyethylene Terephthalate + High Temp Adhesive' },
+    features: { zh: ['优异耐高温性能', '良好强度', '耐热性好', '化学稳定性好'], en: ['Excellent high temperature resistance', 'Good strength', 'Good heat resistance', 'Good chemical stability'], ar: ['مقاومة حرارية ممتازة', 'قوة جيدة', 'مقاومة حرارية جيدة', 'استقرار كيميائي جيد'], es: ['Excelente resistencia a alta temperatura', 'Buena resistencia', 'Buena resistencia al calor', 'Buena estabilidad química'], pt: ['Excelente resistência a altas temperaturas', 'Boa resistência', 'Boa resistência ao calor', 'Boa estabilidade química'] },
+    applications: { zh: ['高温环境包装', '电子应用', '汽车应用', '航空航天'], en: ['High temperature environment packaging', 'Electronics applications', 'Automotive applications', 'Aerospace'], ar: ['تغليف بيئة درجة الحرارة العالية', 'تطبيقات إلكترونية', 'تطبيقات سيارات', 'الطيران والفضاء'], es: ['Empaquetado de ambiente de alta temperatura', 'Aplicaciones electrónicas', 'Aplicaciones automotrices', 'Aeroespacial'], pt: ['Embalagem de ambiente de alta temperatura', 'Aplicações eletrônicas', 'Aplicações automotivas', 'Aeroespacial'] },
+    certifications: ['ISO 9001', 'FDA', 'SGS', 'RoHS', 'UL94'], images: ['/images/products/pet-tape-high-temp.jpg'], featured: false
+  },
+  {
+    id: '93', slug: 'pet-tape-uv-resistant', name: { zh: 'PET抗UV胶带', en: 'PET UV Resistant Tape', ar: 'شريط PET مقاوم للأشعة فوق البنفسجية', es: 'Cinta PET resistente a UV', pt: 'Fita PET resistente a UV' }, category: 'tape',
+    description: { zh: 'PET抗UV胶带，具有优异的抗紫外线性能。适用于户外应用和长期暴露环境。', en: 'PET UV resistant tape with excellent UV resistance. Suitable for outdoor applications and long-term exposure environments.', ar: 'شريط PET مقاوم للأشعة فوق البنفسجية بمقاومة أشعة فوق بنفسجية ممتازة.', es: 'Cinta PET resistente a UV con excelente resistencia UV.', pt: 'Fita PET resistente a UV com excelente resistência UV.' },
+    specifications: { thickness: '15-25 microns', width: '12-48mm', length: '50-500m', weight: 'Customized', color: 'Transparent/White', material: 'Polyethylene Terephthalate + UV Resistant Adhesive' },
+    features: { zh: ['优异抗UV性能', '良好强度', '耐候性好', '适合户外应用'], en: ['Excellent UV resistance', 'Good strength', 'Good weather resistance', 'Suitable for outdoor applications'], ar: ['مقاومة أشعة فوق بنفسجية ممتازة', 'قوة جيدة', 'مقاومة جوية جيدة', 'مناسب للتطبيقات الخارجية'], es: ['Excelente resistencia UV', 'Buena resistencia', 'Buena resistencia a la intemperie', 'Adecuado para aplicaciones exteriores'], pt: ['Excelente resistência UV', 'Boa resistência', 'Boa resistência às intempéries', 'Adequado para aplicações externas'] },
+    applications: { zh: ['户外应用', '建筑应用', '汽车应用', '长期暴露环境'], en: ['Outdoor applications', 'Building applications', 'Automotive applications', 'Long-term exposure environments'], ar: ['تطبيقات خارجية', 'تطبيقات بناء', 'تطبيقات سيارات', 'بيئات التعرض طويل الأمد'], es: ['Aplicaciones exteriores', 'Aplicaciones de construcción', 'Aplicaciones automotrices', 'Ambientes de exposición a largo plazo'], pt: ['Aplicações externas', 'Aplicações de construção', 'Aplicações automotivas', 'Ambientes de exposição a longo prazo'] },
+    certifications: ['ISO 9001', 'FDA', 'SGS', 'RoHS'], images: ['/images/products/pet-tape-uv-resistant.jpg'], featured: false
+  },
+
+  // ==================== Tape 扩展系列 ====================
   {
     id: '60', slug: 'bopp-tape-prod', name: { zh: 'BOPP胶带', en: 'BOPP Tape', ar: 'شريط BOPP', es: 'Cinta BOPP', pt: 'Fita BOPP' }, category: 'tape',
     description: { zh: '标准BOPP胶带，具有优异的拉伸强度和粘性。适用于各种包装和固定应用。', en: 'Standard BOPP tape with excellent tensile strength and adhesion. Suitable for various packaging and fixing applications.', ar: 'شريط BOPP قياسي بقوة شد ممتازة والتصاق.', es: 'Cinta BOPP estándar con excelente resistencia a la tracción y adhesión.', pt: 'Fita BOPP padrão com excelente resistência à tração e adesão.' },
@@ -460,5 +536,21 @@ export const categories = [
     { id: 'flame-retardant', name: { zh: '阻燃膜', en: 'Flame Retardant Film', ar: 'فيلم مقاوم للحريق', es: 'Película ignífuga', pt: 'Filme retardante de chama' } },
     { id: 'high-temp', name: { zh: '耐高温膜', en: 'High Temperature Film', ar: 'فيلم مقاوم للحرارة', es: 'Película resistente al calor', pt: 'Filme resistente ao calor' } },
     { id: 'barrier-film', name: { zh: '高阻隔膜', en: 'High Barrier Film', ar: 'فيلم حاجز عالي', es: 'Película de barrera alta', pt: 'Filme de barreira alta' } },
+  ]},
+  { id: 'pof', name: { zh: 'POF薄膜', en: 'POF Film', ar: 'فيلم POF', es: 'Película POF', pt: 'Filme POF' }, subcategories: [
+    { id: 'pof-12', name: { zh: '12微米', en: '12 Micron', ar: '12 ميكرون', es: '12 Micras', pt: '12 Microns' } },
+    { id: 'pof-15', name: { zh: '15微米', en: '15 Micron', ar: '15 ميكرون', es: '15 Micras', pt: '15 Microns' } },
+    { id: 'pof-18', name: { zh: '18微米', en: '18 Micron', ar: '18 ميكرون', es: '18 Micras', pt: '18 Microns' } },
+    { id: 'pof-25', name: { zh: '25微米', en: '25 Micron', ar: '25 ميكرون', es: '25 Micras', pt: '25 Microns' } },
+  ]},
+  { id: 'tear-tape', name: { zh: '撕裂胶带', en: 'Tear Tape', ar: 'شريط تمزيق', es: 'Cinta de rasgado', pt: 'Fita de rasgar' }, subcategories: [
+    { id: 'tear-tape-15', name: { zh: '15微米', en: '15 Micron', ar: '15 ميكرون', es: '15 Micras', pt: '15 Microns' } },
+    { id: 'tear-tape-18', name: { zh: '18微米', en: '18 Micron', ar: '18 ميكرون', es: '18 Micras', pt: '18 Microns' } },
+    { id: 'tear-tape-25', name: { zh: '25微米', en: '25 Micron', ar: '25 ميكرون', es: '25 Micras', pt: '25 Microns' } },
+  ]},
+  { id: 'stretch-film', name: { zh: '拉伸膜', en: 'Stretch Film', ar: 'فيلم شد', es: 'Película de estiramiento', pt: 'Filme de estiramento' }, subcategories: [
+    { id: 'stretch-15', name: { zh: '15微米', en: '15 Micron', ar: '15 ميكرون', es: '15 Micras', pt: '15 Microns' } },
+    { id: 'stretch-20', name: { zh: '20微米', en: '20 Micron', ar: '20 ميكرون', es: '20 Micras', pt: '20 Microns' } },
+    { id: 'stretch-25', name: { zh: '25微米', en: '25 Micron', ar: '25 ميكرون', es: '25 Micras', pt: '25 Microns' } },
   ]},
 ];
