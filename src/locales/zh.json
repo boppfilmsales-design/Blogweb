@@ -1,0 +1,99 @@
+{
+  "nav": {
+    "home": "首页",
+    "products": "产品中心",
+    "about": "关于我们",
+    "contact": "联系我们",
+    "language": "语言",
+    "search": "搜索产品..."
+  },
+  "hero": {
+    "title": "专业BOPP薄膜供应商",
+    "subtitle": "为全球包装行业提供高品质BOPP薄膜解决方案",
+    "description": "我们专注于BOPP薄膜的生产和出口，产品广泛应用于食品包装、印刷、电子、烟草等多个行业。凭借优质的产品和完善的服务，我们已成为全球客户信赖的合作伙伴。",
+    "cta": "浏览产品",
+    "contact": "立即咨询"
+  },
+  "features": {
+    "title": "为什么选择我们",
+    "quality": {
+      "title": "优质品质",
+      "desc": "采用先进生产工艺，严格质量控制，确保每一卷薄膜都达到国际标准"
+    },
+    "price": {
+      "title": "竞争价格",
+      "desc": "工厂直供，省去中间环节，为客户提供最具竞争力的价格"
+    },
+    "delivery": {
+      "title": "快速交付",
+      "desc": "完善的库存管理和物流体系，确保按时交付全球各地"
+    },
+    "service": {
+      "title": "专业服务",
+      "desc": "专业技术团队提供全方位支持，从产品选择到应用指导"
+    }
+  },
+  "products": {
+    "title": "产品系列",
+    "subtitle": "多样化的BOPP薄膜产品，满足不同行业需求",
+    "viewAll": "查看全部",
+    "viewDetails": "查看详情",
+    "inquire": "立即询价",
+    "specifications": "规格参数",
+    "applications": "应用领域",
+    "certifications": "认证资质",
+    "features": "产品特点",
+    "relatedProducts": "相关产品"
+  },
+  "categories": {
+    "all": "全部产品",
+    "gloss": "光膜",
+    "matte": "哑膜",
+    "metalized": "镀铝膜",
+    "heatSeal": "热封膜",
+    "whiteOpaque": "白膜",
+    "tape": "胶带膜",
+    "printing": "印刷膜"
+  },
+  "contact": {
+    "title": "联系我们",
+    "subtitle": "获取专业的产品咨询和报价",
+    "name": "您的姓名",
+    "email": "电子邮箱",
+    "phone": "联系电话",
+    "company": "公司名称",
+    "country": "国家/地区",
+    "product": "感兴趣的产品",
+    "message": "留言内容",
+    "send": "发送询价",
+    "success": "询价已发送成功！我们会尽快与您联系。",
+    "error": "发送失败，请稍后重试。",
+    "address": "地址",
+    "addressDetail": "中国江苏省苏州市工业园区",
+    "phone": "电话",
+    "email": "邮箱",
+    "whatsapp": "WhatsApp",
+    "businessHours": "工作时间",
+    "businessHoursDetail": "周一至周五 9:00-18:00"
+  },
+  "footer": {
+    "company": "公司简介",
+    "companyDesc": "专业的BOPP薄膜制造商和出口商，致力于为全球客户提供优质的包装解决方案。",
+    "quickLinks": "快速链接",
+    "products": "产品系列",
+    "contact": "联系方式",
+    "copyright": "版权所有",
+    "privacy": "隐私政策",
+    "terms": "使用条款"
+  },
+  "seo": {
+    "homeTitle": "BOPP薄膜供应商 | 专业BOPP薄膜生产厂家 | BOPP Films Sale",
+    "homeDesc": "专业的BOPP薄膜供应商，提供光膜、哑膜、镀铝膜、热封膜等多种产品。工厂直供，品质保证，全球出口。",
+    "productsTitle": "BOPP薄膜产品 | 光膜 哑膜 镀铝膜 | BOPP Films Sale",
+    "productsDesc": "浏览我们的BOPP薄膜产品系列，包括光膜、哑膜、镀铝膜、热封膜等。适用于食品包装、印刷、电子等多个行业。",
+    "aboutTitle": "关于我们 | BOPP薄膜专业制造商",
+    "aboutDesc": "了解BOPP Films Sale，我们是专业的BOPP薄膜制造商，拥有多年出口经验，服务全球客户。",
+    "contactTitle": "联系我们 | BOPP薄膜询价",
+    "contactDesc": "联系我们获取BOPP薄膜产品报价。专业团队为您提供详细的产品信息和应用建议。"
+  }
+}

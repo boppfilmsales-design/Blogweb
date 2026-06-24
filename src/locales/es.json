@@ -1,0 +1,99 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "products": "Productos",
+    "about": "Acerca de",
+    "contact": "Contacto",
+    "language": "Idioma",
+    "search": "Buscar productos..."
+  },
+  "hero": {
+    "title": "Proveedor Profesional de Películas BOPP",
+    "subtitle": "Proporcionando Soluciones de Películas BOPP de Alta Calidad para la Industria de Empaquetado Global",
+    "description": "Nos especializamos en la producción y exportación de películas BOPP, ampliamente utilizadas en empaquetado de alimentos, impresión, electrónica, tabaco y muchas otras industrias. Con productos de calidad premium y servicio excelente, nos hemos convertido en un socio de confianza para clientes en todo el mundo.",
+    "cta": "Explorar Productos",
+    "contact": "Contáctanos"
+  },
+  "features": {
+    "title": "Por Qué Elegirnos",
+    "quality": {
+      "title": "Calidad Premium",
+      "desc": "Tecnología de producción avanzada y control de calidad estricto aseguran que cada rollo cumpla con los estándares internacionales"
+    },
+    "price": {
+      "title": "Precio Competitivo",
+      "desc": "Suministro directo de fábrica, eliminando intermediarios para proporcionar los precios más competitivos"
+    },
+    "delivery": {
+      "title": "Entrega Rápida",
+      "desc": "Sistema completo de gestión de inventario y logística asegura la entrega a tiempo en todo el mundo"
+    },
+    "service": {
+      "title": "Servicio Profesional",
+      "desc": "Equipo técnico profesional proporciona soporte integral desde la selección del producto hasta la orientación de aplicación"
+    }
+  },
+  "products": {
+    "title": "Series de Productos",
+    "subtitle": "Diversos productos de películas BOPP para satisfacer diferentes necesidades de la industria",
+    "viewAll": "Ver Todo",
+    "viewDetails": "Ver Detalles",
+    "inquire": "Consultar Ahora",
+    "specifications": "Especificaciones",
+    "applications": "Aplicaciones",
+    "certifications": "Certificaciones",
+    "features": "Características",
+    "relatedProducts": "Productos Relacionados"
+  },
+  "category": {
+    "all": "Todos los Productos",
+    "gloss": "Película Brillante",
+    "matte": "Película Mate",
+    "metalized": "Película Metalizada",
+    "heatSeal": "Película Termosellable",
+    "whiteOpaque": "Película Blanca Opaca",
+    "tape": "Película de Cinta",
+    "printing": "Película de Impresión"
+  },
+  "contact": {
+    "title": "Contáctanos",
+    "subtitle": "Obtén consulta profesional de productos y cotización",
+    "name": "Tu Nombre",
+    "email": "Correo Electrónico",
+    "phone": "Número de Teléfono",
+    "company": "Nombre de la Empresa",
+    "country": "País/Región",
+    "product": "Producto de Interés",
+    "message": "Mensaje",
+    "send": "Enviar Consulta",
+    "success": "¡Consulta enviada exitosamente! Te contactaremos pronto.",
+    "error": "Error al enviar, por favor intenta más tarde.",
+    "address": "Dirección",
+    "addressDetail": "Parque Industrial, Suzhou, Jiangsu, China",
+    "phone": "Teléfono",
+    "email": "Correo",
+    "whatsapp": "WhatsApp",
+    "businessHours": "Horario de Atención",
+    "businessHoursDetail": "Lunes - Viernes 9:00-18:00"
+  },
+  "footer": {
+    "company": "Perfil de la Empresa",
+    "companyDesc": "Fabricante y exportador profesional de películas BOPP, comprometido a proporcionar soluciones de empaquetado de alta calidad para clientes globales.",
+    "quickLinks": "Enlaces Rápidos",
+    "products": "Series de Productos",
+    "contact": "Información de Contacto",
+    "copyright": "Todos los Derechos Reservados",
+    "privacy": "Política de Privacidad",
+    "terms": "Términos de Uso"
+  },
+  "seo": {
+    "homeTitle": "Proveedor de Películas BOPP | Fabricante Profesional de BOPP | BOPP Films Sale",
+    "homeDesc": "Proveedor profesional de películas BOPP que ofrece películas brillantes, mates, metalizadas, termosellables y más. Suministro directo de fábrica, garantía de calidad, exportación global.",
+    "productsTitle": "Productos de Películas BOPP | Películas Brillantes Mate Metalizadas | BOPP Films Sale",
+    "productsDesc": "Explora nuestra serie de productos de películas BOPP incluyendo películas brillantes, mates, metalizadas, termosellables y más. Adecuadas para empaquetado de alimentos, impresión, electrónica y muchas otras industrias.",
+    "aboutTitle": "Acerca de Nosotros | Fabricante Profesional de BOPP",
+    "aboutDesc": "Conoce BOPP Films Sale, somos un fabricante profesional de películas BOPP con años de experiencia en exportación sirviendo a clientes en todo el mundo.",
+    "contactTitle": "Contáctanos | Consulta de Películas BOPP",
+    "contactDesc": "Contáctanos para obtener cotizaciones de productos de películas BOPP. Equipo profesional proporciona información detallada del producto y consejos de aplicación."
+  }
+}

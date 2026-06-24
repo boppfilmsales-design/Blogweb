@@ -1,0 +1,99 @@
+{
+  "nav": {
+    "home": "Home",
+    "products": "Products",
+    "about": "About Us",
+    "contact": "Contact",
+    "language": "Language",
+    "search": "Search products..."
+  },
+  "hero": {
+    "title": "Professional BOPP Film Supplier",
+    "subtitle": "Providing High-Quality BOPP Film Solutions for Global Packaging Industry",
+    "description": "We specialize in the production and export of BOPP films, widely used in food packaging, printing, electronics, tobacco and many other industries. With premium quality products and excellent service, we have become a trusted partner for customers worldwide.",
+    "cta": "Browse Products",
+    "contact": "Contact Us"
+  },
+  "features": {
+    "title": "Why Choose Us",
+    "quality": {
+      "title": "Premium Quality",
+      "desc": "Advanced production technology and strict quality control ensure every roll meets international standards"
+    },
+    "price": {
+      "title": "Competitive Price",
+      "desc": "Factory direct supply, eliminating middlemen to provide the most competitive prices"
+    },
+    "delivery": {
+      "title": "Fast Delivery",
+      "desc": "Complete inventory management and logistics system ensures timely delivery worldwide"
+    },
+    "service": {
+      "title": "Professional Service",
+      "desc": "Professional technical team provides comprehensive support from product selection to application guidance"
+    }
+  },
+  "products": {
+    "title": "Product Series",
+    "subtitle": "Diverse BOPP film products to meet different industry needs",
+    "viewAll": "View All",
+    "viewDetails": "View Details",
+    "inquire": "Inquire Now",
+    "specifications": "Specifications",
+    "applications": "Applications",
+    "certifications": "Certifications",
+    "features": "Features",
+    "relatedProducts": "Related Products"
+  },
+  "category": {
+    "all": "All Products",
+    "gloss": "Gloss Film",
+    "matte": "Matte Film",
+    "metalized": "Metalized Film",
+    "heatSeal": "Heat Sealable Film",
+    "whiteOpaque": "White Opaque Film",
+    "tape": "Tape Film",
+    "printing": "Printing Film"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "Get professional product consultation and quotation",
+    "name": "Your Name",
+    "email": "Email Address",
+    "phone": "Phone Number",
+    "company": "Company Name",
+    "country": "Country/Region",
+    "product": "Interested Product",
+    "message": "Message",
+    "send": "Send Inquiry",
+    "success": "Inquiry sent successfully! We will contact you soon.",
+    "error": "Failed to send, please try again later.",
+    "address": "Address",
+    "addressDetail": "Industrial Park, Suzhou, Jiangsu, China",
+    "phone": "Phone",
+    "email": "Email",
+    "whatsapp": "WhatsApp",
+    "businessHours": "Business Hours",
+    "businessHoursDetail": "Monday - Friday 9:00-18:00"
+  },
+  "footer": {
+    "company": "Company Profile",
+    "companyDesc": "Professional BOPP film manufacturer and exporter, committed to providing high-quality packaging solutions for global customers.",
+    "quickLinks": "Quick Links",
+    "products": "Product Series",
+    "contact": "Contact Info",
+    "copyright": "All Rights Reserved",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Use"
+  },
+  "seo": {
+    "homeTitle": "BOPP Film Supplier | Professional BOPP Film Manufacturer | BOPP Films Sale",
+    "homeDesc": "Professional BOPP film supplier offering gloss film, matte film, metalized film, heat sealable film and more. Factory direct supply, quality assurance, global export.",
+    "productsTitle": "BOPP Film Products | Gloss Matte Metalized Films | BOPP Films Sale",
+    "productsDesc": "Browse our BOPP film product series including gloss film, matte film, metalized film, heat sealable film and more. Suitable for food packaging, printing, electronics and many other industries.",
+    "aboutTitle": "About Us | Professional BOPP Film Manufacturer",
+    "aboutDesc": "Learn about BOPP Films Sale, we are a professional BOPP film manufacturer with years of export experience serving customers worldwide.",
+    "contactTitle": "Contact Us | BOPP Film Inquiry",
+    "contactDesc": "Contact us to get BOPP film product quotations. Professional team provides detailed product information and application advice."
+  }
+}
