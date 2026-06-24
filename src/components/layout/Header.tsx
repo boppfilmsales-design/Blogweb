@@ -65,38 +65,44 @@ const Header = () => {
 
                     {/* Dropdown Menu */}
                     {isProductsOpen && (
-                      <div className="absolute top-full left-0 mt-2 w-80 bg-white rounded-lg shadow-xl border border-gray-200 z-50">
-                        <div className="p-4">
-                          {categories.filter(cat => cat.id !== 'all').map((category) => (
-                            <div key={category.id} className="mb-4 last:mb-0">
-                              <Link
-                                href={`/products?category=${category.id}`}
-                                className="font-semibold text-gray-900 hover:text-blue-600 block py-2 border-b border-gray-100"
-                                onClick={() => setIsProductsOpen(false)}
-                              >
-                                {getLocalizedText(category.name)}
-                              </Link>
-                              {category.subcategories && (
-                                <div className="ml-4 mt-2 space-y-1">
-                                  {category.subcategories.map((sub) => (
-                                    <Link
-                                      key={sub.id}
-                                      href={`/products?subcategory=${sub.id}`}
-                                      className="text-sm text-gray-600 hover:text-blue-600 block py-1"
-                                      onClick={() => setIsProductsOpen(false)}
-                                    >
-                                      {getLocalizedText(sub.name)}
-                                    </Link>
-                                  ))}
-                                </div>
-                              )}
-                            </div>
-                          ))}
+                      <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-[600px] bg-white rounded-lg shadow-2xl border border-gray-200 z-50">
+                        <div className="p-6">
+                          <h3 className="text-lg font-bold text-gray-900 mb-4 border-b pb-2">Product Categories</h3>
+                          <div className="grid grid-cols-2 gap-4">
+                            {categories.filter(cat => cat.id !== 'all').map((category) => (
+                              <div key={category.id} className="mb-3">
+                                <Link
+                                  href={`/products?category=${category.id}`}
+                                  className="font-semibold text-blue-600 hover:text-blue-800 block py-1 text-sm font-bold"
+                                  onClick={() => setIsProductsOpen(false)}
+                                >
+                                  {getLocalizedText(category.name)}
+                                </Link>
+                                {category.subcategories && (
+                                  <div className="ml-2 mt-1 space-y-0.5">
+                                    {category.subcategories.slice(0, 4).map((sub) => (
+                                      <Link
+                                        key={sub.id}
+                                        href={`/products?subcategory=${sub.id}`}
+                                        className="text-xs text-gray-500 hover:text-blue-600 block py-0.5"
+                                        onClick={() => setIsProductsOpen(false)}
+                                      >
+                                        • {getLocalizedText(sub.name)}
+                                      </Link>
+                                    ))}
+                                    {category.subcategories.length > 4 && (
+                                      <span className="text-xs text-gray-400">+{category.subcategories.length - 4} more</span>
+                                    )}
+                                  </div>
+                                )}
+                              </div>
+                            ))}
+                          </div>
                         </div>
                         <div className="border-t border-gray-200 p-4 bg-gray-50 rounded-b-lg">
                           <Link
                             href="/products"
-                            className="text-blue-600 hover:text-blue-700 font-medium text-sm"
+                            className="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center justify-center"
                             onClick={() => setIsProductsOpen(false)}
                           >
                             View All Products →
