@@ -50,12 +50,12 @@ const InquiryForm: React.FC<InquiryFormProps> = ({ productSlug }) => {
   };
 
   const productOptions = [
-    { value: 'gloss-bopp-film', label: t.category.gloss },
-    { value: 'matte-bopp-film', label: t.category.matte },
-    { value: 'metalized-bopp-film', label: t.category.metalized },
-    { value: 'heat-sealable-bopp-film', label: t.category.heatSeal },
-    { value: 'white-opaque-bopp-film', label: t.category.whiteOpaque },
-    { value: 'tape-bopp-film', label: t.category.tape },
+    { value: 'gloss-bopp-film', label: 'Glossy BOPP Film' },
+    { value: 'matte-bopp-film', label: 'Matte BOPP Film' },
+    { value: 'metalized-bopp-film', label: 'Metalized BOPP Film' },
+    { value: 'heat-sealable-bopp-film', label: 'Heat Sealable BOPP Film' },
+    { value: 'white-opaque-bopp-film', label: 'White Opaque BOPP Film' },
+    { value: 'tape-bopp-film', label: 'Tape BOPP Film' },
   ];
 
   return (

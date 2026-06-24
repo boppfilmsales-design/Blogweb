@@ -316,4 +316,6 @@ export const categories = [
   { id: 'matte', name: { zh: '哑膜', en: 'Matte Film', ar: 'فيلم غير لامع', es: 'Película Mate', pt: 'Filme Fosco' } },
   { id: 'metalized', name: { zh: '镀铝膜', en: 'Metalized Film', ar: 'فيلم معدني', es: 'Película Metalizada', pt: 'Filme Metalizado' } },
   { id: 'heatSeal', name: { zh: '热封膜', en: 'Heat Sealable Film', ar: 'فيلم قابل للحرار', es: 'Película Termosellable', pt: 'Filme Termosselável' } },
-  { id: 'whiteOpaque', name: { zh: '白膜', en: 'White Opaque Film', ar: 'فيلم أبيض معتم', es: 'Película Blanca Opaca', pt: '
+  { id: 'whiteOpaque', name: { zh: '白膜', en: 'White Opaque Film', ar: 'فيلم أبيض معتم', es: 'Película Blanca Opaca', pt: 'Filme Branco Opaco' } },
+  { id: 'tape', name: { zh: '胶带膜', en: 'Tape Film', ar: 'فيلم شريط', es: 'Película de Cinta', pt: 'Filme de Fita' } },
+];

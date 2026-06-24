@@ -16,10 +16,10 @@ const Footer = () => {
   ];
 
   const productCategories = [
-    { href: '/products?category=gloss', label: t.category.gloss },
-    { href: '/products?category=matte', label: t.category.matte },
-    { href: '/products?category=metalized', label: t.category.metalized },
-    { href: '/products?category=heatSeal', label: t.category.heatSeal },
+    { href: '/products?category=gloss', label: 'Gloss Film' },
+    { href: '/products?category=matte', label: 'Matte Film' },
+    { href: '/products?category=metalized', label: 'Metalized Film' },
+    { href: '/products?category=heatSeal', label: 'Heat Sealable Film' },
   ];
 
   const socialLinks = [

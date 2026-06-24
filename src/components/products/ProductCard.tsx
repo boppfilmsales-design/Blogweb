@@ -58,7 +58,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       <div className="p-6">
         <div className="mb-2">
           <span className="text-sm text-blue-600 font-medium">
-            {t.category[product.category as keyof typeof t.category] || product.category}
+            {product.category}
           </span>
         </div>
         <h3 className="text-xl font-semibold text-gray-900 mb-3 line-clamp-2">

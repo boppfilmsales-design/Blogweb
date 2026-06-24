@@ -8,7 +8,7 @@ import es from '../locales/es.json';
 import pt from '../locales/pt.json';
 
 type Locale = 'zh' | 'en' | 'ar' | 'es' | 'pt';
-type Translations = typeof zh;
+type Translations = any;
 
 interface LanguageContextType {
   locale: Locale;
@@ -48,15 +48,19 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 
   const setLocale = (newLocale: Locale) => {
     setLocaleState(newLocale);
-    localStorage.setItem('locale', newLocale);
-    document.documentElement.lang = newLocale;
-    document.documentElement.dir = rtlLanguages.includes(newLocale) ? 'rtl' : 'ltr';
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('locale', newLocale);
+    }
+    if (typeof document !== 'undefined') {
+      document.documentElement.lang = newLocale;
+      document.documentElement.dir = rtlLanguages.includes(newLocale) ? 'rtl' : 'ltr';
+    }
   };
 
   const isRTL = rtlLanguages.includes(locale);
 
   useEffect(() => {
-    if (mounted) {
+    if (mounted && typeof document !== 'undefined') {
       document.documentElement.lang = locale;
       document.documentElement.dir = isRTL ? 'rtl' : 'ltr';
     }

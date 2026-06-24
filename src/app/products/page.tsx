@@ -1,106 +1,106 @@
-'use client';
-
-import React, { useState, useMemo } from 'react';
-import { useLanguage } from '@/context/LanguageContext';
-import ProductCard from '@/components/products/ProductCard';
+import React from 'react';
+import Link from 'next/link';
 import { products, categories } from '@/data/products';
-import { FiFilter, FiGrid, FiList } from 'react-icons/fi';
+import { FiArrowRight } from 'react-icons/fi';
 
 export default function ProductsPage() {
-  const { t, locale } = useLanguage();
-  const [selectedCategory, setSelectedCategory] = useState('all');
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
-  const [searchTerm, setSearchTerm] = useState('');
-
-  const filteredProducts = useMemo(() => {
-    return products.filter(product => {
-      const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory;
-      const matchesSearch = searchTerm === '' ||
-        product.name[locale].toLowerCase().includes(searchTerm.toLowerCase()) ||
-        product.description[locale].toLowerCase().includes(searchTerm.toLowerCase());
-      return matchesCategory && matchesSearch;
-    });
-  }, [selectedCategory, searchTerm, locale]);
-
-  const getLocalizedText = (textObj: any) => {
-    return textObj[locale] || textObj.en;
-  };
-
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <div className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">{t.products.title}</h1>
-          <p className="text-gray-600">{t.products.subtitle}</p>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Our Products</h1>
+          <p className="text-gray-600">Diverse BOPP film products to meet different industry needs</p>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Filters */}
+        {/* Category Filter */}
         <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
-            {/* Search */}
-            <div className="flex-1 max-w-md">
-              <input
-                type="text"
-                placeholder={t.nav.search}
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
-            </div>
-
-            {/* Category Filter */}
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2">
-                <FiFilter className="w-5 h-5 text-gray-500" />
-                <span className="text-sm font-medium text-gray-700">Category:</span>
-              </div>
-              <select
-                value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
-                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
-                {categories.map((category) => (
-                  <option key={category.id} value={category.id}>
-                    {getLocalizedText(category.name)}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* View Mode */}
-            <div className="flex items-center space-x-2">
+          <div className="flex flex-wrap gap-2">
+            {categories.map((category) => (
               <button
-                onClick={() => setViewMode('grid')}
-                className={`p-2 rounded ${viewMode === 'grid' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-600'}`}
+                key={category.id}
+                className="px-4 py-2 rounded-lg bg-gray-100 hover:bg-blue-100 text-gray-700 hover:text-blue-700 transition-colors"
               >
-                <FiGrid className="w-5 h-5" />
+                {category.name.en}
               </button>
-              <button
-                onClick={() => setViewMode('list')}
-                className={`p-2 rounded ${viewMode === 'list' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-600'}`}
-              >
-                <FiList className="w-5 h-5" />
-              </button>
-            </div>
+            ))}
           </div>
         </div>
 
-        {/* Products Grid/List */}
-        <div className={`grid gap-6 ${viewMode === 'grid' ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'}`}>
-          {filteredProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
+        {/* Products Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {products.map((product) => (
+            <div key={product.id} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow group">
+              {/* Product Image */}
+              <Link href={`/products/${product.slug}`}>
+                <div className="relative aspect-video bg-gradient-to-br from-blue-100 to-blue-200 overflow-hidden">
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="text-center">
+                      <div className="w-16 h-16 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-2">
+                        <span className="text-blue-600 font-bold text-2xl">B</span>
+                      </div>
+                      <p className="text-blue-600 font-medium text-sm">BOPP Film</p>
+                    </div>
+                  </div>
+
+                  {/* Featured Badge */}
+                  {product.featured && (
+                    <div className="absolute top-4 left-4 bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-medium">
+                      Featured
+                    </div>
+                  )}
+                </div>
+              </Link>
+
+              {/* Product Info */}
+              <div className="p-6">
+                <div className="mb-2">
+                  <span className="text-sm text-blue-600 font-medium">
+                    {product.category}
+                  </span>
+                </div>
+                <Link href={`/products/${product.slug}`}>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-3 line-clamp-2 hover:text-blue-600">
+                    {product.name.en}
+                  </h3>
+                </Link>
+                <p className="text-gray-600 mb-4 line-clamp-3">
+                  {product.description.en}
+                </p>
+
+                {/* Specifications Preview */}
+                <div className="grid grid-cols-2 gap-2 mb-4 text-sm">
+                  <div className="bg-gray-50 rounded px-2 py-1">
+                    <span className="text-gray-500">Thickness:</span>
+                    <span className="text-gray-700 ml-1">{product.specifications.thickness}</span>
+                  </div>
+                  <div className="bg-gray-50 rounded px-2 py-1">
+                    <span className="text-gray-500">Width:</span>
+                    <span className="text-gray-700 ml-1">{product.specifications.width}</span>
+                  </div>
+                </div>
+
+                {/* Actions */}
+                <div className="flex space-x-3">
+                  <Link
+                    href={`/products/${product.slug}`}
+                    className="flex-1 bg-blue-600 text-white text-center py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors font-medium"
+                  >
+                    View Details
+                  </Link>
+                  <Link
+                    href={`/contact?product=${product.slug}`}
+                    className="flex items-center justify-center w-12 h-10 border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-600 hover:text-white transition-colors"
+                  >
+                    <FiArrowRight className="w-5 h-5" />
+                  </Link>
+                </div>
+              </div>
+            </div>
           ))}
         </div>
-
-        {/* No Results */}
-        {filteredProducts.length === 0 && (
-          <div className="text-center py-12">
-            <p className="text-gray-500 text-lg">No products found matching your criteria.</p>
-          </div>
-        )}
       </div>
     </div>
   );
