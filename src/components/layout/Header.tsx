@@ -3,12 +3,14 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/context/LanguageContext';
-import { FiMenu, FiX, FiGlobe, FiSearch } from 'react-icons/fi';
+import { categories } from '@/data/products';
+import { FiMenu, FiX, FiGlobe, FiSearch, FiChevronDown } from 'react-icons/fi';
 
 const Header = () => {
   const { locale, setLocale, t, isRTL } = useLanguage();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLangOpen, setIsLangOpen] = useState(false);
+  const [isProductsOpen, setIsProductsOpen] = useState(false);
 
   const languages = [
     { code: 'en', name: 'English', flag: '🇺🇸' },
@@ -20,10 +22,14 @@ const Header = () => {
 
   const navItems = [
     { href: '/', label: t.nav.home },
-    { href: '/products', label: t.nav.products },
+    { href: '/products', label: t.nav.products, hasDropdown: true },
     { href: '/about', label: t.nav.about },
     { href: '/contact', label: t.nav.contact },
   ];
+
+  const getLocalizedText = (textObj: any) => {
+    return textObj[locale] || textObj.en;
+  };
 
   return (
     <header className="bg-white shadow-md sticky top-0 z-50">
@@ -43,28 +49,89 @@ const Header = () => {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="text-gray-700 hover:text-blue-600 font-medium transition-colors"
-              >
-                {item.label}
-              </Link>
+              <div key={item.href} className="relative group">
+                {item.hasDropdown ? (
+                  <div
+                    className="relative"
+                    onMouseEnter={() => setIsProductsOpen(true)}
+                    onMouseLeave={() => setIsProductsOpen(false)}
+                  >
+                    <Link
+                      href={item.href}
+                      className="text-gray-700 hover:text-blue-600 font-medium transition-colors flex items-center space-x-1"
+                    >
+                      <span>{item.label}</span>
+                      <FiChevronDown className={`w-4 h-4 transition-transform ${isProductsOpen ? 'rotate-180' : ''}`} />
+                    </Link>
+
+                    {/* Dropdown Menu */}
+                    {isProductsOpen && (
+                      <div className="absolute top-full left-0 mt-2 w-80 bg-white rounded-lg shadow-xl border border-gray-200 z-50">
+                        <div className="p-4">
+                          {categories.filter(cat => cat.id !== 'all').map((category) => (
+                            <div key={category.id} className="mb-4 last:mb-0">
+                              <Link
+                                href={`/products?category=${category.id}`}
+                                className="font-semibold text-gray-900 hover:text-blue-600 block py-2 border-b border-gray-100"
+                                onClick={() => setIsProductsOpen(false)}
+                              >
+                                {getLocalizedText(category.name)}
+                              </Link>
+                              {category.subcategories && (
+                                <div className="ml-4 mt-2 space-y-1">
+                                  {category.subcategories.map((sub) => (
+                                    <Link
+                                      key={sub.id}
+                                      href={`/products?subcategory=${sub.id}`}
+                                      className="text-sm text-gray-600 hover:text-blue-600 block py-1"
+                                      onClick={() => setIsProductsOpen(false)}
+                                    >
+                                      {getLocalizedText(sub.name)}
+                                    </Link>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                        <div className="border-t border-gray-200 p-4 bg-gray-50 rounded-b-lg">
+                          <Link
+                            href="/products"
+                            className="text-blue-600 hover:text-blue-700 font-medium text-sm"
+                            onClick={() => setIsProductsOpen(false)}
+                          >
+                            View All Products →
+                          </Link>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <Link
+                    href={item.href}
+                    className="text-gray-700 hover:text-blue-600 font-medium transition-colors"
+                  >
+                    {item.label}
+                  </Link>
+                )}
+              </div>
             ))}
           </nav>
 
           {/* Language Selector & Search */}
           <div className="flex items-center space-x-4">
             {/* Search */}
-            <button className="p-2 text-gray-600 hover:text-blue-600 transition-colors">
+            <button type="button" className="p-2 text-gray-600 hover:text-blue-600 transition-colors" aria-label="Search">
               <FiSearch className="w-5 h-5" />
             </button>
 
             {/* Language Selector */}
             <div className="relative">
               <button
+                type="button"
                 onClick={() => setIsLangOpen(!isLangOpen)}
                 className="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors"
+                aria-label="Select language"
               >
                 <FiGlobe className="w-5 h-5 text-gray-600" />
                 <span className="hidden sm:inline text-sm font-medium text-gray-700">
