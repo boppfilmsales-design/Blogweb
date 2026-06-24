@@ -22,7 +22,7 @@ const Header = () => {
   const navItems = [
     { href: '/', label: 'Home' },
     { href: '/products', label: 'Products', hasDropdown: true },
-    { href: '/about', label: 'About Us' },
+    { href: '/about', label: 'About' },
     { href: '/contact', label: 'Contact' },
   ];
 

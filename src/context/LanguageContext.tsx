@@ -39,10 +39,8 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     if (savedLocale && translations[savedLocale]) {
       setLocaleState(savedLocale);
     } else {
-      const browserLang = navigator.language.split('-')[0] as Locale;
-      if (translations[browserLang]) {
-        setLocaleState(browserLang);
-      }
+      // 默认使用英文
+      setLocaleState('en');
     }
   }, []);
 
