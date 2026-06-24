@@ -220,6 +220,16 @@ export const products: Product[] = [
     certifications: ['ISO 9001', 'FDA', 'SGS', 'RoHS'], images: ['/images/products/cpp-50.jpg'], featured: false
   },
 
+  // ==================== BOPET 4.5微米 ====================
+  {
+    id: '29', slug: 'bopet-4.5', name: { zh: 'BOPET薄膜 4.5微米', en: 'BOPET Film 4.5 Micron', ar: 'فيلم BOPET 4.5 ميكرون', es: 'Película BOPET 4.5 Micras', pt: 'Filme BOPET 4.5 Microns' }, category: 'bopet',
+    description: { zh: '超薄BOPET薄膜，厚度4.5微米，具有卓越的透明度和光泽度。适用于高速印刷和精密包装，提供出色的印刷适性和防潮性能。', en: 'Ultra-thin BOPET film with 4.5 micron thickness, featuring exceptional transparency and gloss. Ideal for high-speed printing and precision packaging, providing excellent printability and moisture barrier properties.', ar: 'فيلم BOPET فائق الرقة بسماكة 4.5 ميكرون، يتميز بشفافية وتلألؤ استثنائيين.', es: 'Película BOPET ultra delgada con grosor de 4.5 micras, con transparencia y brillo excepcionales.', pt: 'Filme BOPET ultra-fino com espessura de 4.5 micrômetros, com transparência e brilho excepcionais.' },
+    specifications: { thickness: '4.5 microns', width: '200-1000mm', length: '4000-8000m', weight: 'Customized', color: 'Transparent', material: 'Polyethylene Terephthalate' },
+    features: { zh: ['超薄设计', '高透明度', '优异光泽度', '高速印刷适用', '优异防潮性能'], en: ['Ultra-thin design', 'High transparency', 'Excellent gloss', 'High-speed printing', 'Superior moisture barrier'], ar: ['تصميم فائق الرقة', 'شفافية عالية', 'لمعان ممتاز', 'طباعة عالية السرعة', 'حاجز رطوبة فائق'], es: ['Diseño ultra delgado', 'Alta transparencia', 'Excelente brillo', 'Impresión de alta velocidad', 'Barrera de humedad superior'], pt: ['Design ultra-fino', 'Alta transparência', 'Excelente brilho', 'Impressão de alta velocidade', 'Barreira de umidade superior'] },
+    applications: { zh: ['食品包装', '印刷覆膜', '标签制作', '礼品包装', '文具包装'], en: ['Food packaging', 'Printing lamination', 'Label making', 'Gift wrapping', 'Stationery packaging'], ar: ['تغليف المواد الغذائية', 'تصفيح الطباعة', 'صنع الملصقات', 'تغليف الهدايا', 'تغليف القرطاسية'], es: ['Empaquetado de alimentos', 'Laminación de impresión', 'Fabricación de etiquetas', 'Envoltura de regalos', 'Empaquetado de papelería'], pt: ['Embalagem de alimentos', 'Laminação de impressão', 'Fabricação de etiquetas', 'Embalagem de presentes', 'Embalagem de papelaria'] },
+    certifications: ['ISO 9001', 'FDA', 'SGS', 'RoHS'], images: ['/images/products/bopet-4.5.jpg'], featured: true
+  },
+
   // ==================== BOPET 扩展系列 ====================
   {
     id: '80', slug: 'bopet-metalized-12', name: { zh: 'BOPET镀铝膜 12微米', en: 'BOPET Metalized Film 12 Micron', ar: 'فيلم BOPET معدني 12 ميكرون', es: 'Película BOPET Metalizada 12 Micras', pt: 'Filme BOPET Metalizado 12 Microns' }, category: 'bopet',
@@ -538,6 +548,7 @@ export const categories = [
     { id: 'barrier-film', name: { zh: '高阻隔膜', en: 'High Barrier Film', ar: 'فيلم حاجز عالي', es: 'Película de barrera alta', pt: 'Filme de barreira alta' } },
   ]},
   { id: 'pof', name: { zh: 'POF薄膜', en: 'POF Film', ar: 'فيلم POF', es: 'Película POF', pt: 'Filme POF' }, subcategories: [
+    { id: 'pof-4.5', name: { zh: '4.5微米', en: '4.5 Micron', ar: '4.5 ميكرون', es: '4.5 Micras', pt: '4.5 Microns' } },
     { id: 'pof-12', name: { zh: '12微米', en: '12 Micron', ar: '12 ميكرون', es: '12 Micras', pt: '12 Microns' } },
     { id: 'pof-15', name: { zh: '15微米', en: '15 Micron', ar: '15 ميكرون', es: '15 Micras', pt: '15 Microns' } },
     { id: 'pof-18', name: { zh: '18微米', en: '18 Micron', ar: '18 ميكرون', es: '18 Micras', pt: '18 Microns' } },
@@ -553,4 +564,22 @@ export const categories = [
     { id: 'stretch-20', name: { zh: '20微米', en: '20 Micron', ar: '20 ميكرون', es: '20 Micras', pt: '20 Microns' } },
     { id: 'stretch-25', name: { zh: '25微米', en: '25 Micron', ar: '25 ميكرون', es: '25 Micras', pt: '25 Microns' } },
   ]},
+
+  // ==================== POF 薄膜系列 ====================
+  {
+    id: '130', slug: 'pof-4.5', name: { zh: 'POF薄膜 4.5微米', en: 'POF Film 4.5 Micron', ar: 'فيلم POF 4.5 ميكرون', es: 'Película POF 4.5 Micras', pt: 'Filme POF 4.5 Microns' }, category: 'pof',
+    description: { zh: '超薄POF薄膜，厚度4.5微米，具有优异的透明度和收缩性能。适用于热收缩包装应用。', en: 'Ultra-thin POF film with 4.5 micron thickness, featuring excellent transparency and shrinkage properties. Suitable for heat shrink packaging applications.', ar: 'فيلم POF فائق الرقة بسماكة 4.5 ميكرون بشفافية ممتازة وخصائص انكماش.', es: 'Película POF ultra delgada con grosor de 4.5 micras, con excelente transparencia y propiedades de contracción.', pt: 'Filme POF ultra-fino com espessura de 4.5 micrômetros, com excelente transparência e propriedades de contração.' },
+    specifications: { thickness: '4.5 microns', width: '200-1000mm', length: '4000-8000m', weight: 'Customized', color: 'Transparent', material: 'Polyolefin' },
+    features: { zh: ['超薄设计', '优异透明度', '收缩性能好', '印刷适性佳'], en: ['Ultra-thin design', 'Excellent transparency', 'Good shrinkage', 'Good printability'], ar: ['تصميم فائق الرقة', 'شفافية ممتازة', 'انكماش جيد', 'قابلية طباعة جيدة'], es: ['Diseño ultra delgado', 'Excelente transparencia', 'Buena contracción', 'Buena imprimibilidad'], pt: ['Design ultra-fino', 'Excelente transparência', 'Boa contração', 'Boa imprimibilidade'] },
+    applications: { zh: ['热收缩包装', '标签制作', '食品包装', '日用品包装'], en: ['Heat shrink packaging', 'Label making', 'Food packaging', 'Daily necessities packaging'], ar: ['تغليف بالانكماش الحراري', 'صنع الملصقات', 'تغليف المواد الغذائية', 'تغليف الضروريات اليومية'], es: ['Empaquetado termoencogible', 'Fabricación de etiquetas', 'Empaquetado de alimentos', 'Empaquetado de artículos de uso diario'], pt: ['Embalagem termocontrátil', 'Fabricação de etiquetas', 'Embalagem de alimentos', 'Embalagem de artigos de uso diário'] },
+    certifications: ['ISO 9001', 'FDA', 'SGS', 'RoHS'], images: ['/images/products/pof-4.5.jpg'], featured: true
+  },
+  {
+    id: '131', slug: 'pof-12', name: { zh: 'POF薄膜 12微米', en: 'POF Film 12 Micron', ar: 'فيلم POF 12 ميكرون', es: 'Película POF 12 Micras', pt: 'Filme POF 12 Microns' }, category: 'pof',
+    description: { zh: '标准POF薄膜，具有良好的透明度和收缩性能。适用于热收缩包装应用。', en: 'Standard POF film with good transparency and shrinkage properties. Suitable for heat shrink packaging applications.', ar: 'فيلم POF قياسي بشفافية جيدة وخصائص انكماش.', es: 'Película POF estándar con buena transparencia y propiedades de contracción.', pt: 'Filme POF padrão com boa transparência e propriedades de contração.' },
+    specifications: { thickness: '12 microns', width: '200-1200mm', length: '3000-6000m', weight: 'Customized', color: 'Transparent', material: 'Polyolefin' },
+    features: { zh: ['标准厚度', '良好透明度', '收缩性能好', '印刷适性佳'], en: ['Standard thickness', 'Good transparency', 'Good shrinkage', 'Good printability'], ar: ['سماكة قياسية', 'شفافية جيدة', 'انكماش جيد', 'قابلية طباعة جيدة'], es: ['Grosor estándar', 'Buena transparencia', 'Buena contracción', 'Buena imprimibilidad'], pt: ['Espessura padrão', 'Boa transparência', 'Boa contração', 'Boa imprimibilidade'] },
+    applications: { zh: ['热收缩包装', '标签制作', '食品包装', '日用品包装'], en: ['Heat shrink packaging', 'Label making', 'Food packaging', 'Daily necessities packaging'], ar: ['تغليف بالانكماش الحراري', 'صنع الملصقات', 'تغليف المواد الغذائية', 'تغليف الضروريات اليومية'], es: ['Empaquetado termoencogible', 'Fabricación de etiquetas', 'Empaquetado de alimentos', 'Empaquetado de artículos de uso diario'], pt: ['Embalagem termocontrátil', 'Fabricação de etiquetas', 'Embalagem de alimentos', 'Embalagem de artigos de uso diário'] },
+    certifications: ['ISO 9001', 'FDA', 'SGS', 'RoHS'], images: ['/images/products/pof-12.jpg'], featured: false
+  },
 ];
