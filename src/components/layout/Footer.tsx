@@ -2,24 +2,27 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { useLanguage } from '@/context/LanguageContext';
 import { FiMail, FiPhone, FiMapPin, FiFacebook, FiTwitter, FiLinkedin, FiInstagram } from 'react-icons/fi';
 
 const Footer = () => {
+  const { t, isRTL } = useLanguage();
+
   const quickLinks = [
-    { href: '/', label: 'Home' },
-    { href: '/products', label: 'Products' },
-    { href: '/about', label: 'About Us' },
-    { href: '/contact', label: 'Contact' },
+    { href: '/', label: t.nav.home },
+    { href: '/products', label: t.nav.products },
+    { href: '/about', label: t.nav.about },
+    { href: '/contact', label: t.nav.contact },
   ];
 
   const productCategories = [
-    { href: '/products?category=bopp-gloss', label: 'BOPP Gloss Film' },
-    { href: '/products?category=bopp-matte', label: 'BOPP Matte Film' },
-    { href: '/products?category=bopet', label: 'BOPET Film' },
-    { href: '/products?category=tape', label: 'Tape Products' },
-    { href: '/products?category=cpp', label: 'CPP Film' },
-    { href: '/products?category=bops', label: 'BOPS Film' },
-    { href: '/products?category=pof', label: 'POF Film' },
+    { href: '/products?category=bopp-gloss', label: t.category.gloss },
+    { href: '/products?category=bopp-matte', label: t.category.matte },
+    { href: '/products?category=bopet', label: t.category.bopet || 'BOPET Film' },
+    { href: '/products?category=tape', label: t.category.tape || 'Tape Products' },
+    { href: '/products?category=cpp', label: t.category.cpp || 'CPP Film' },
+    { href: '/products?category=bops', label: t.category.bops || 'BOPS Film' },
+    { href: '/products?category=pof', label: t.category.pof || 'POF Film' },
   ];
 
   const socialLinks = [
@@ -39,11 +42,11 @@ const Footer = () => {
               <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-blue-800 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-xl">B</span>
               </div>
-              <div className="ml-2">
+              <div className={`${isRTL ? 'mr-2' : 'ml-2'}`}>
                 <h3 className="text-xl font-bold">BOPP Films Sale</h3>
               </div>
             </div>
-            <p className="text-gray-400 mb-4">Professional supplier of BOPP, BOPET, BOPS, CPP, POF films and tape products for packaging industry.</p>
+            <p className="text-gray-400 mb-4">{t.footer.companyDesc}</p>
             <div className="flex space-x-4">
               {socialLinks.map((social, index) => (
                 <a
@@ -60,7 +63,7 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
+            <h4 className="text-lg font-semibold mb-4">{t.footer.quickLinks}</h4>
             <ul className="space-y-2">
               {quickLinks.map((link, index) => (
                 <li key={index}>
@@ -77,7 +80,7 @@ const Footer = () => {
 
           {/* Product Categories */}
           <div>
-            <h4 className="text-lg font-semibold mb-4">Product Categories</h4>
+            <h4 className="text-lg font-semibold mb-4">{t.footer.products}</h4>
             <ul className="space-y-2">
               {productCategories.map((category, index) => (
                 <li key={index}>
@@ -94,7 +97,7 @@ const Footer = () => {
 
           {/* Contact Info */}
           <div>
-            <h4 className="text-lg font-semibold mb-4">Contact</h4>
+            <h4 className="text-lg font-semibold mb-4">{t.footer.contact}</h4>
             <ul className="space-y-3">
               <li className="flex items-start space-x-3">
                 <FiMapPin className="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0" />
@@ -115,14 +118,14 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-400 text-sm">
-            © 2024 BOPP Films Sale. All Rights Reserved
+            © 2024 BOPP Films Sale. {t.footer.copyright}
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <Link href="/privacy" className="text-gray-400 hover:text-white text-sm transition-colors">
-              Privacy Policy
+              {t.footer.privacy}
             </Link>
             <Link href="/terms" className="text-gray-400 hover:text-white text-sm transition-colors">
-              Terms of Use
+              {t.footer.terms}
             </Link>
           </div>
         </div>

@@ -2,14 +2,15 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { useLanguage } from '@/context/LanguageContext';
 import { categories } from '@/data/products';
 import { FiMenu, FiX, FiGlobe, FiSearch, FiChevronDown } from 'react-icons/fi';
 
 const Header = () => {
+  const { locale, setLocale, t } = useLanguage();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLangOpen, setIsLangOpen] = useState(false);
   const [isProductsOpen, setIsProductsOpen] = useState(false);
-  const [locale, setLocale] = useState('en');
 
   const languages = [
     { code: 'en', name: 'English', flag: '🇺🇸' },
@@ -20,14 +21,14 @@ const Header = () => {
   ];
 
   const navItems = [
-    { href: '/', label: 'Home' },
-    { href: '/products', label: 'Products', hasDropdown: true },
-    { href: '/about', label: 'About' },
-    { href: '/contact', label: 'Contact' },
+    { href: '/', label: t.nav.home },
+    { href: '/products', label: t.nav.products, hasDropdown: true },
+    { href: '/about', label: t.nav.about },
+    { href: '/contact', label: t.nav.contact },
   ];
 
   const getLocalizedText = (textObj: any) => {
-    return textObj.en;
+    return textObj[locale] || textObj.en;
   };
 
   return (
@@ -168,6 +169,7 @@ const Header = () => {
 
             {/* Mobile Menu Button */}
             <button
+              type="button"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="md:hidden p-2 text-gray-600 hover:text-blue-600"
             >
