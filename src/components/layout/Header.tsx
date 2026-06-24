@@ -9,6 +9,7 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLangOpen, setIsLangOpen] = useState(false);
   const [isProductsOpen, setIsProductsOpen] = useState(false);
+  const [locale, setLocale] = useState('en');
 
   const languages = [
     { code: 'en', name: 'English', flag: '🇺🇸' },
@@ -38,7 +39,7 @@ const Header = () => {
             <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-blue-800 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-xl">B</span>
             </div>
-            <div className={`${isRTL ? 'mr-2' : 'ml-2'}`}>
+            <div className="ml-2">
               <h1 className="text-xl font-bold text-gray-900">BOPP Films Sale</h1>
               <p className="text-xs text-gray-500">Professional BOPP Film Supplier</p>
             </div>

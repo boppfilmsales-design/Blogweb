@@ -115,4 +115,89 @@ export const products: Product[] = [
     id: '9', slug: 'bopp-matte-30', name: { zh: 'BOPP哑膜 30微米', en: 'BOPP Matte Film 30 Micron', ar: 'فيلم BOPP غير لامع 30 ميكرون', es: 'Película BOPP Mate 30 Micras', pt: 'Filme BOPP Fosco 30 Microns' }, category: 'bopp-matte',
     description: { zh: '超厚BOPP哑膜，厚度30微米，提供最高的强度和最佳的哑光效果。', en: 'Ultra-thick BOPP matte film with 30 micron thickness, providing maximum strength and optimal matte finish.', ar: 'فيلم BOPP غير لامع فائق السماكة بسماكة 30 ميكرون، يوفر أقصى قوة وتأثير غير لامع مثالي.', es: 'Película BOPP mate ultra gruesa con 30 micras de espesor.', pt: 'Filme BOPP fosco ultra-grosso com 30 micrômetros de espessura.' },
     specifications: { thickness: '30 microns', width: '200-1600mm', length: '1000-3000m', weight: 'Customized', color: 'Matte White', material: 'Polypropylene' },
-    features: { zh: ['超厚设计', '最高强度', '最佳哑光效果', '工业级品质'], en: ['Ultra-thick design', 'Maximum strength', 'Optimal matte
+    features: { zh: ['超厚设计', '最高强度', '最佳哑光效果', '工业级品质'], en: ['Ultra-thick design', 'Maximum strength', 'Optimal matte effect', 'Industrial grade quality'], ar: ['تصميم فائق السماكة', 'أقصى قوة', 'تأثير غير لامع مثالي', 'جودة صناعية'], es: ['Diseño ultra grueso', 'Máxima resistencia', 'Acabado mate óptimo', 'Calidad industrial'], pt: ['Design ultra-grosso', 'Máxima resistência', 'Acabamento fosco ideal', 'Qualidade industrial'] },
+    applications: { zh: ['重型工业包装', '建筑材料包装', '电子产品包装', '特殊应用'], en: ['Heavy industrial packaging', 'Building materials packaging', 'Electronics packaging', 'Special applications'], ar: ['تغليف صناعي ثقيل', 'تغليف مواد البناء', 'تغليف الإلكترونيات', 'تطبيقات خاصة'], es: ['Empaquetado industrial pesado', 'Empaquetado de materiales de construcción', 'Empaquetado de electrónicos', 'Aplicaciones especiales'], pt: ['Embalagem industrial pesada', 'Embalagem de materiais de construção', 'Embalagem de eletrônicos', 'Aplicações especiais'] },
+    certifications: ['ISO 9001', 'FDA', 'SGS', 'RoHS'], images: ['/images/products/bopp-matte-30.jpg'], featured: false
+  },
+];
+
+export const categories = [
+  { id: 'all', name: { zh: '全部产品', en: 'All Products', ar: 'جميع المنتجات', es: 'Todos los Productos', pt: 'Todos os Produtos' } },
+  { id: 'bopp-gloss', name: { zh: 'BOPP光膜', en: 'BOPP Gloss Film', ar: 'فيلم BOPP لامع', es: 'Película BOPP Brillante', pt: 'Filme BOPP Brilhante' }, subcategories: [
+    { id: 'bopp-gloss-15', name: { zh: '15微米', en: '15 Micron', ar: '15 ميكرون', es: '15 Micras', pt: '15 Microns' } },
+    { id: 'bopp-gloss-18', name: { zh: '18微米', en: '18 Micron', ar: '18 ميكرون', es: '18 Micras', pt: '18 Microns' } },
+    { id: 'bopp-gloss-20', name: { zh: '20微米', en: '20 Micron', ar: '20 ميكرون', es: '20 Micras', pt: '20 Microns' } },
+    { id: 'bopp-gloss-25', name: { zh: '25微米', en: '25 Micron', ar: '25 ميكرون', es: '25 Micras', pt: '25 Microns' } },
+    { id: 'bopp-gloss-30', name: { zh: '30微米', en: '30 Micron', ar: '30 ميكرون', es: '30 Micras', pt: '30 Microns' } },
+  ]},
+  { id: 'bopp-matte', name: { zh: 'BOPP哑膜', en: 'BOPP Matte Film', ar: 'فيلم BOPP غير لامع', es: 'Película BOPP Mate', pt: 'Filme BOPP Fosco' }, subcategories: [
+    { id: 'bopp-matte-18', name: { zh: '18微米', en: '18 Micron', ar: '18 ميكرون', es: '18 Micras', pt: '18 Microns' } },
+    { id: 'bopp-matte-20', name: { zh: '20微米', en: '20 Micron', ar: '20 ميكرون', es: '20 Micras', pt: '20 Microns' } },
+    { id: 'bopp-matte-25', name: { zh: '25微米', en: '25 Micron', ar: '25 ميكرون', es: '25 Micras', pt: '25 Microns' } },
+    { id: 'bopp-matte-30', name: { zh: '30微米', en: '30 Micron', ar: '30 ميكرون', es: '30 Micras', pt: '30 Microns' } },
+  ]},
+  { id: 'bopp-metalized', name: { zh: 'BOPP镀铝膜', en: 'BOPP Metalized Film', ar: 'فيلم BOPP معدني', es: 'Película BOPP Metalizada', pt: 'Filme BOPP Metalizado' }, subcategories: [
+    { id: 'bopp-metalized-18', name: { zh: '18微米', en: '18 Micron', ar: '18 ميكرون', es: '18 Micras', pt: '18 Microns' } },
+    { id: 'bopp-metalized-20', name: { zh: '20微米', en: '20 Micron', ar: '20 ميكرون', es: '20 Micras', pt: '20 Microns' } },
+    { id: 'bopp-metalized-25', name: { zh: '25微米', en: '25 Micron', ar: '25 ميكرون', es: '25 Micras', pt: '25 Microns' } },
+    { id: 'bopp-metalized-30', name: { zh: '30微米', en: '30 Micron', ar: '30 ميكرون', es: '30 Micras', pt: '30 Microns' } },
+  ]},
+  { id: 'bopp-heatseal', name: { zh: 'BOPP热封膜', en: 'BOPP Heat Sealable Film', ar: 'فيلم BOPP قابل للحرار', es: 'Película BOPP Termosellable', pt: 'Filme BOPP Termosselável' }, subcategories: [
+    { id: 'bopp-heatseal-20', name: { zh: '20微米', en: '20 Micron', ar: '20 ميكرون', es: '20 Micras', pt: '20 Microns' } },
+    { id: 'bopp-heatseal-25', name: { zh: '25微米', en: '25 Micron', ar: '25 ميكرون', es: '25 Micras', pt: '25 Microns' } },
+    { id: 'bopp-heatseal-30', name: { zh: '30微米', en: '30 Micron', ar: '30 ميكرون', es: '30 Micras', pt: '30 Microns' } },
+    { id: 'bopp-heatseal-35', name: { zh: '35微米', en: '35 Micron', ar: '35 ميكرون', es: '35 Micras', pt: '35 Microns' } },
+  ]},
+  { id: 'bopp-white', name: { zh: 'BOPP白膜', en: 'BOPP White Opaque Film', ar: 'فيلم BOPP أبيض معتم', es: 'Película BOPP Blanca Opaca', pt: 'Filme BOPP Branco Opaco' }, subcategories: [
+    { id: 'bopp-white-20', name: { zh: '20微米', en: '20 Micron', ar: '20 ميكرون', es: '20 Micras', pt: '20 Microns' } },
+    { id: 'bopp-white-25', name: { zh: '25微米', en: '25 Micron', ar: '25 ميكرون', es: '25 Micras', pt: '25 Microns' } },
+    { id: 'bopp-white-30', name: { zh: '30微米', en: '30 Micron', ar: '30 ميكرون', es: '30 Micras', pt: '30 Microns' } },
+    { id: 'bopp-white-35', name: { zh: '35微米', en: '35 Micron', ar: '35 ميكرون', es: '35 Micras', pt: '35 Microns' } },
+  ]},
+  { id: 'bopp-tape', name: { zh: 'BOPP胶带膜', en: 'BOPP Tape Film', ar: 'فيلم BOPP شريط', es: 'Película BOPP de Cinta', pt: 'Filme BOPP de Fita' }, subcategories: [
+    { id: 'bopp-tape-15', name: { zh: '15微米', en: '15 Micron', ar: '15 ميكرون', es: '15 Micras', pt: '15 Microns' } },
+    { id: 'bopp-tape-18', name: { zh: '18微米', en: '18 Micron', ar: '18 ميكرون', es: '18 Micras', pt: '18 Microns' } },
+    { id: 'bopp-tape-20', name: { zh: '20微米', en: '20 Micron', ar: '20 ميكرون', es: '20 Micras', pt: '20 Microns' } },
+    { id: 'bopp-tape-25', name: { zh: '25微米', en: '25 Micron', ar: '25 ميكرون', es: '25 Micras', pt: '25 Microns' } },
+  ]},
+  { id: 'bopet', name: { zh: 'BOPET薄膜', en: 'BOPET Film', ar: 'فيلم BOPET', es: 'Película BOPET', pt: 'Filme BOPET' }, subcategories: [
+    { id: 'bopet-12', name: { zh: '12微米', en: '12 Micron', ar: '12 ميكرون', es: '12 Micras', pt: '12 Microns' } },
+    { id: 'bopet-15', name: { zh: '15微米', en: '15 Micron', ar: '15 ميكرون', es: '15 Micras', pt: '15 Microns' } },
+    { id: 'bopet-18', name: { zh: '18微米', en: '18 Micron', ar: '18 ميكرون', es: '18 Micras', pt: '18 Microns' } },
+    { id: 'bopet-20', name: { zh: '20微米', en: '20 Micron', ar: '20 ميكرون', es: '20 Micras', pt: '20 Microns' } },
+    { id: 'bopet-25', name: { zh: '25微米', en: '25 Micron', ar: '25 ميكرون', es: '25 Micras', pt: '25 Microns' } },
+    { id: 'bopet-30', name: { zh: '30微米', en: '30 Micron', ar: '30 ميكرون', es: '30 Micras', pt: '30 Microns' } },
+    { id: 'bopet-35', name: { zh: '35微米', en: '35 Micron', ar: '35 ميكرون', es: '35 Micras', pt: '35 Microns' } },
+    { id: 'bopet-50', name: { zh: '50微米', en: '50 Micron', ar: '50 ميكرون', es: '50 Micras', pt: '50 Microns' } },
+  ]},
+  { id: 'bops', name: { zh: 'BOPS薄膜', en: 'BOPS Film', ar: 'فيلم BOPS', es: 'Película BOPS', pt: 'Filme BOPS' }, subcategories: [
+    { id: 'bops-15', name: { zh: '15微米', en: '15 Micron', ar: '15 ميكرون', es: '15 Micras', pt: '15 Microns' } },
+    { id: 'bops-18', name: { zh: '18微米', en: '18 Micron', ar: '18 ميكرون', es: '18 Micras', pt: '18 Microns' } },
+    { id: 'bops-20', name: { zh: '20微米', en: '20 Micron', ar: '20 ميكرون', es: '20 Micras', pt: '20 Microns' } },
+    { id: 'bops-25', name: { zh: '25微米', en: '25 Micron', ar: '25 ميكرون', es: '25 Micras', pt: '25 Microns' } },
+    { id: 'bops-30', name: { zh: '30微米', en: '30 Micron', ar: '30 ميكرون', es: '30 Micras', pt: '30 Microns' } },
+    { id: 'bops-35', name: { zh: '35微米', en: '35 Micron', ar: '35 ميكرون', es: '35 Micras', pt: '35 Microns' } },
+  ]},
+  { id: 'cpp', name: { zh: 'CPP薄膜', en: 'CPP Film', ar: 'فيلم CPP', es: 'Película CPP', pt: 'Filme CPP' }, subcategories: [
+    { id: 'cpp-20', name: { zh: '20微米', en: '20 Micron', ar: '20 ميكرون', es: '20 Micras', pt: '20 Microns' } },
+    { id: 'cpp-25', name: { zh: '25微米', en: '25 Micron', ar: '25 ميكرون', es: '25 Micras', pt: '25 Microns' } },
+    { id: 'cpp-30', name: { zh: '30微米', en: '30 Micron', ar: '30 ميكرون', es: '30 Micras', pt: '30 Microns' } },
+    { id: 'cpp-35', name: { zh: '35微米', en: '35 Micron', ar: '35 ميكرون', es: '35 Micras', pt: '35 Microns' } },
+    { id: 'cpp-40', name: { zh: '40微米', en: '40 Micron', ar: '40 ميكرون', es: '40 Micras', pt: '40 Microns' } },
+    { id: 'cpp-50', name: { zh: '50微米', en: '50 Micron', ar: '50 ميكرون', es: '50 Micras', pt: '50 Microns' } },
+  ]},
+  { id: 'tape', name: { zh: '胶带产品', en: 'Tape Products', ar: 'منتجات الشريط', es: 'Productos de Cinta', pt: 'Produtos de Fita' }, subcategories: [
+    { id: 'bopp-tape-prod', name: { zh: 'BOPP胶带', en: 'BOPP Tape', ar: 'شريط BOPP', es: 'Cinta BOPP', pt: 'Fita BOPP' } },
+    { id: 'pet-tape', name: { zh: 'PET胶带', en: 'PET Tape', ar: 'شريط PET', es: 'Cinta PET', pt: 'Fita PET' } },
+    { id: 'cpp-tape', name: { zh: 'CPP胶带', en: 'CPP Tape', ar: 'شريط CPP', es: 'Cinta CPP', pt: 'Fita CPP' } },
+    { id: 'double-sided', name: { zh: '双面胶带', en: 'Double-sided Tape', ar: 'شريط مزدوج', es: 'Cinta de doble cara', pt: 'Fita dupla face' } },
+    { id: 'masking-tape', name: { zh: '遮蔽胶带', en: 'Masking Tape', ar: 'شريط إخفاء', es: 'Cinta de enmascarar', pt: 'Fita de máscara' } },
+    { id: 'packing-tape', name: { zh: '包装胶带', en: 'Packing Tape', ar: 'شريط تغليف', es: 'Cinta de empaquetado', pt: 'Fita de embalagem' } },
+  ]},
+  { id: 'specialty', name: { zh: '特种薄膜', en: 'Specialty Films', ar: 'أفلام خاصة', es: 'Películas Especiales', pt: 'Filmes Especiais' }, subcategories: [
+    { id: 'anti-static', name: { zh: '抗静电膜', en: 'Anti-static Film', ar: 'فيلم مضاد للكهرباء', es: 'Película antiestática', pt: 'Filme antiestático' } },
+    { id: 'flame-retardant', name: { zh: '阻燃膜', en: 'Flame Retardant Film', ar: 'فيلم مقاوم للحريق', es: 'Película ignífuga', pt: 'Filme retardante de chama' } },
+    { id: 'high-temp', name: { zh: '耐高温膜', en: 'High Temperature Film', ar: 'فيلم مقاوم للحرارة', es: 'Película resistente al calor', pt: 'Filme resistente ao calor' } },
+    { id: 'barrier-film', name: { zh: '高阻隔膜', en: 'High Barrier Film', ar: 'فيلم حاجز عالي', es: 'Película de barrera alta', pt: 'Filme de barreira alta' } },
+  ]},
+];
