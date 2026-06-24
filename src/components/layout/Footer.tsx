@@ -43,7 +43,7 @@ const Footer = () => {
                 <span className="text-white font-bold text-xl">B</span>
               </div>
               <div className={`${isRTL ? 'mr-2' : 'ml-2'}`}>
-                <h3 className="text-xl font-bold">BOPP Films Sale</h3>
+                <h3 className="text-xl font-bold">AEC Group</h3>
               </div>
             </div>
             <p className="text-gray-400 mb-4">{t.footer.companyDesc}</p>
@@ -118,7 +118,7 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-400 text-sm">
-            © 2024 BOPP Films Sale. {t.footer.copyright}
+            © 2024 AEC Group. {t.footer.copyright}
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <Link href="/privacy" className="text-gray-400 hover:text-white text-sm transition-colors">

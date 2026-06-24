@@ -8,8 +8,8 @@ import '@/styles/globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
-  title: 'BOPP Films Sale | Professional BOPP Film Supplier',
-  description: 'Professional BOPP film supplier offering gloss film, matte film, metalized film, heat sealable film and more. Factory direct supply, quality assurance, global export.',
+  title: 'AEC Group | Professional Packaging Film Supplier',
+  description: 'Professional supplier of BOPP, BOPET, BOPS, CPP, POF films and tape products for packaging industry. Factory direct supply, quality assurance, global export.',
   keywords: 'BOPP film, packaging film, gloss film, matte film, metalized film, heat sealable film, BOPP supplier, China manufacturer',
 };
 
