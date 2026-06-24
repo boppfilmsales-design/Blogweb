@@ -24,7 +24,7 @@ export default function ContactPage() {
     {
       icon: FiMail,
       title: t.contact.email,
-      content: 'info@boppfilmsale.com',
+      content: 'sale@boppfilmsale.com',
       color: 'bg-purple-500',
     },
     {

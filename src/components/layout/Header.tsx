@@ -2,12 +2,10 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { useLanguage } from '@/context/LanguageContext';
 import { categories } from '@/data/products';
 import { FiMenu, FiX, FiGlobe, FiSearch, FiChevronDown } from 'react-icons/fi';
 
 const Header = () => {
-  const { locale, setLocale, t, isRTL } = useLanguage();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLangOpen, setIsLangOpen] = useState(false);
   const [isProductsOpen, setIsProductsOpen] = useState(false);
@@ -21,14 +19,14 @@ const Header = () => {
   ];
 
   const navItems = [
-    { href: '/', label: t.nav.home },
-    { href: '/products', label: t.nav.products, hasDropdown: true },
-    { href: '/about', label: t.nav.about },
-    { href: '/contact', label: t.nav.contact },
+    { href: '/', label: 'Home' },
+    { href: '/products', label: 'Products', hasDropdown: true },
+    { href: '/about', label: 'About Us' },
+    { href: '/contact', label: 'Contact' },
   ];
 
   const getLocalizedText = (textObj: any) => {
-    return textObj[locale] || textObj.en;
+    return textObj.en;
   };
 
   return (
@@ -143,6 +141,7 @@ const Header = () => {
                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
                   {languages.map((lang) => (
                     <button
+                      type="button"
                       key={lang.code}
                       onClick={() => {
                         setLocale(lang.code as any);
