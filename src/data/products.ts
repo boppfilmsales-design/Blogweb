@@ -579,7 +579,7 @@ export const categories = [
 
   // ==================== POF 薄膜系列 ====================
   {
-    id: '130', slug: 'pof-4.5', name: { zh: 'POF薄膜 4.5微米', en: 'POF Film 4.5 Micron', ar: 'فيلم POF 4.5 ميكرون', es: 'Película POF 4.5 Micras', pt: 'Filme POF 4.5 Microns' }, category: 'pof',
+    id: '130', slug: 'pof-4.5', name: { zh: 'BOPET薄膜 4.5微米', en: 'BOPET Film 4.5 Micron', ar: 'فيلم BOPET 4.5 ميكرون', es: 'Película BOPET 4.5 Micras', pt: 'Filme BOPET 4.5 Microns' }, category: 'pof',
     description: { zh: '超薄POF薄膜，厚度4.5微米，具有优异的透明度和收缩性能。适用于热收缩包装应用。', en: 'Ultra-thin POF film with 4.5 micron thickness, featuring excellent transparency and shrinkage properties. Suitable for heat shrink packaging applications.', ar: 'فيلم POF فائق الرقة بسماكة 4.5 ميكرون بشفافية ممتازة وخصائص انكماش.', es: 'Película POF ultra delgada con grosor de 4.5 micras, con excelente transparencia y propiedades de contracción.', pt: 'Filme POF ultra-fino com espessura de 4.5 micrômetros, com excelente transparência e propriedades de contração.' },
     specifications: { thickness: '4.5 microns', width: '200-1000mm', length: '4000-8000m', weight: 'Customized', color: 'Transparent', material: 'Polyolefin' },
     features: { zh: ['超薄设计', '优异透明度', '收缩性能好', '印刷适性佳'], en: ['Ultra-thin design', 'Excellent transparency', 'Good shrinkage', 'Good printability'], ar: ['تصميم فائق الرقة', 'شفافية ممتازة', 'انكماش جيد', 'قابلية طباعة جيدة'], es: ['Diseño ultra delgado', 'Excelente transparencia', 'Buena contracción', 'Buena imprimibilidad'], pt: ['Design ultra-fino', 'Excelente transparência', 'Boa contração', 'Boa imprimibilidade'] },
