@@ -24,11 +24,28 @@ const About = () => {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // 首先从localStorage加载
+    const savedData = localStorage.getItem('aec-page-content');
+    if (savedData) {
+      try {
+        const data = JSON.parse(savedData);
+        if (data.about) setAboutContent(data.about);
+      } catch (e) {
+        console.error('Failed to parse saved about data:', e);
+      }
+    }
+
+    // 然后从API加载
     fetch('/api/pages')
       .then((res) => res.json())
       .then((data) => {
         if (data.about) {
-          setAboutContent(data.about);
+          setAboutContent(prev => ({
+            titleEn: prev.titleEn || data.about.titleEn || '',
+            titleZh: prev.titleZh || data.about.titleZh || '',
+            contentEn: prev.contentEn || data.about.contentEn || '',
+            contentZh: prev.contentZh || data.about.contentZh || '',
+          }));
         }
       })
       .catch((error) => console.error('Failed to load about content:', error));

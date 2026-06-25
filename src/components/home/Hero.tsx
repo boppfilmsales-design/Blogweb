@@ -31,12 +31,32 @@ const Hero = () => {
   const [locale, setLocale] = useState('en');
 
   useEffect(() => {
-    // 获取页面内容
+    // 首先从localStorage加载
+    const savedData = localStorage.getItem('aec-page-content');
+    if (savedData) {
+      try {
+        const data = JSON.parse(savedData);
+        if (data.hero) setHeroContent(data.hero);
+      } catch (e) {
+        console.error('Failed to parse saved hero data:', e);
+      }
+    }
+
+    // 然后从API加载
     fetch('/api/pages')
       .then((res) => res.json())
       .then((data) => {
         if (data.hero) {
-          setHeroContent(data.hero);
+          setHeroContent(prev => ({
+            titleEn: prev.titleEn || data.hero.titleEn || '',
+            titleZh: prev.titleZh || data.hero.titleZh || '',
+            subtitleEn: prev.subtitleEn || data.hero.subtitleEn || '',
+            subtitleZh: prev.subtitleZh || data.hero.subtitleZh || '',
+            descEn: prev.descEn || data.hero.descEn || '',
+            descZh: prev.descZh || data.hero.descZh || '',
+            ctaTextEn: prev.ctaTextEn || data.hero.ctaTextEn || '',
+            ctaTextZh: prev.ctaTextZh || data.hero.ctaTextZh || '',
+          }));
         }
       })
       .catch((error) => console.error('Failed to load hero content:', error));

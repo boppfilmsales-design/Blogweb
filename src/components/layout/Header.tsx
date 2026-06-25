@@ -17,12 +17,35 @@ const Header = () => {
   const [navItems, setNavItems] = useState<Array<{id: string; labelEn: string; labelZh: string; href: string; visible: boolean}>>([]);
 
   useEffect(() => {
-    // 从API加载页眉和导航数据
+    // 首先从localStorage加载
+    const savedData = localStorage.getItem('aec-page-content');
+    if (savedData) {
+      try {
+        const data = JSON.parse(savedData);
+        if (data.header) setHeaderContent(data.header);
+        if (data.navigation) setNavItems(data.navigation.filter((n: any) => n.visible).sort((a: any, b: any) => a.order - b.order));
+      } catch (e) {
+        console.error('Failed to parse saved data:', e);
+      }
+    }
+
+    // 然后从API加载（API可能有更新的数据，但localStorage优先）
     fetch('/api/pages')
       .then((res) => res.json())
       .then((data) => {
-        if (data.header) setHeaderContent(data.header);
-        if (data.navigation) setNavItems(data.navigation.filter((n: any) => n.visible).sort((a: any, b: any) => a.order - b.order));
+        // 只使用API数据填充localStorage中没有的字段
+        if (data.header) {
+          setHeaderContent(prev => ({
+            logoText: prev.logoText || data.header.logoText || '',
+            logoSubtext: prev.logoSubtext || data.header.logoSubtext || '',
+            email: prev.email || data.header.email || '',
+            phone: prev.phone || data.header.phone || '',
+          }));
+        }
+        if (data.navigation) {
+          const filtered = data.navigation.filter((n: any) => n.visible).sort((a: any, b: any) => a.order - b.order);
+          if (filtered.length > 0) setNavItems(filtered);
+        }
       })
       .catch((error) => console.error('Failed to load header content:', error));
   }, []);

@@ -21,10 +21,36 @@ const Footer = () => {
   });
 
   useEffect(() => {
+    // 首先从localStorage加载
+    const savedData = localStorage.getItem('aec-page-content');
+    if (savedData) {
+      try {
+        const data = JSON.parse(savedData);
+        if (data.footer) setFooterContent(data.footer);
+      } catch (e) {
+        console.error('Failed to parse saved footer data:', e);
+      }
+    }
+
+    // 然后从API加载（API可能有更新的数据，但localStorage优先）
     fetch('/api/pages')
       .then((res) => res.json())
       .then((data) => {
-        if (data.footer) setFooterContent(data.footer);
+        // 只使用API数据填充localStorage中没有的字段
+        if (data.footer) {
+          setFooterContent(prev => ({
+            companyDescEn: prev.companyDescEn || data.footer.companyDescEn || '',
+            companyDescZh: prev.companyDescZh || data.footer.companyDescZh || '',
+            address: prev.address || data.footer.address || '',
+            phone: prev.phone || data.footer.phone || '',
+            email: prev.email || data.footer.email || '',
+            facebook: prev.facebook || data.footer.facebook || '',
+            twitter: prev.twitter || data.footer.twitter || '',
+            linkedin: prev.linkedin || data.footer.linkedin || '',
+            instagram: prev.instagram || data.footer.instagram || '',
+            copyright: prev.copyright || data.footer.copyright || '',
+          }));
+        }
       })
       .catch((error) => console.error('Failed to load footer content:', error));
   }, []);

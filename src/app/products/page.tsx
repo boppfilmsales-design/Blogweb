@@ -102,14 +102,24 @@ function ProductsPageContent() {
               {/* Product Image */}
               <Link href={`/products/${product.slug}`}>
                 <div className="relative aspect-video bg-gradient-to-br from-blue-100 to-blue-200 overflow-hidden">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-center">
-                      <div className="w-16 h-16 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-2">
-                        <span className="text-blue-600 font-bold text-2xl">A</span>
+                  {(() => {
+                    try {
+                      const images = JSON.parse(product.images || '[]');
+                      if (images.length > 0) {
+                        return <img src={images[0]} alt={product.nameEn} className="w-full h-full object-cover" />;
+                      }
+                    } catch {}
+                    return (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="text-center">
+                          <div className="w-16 h-16 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-2">
+                            <span className="text-blue-600 font-bold text-2xl">A</span>
+                          </div>
+                          <p className="text-blue-600 font-medium text-sm">AEC Group</p>
+                        </div>
                       </div>
-                      <p className="text-blue-600 font-medium text-sm">AEC Group</p>
-                    </div>
-                  </div>
+                    );
+                  })()}
 
                   {/* Featured Badge */}
                   {product.featured && (

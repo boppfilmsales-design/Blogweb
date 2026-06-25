@@ -62,25 +62,40 @@ export default function AdminPage() {
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [importStatus, setImportStatus] = useState<string>('');
-  const [pageContent, setPageContent] = useState<PageContent>({
-    hero: { titleEn: '', titleZh: '', descEn: '', descZh: '' },
-    about: {
-      intro: { titleEn: '', titleZh: '', contentEn: '', contentZh: '' },
-      story: { titleEn: '', titleZh: '', contentEn: '', contentZh: '' },
-      stats: { clients: '', countries: '', years: '', capacity: '' },
-      values: [
-        { titleEn: '', titleZh: '', descEn: '', descZh: '' },
-        { titleEn: '', titleZh: '', descEn: '', descZh: '' },
-        { titleEn: '', titleZh: '', descEn: '', descZh: '' },
-        { titleEn: '', titleZh: '', descEn: '', descZh: '' },
-      ],
-      certifications: [],
-    },
-    contact: { address: '', phone: '', email: '', whatsapp: '' },
-    header: { logoText: '', logoSubtext: '', email: '', phone: '' },
-    footer: { companyDescEn: '', companyDescZh: '', address: '', phone: '', email: '', facebook: '', twitter: '', linkedin: '', instagram: '', copyright: '' },
-    navigation: [],
-  });
+  // 从localStorage初始化状态（同步，避免闪烁）
+  const getInitialPageContent = (): PageContent => {
+    try {
+      if (typeof window !== 'undefined') {
+        const saved = localStorage.getItem('aec-page-content');
+        if (saved) {
+          return JSON.parse(saved);
+        }
+      }
+    } catch (e) {
+      console.error('Failed to load initial state from localStorage:', e);
+    }
+    return {
+      hero: { titleEn: '', titleZh: '', descEn: '', descZh: '' },
+      about: {
+        intro: { titleEn: '', titleZh: '', contentEn: '', contentZh: '' },
+        story: { titleEn: '', titleZh: '', contentEn: '', contentZh: '' },
+        stats: { clients: '', countries: '', years: '', capacity: '' },
+        values: [
+          { titleEn: '', titleZh: '', descEn: '', descZh: '' },
+          { titleEn: '', titleZh: '', descEn: '', descZh: '' },
+          { titleEn: '', titleZh: '', descEn: '', descZh: '' },
+          { titleEn: '', titleZh: '', descEn: '', descZh: '' },
+        ],
+        certifications: [],
+      },
+      contact: { address: '', phone: '', email: '', whatsapp: '' },
+      header: { logoText: '', logoSubtext: '', email: '', phone: '' },
+      footer: { companyDescEn: '', companyDescZh: '', address: '', phone: '', email: '', facebook: '', twitter: '', linkedin: '', instagram: '', copyright: '' },
+      navigation: [],
+    };
+  };
+
+  const [pageContent, setPageContent] = useState<PageContent>(getInitialPageContent);
   const [savingPage, setSavingPage] = useState(false);
   const [editingNav, setEditingNav] = useState<NavItem | null>(null);
   const [uploadedFiles, setUploadedFiles] = useState<string[]>([]);
@@ -347,16 +362,25 @@ export default function AdminPage() {
   const handleSavePageContent = async (page: 'hero' | 'about' | 'contact' | 'header' | 'footer') => {
     setSavingPage(true);
     try {
+      // 保存到API
       await fetch('/api/pages', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ [page]: pageContent[page] }),
       });
-      alert('Saved successfully!');
     } catch (error) {
-      alert('Failed to save');
+      console.error('API save failed:', error);
     }
+
+    // 无论API是否成功，都保存到localStorage（这是关键！）
+    try {
+      saveToStorage(pageContent);
+    } catch (e) {
+      console.error('localStorage save failed:', e);
+    }
+
     setSavingPage(false);
+    alert('Saved successfully!');
   };
 
   const handleAddNavItem = () => {
