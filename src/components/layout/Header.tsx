@@ -13,6 +13,19 @@ const Header = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isDark, setIsDark] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [headerContent, setHeaderContent] = useState({ logoText: '', logoSubtext: '', email: '', phone: '' });
+  const [navItems, setNavItems] = useState<Array<{id: string; labelEn: string; labelZh: string; href: string; visible: boolean}>>([]);
+
+  useEffect(() => {
+    // 从API加载页眉和导航数据
+    fetch('/api/pages')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.header) setHeaderContent(data.header);
+        if (data.navigation) setNavItems(data.navigation.filter((n: any) => n.visible).sort((a: any, b: any) => a.order - b.order));
+      })
+      .catch((error) => console.error('Failed to load header content:', error));
+  }, []);
 
   const languages = [
     { code: 'en', name: 'English', flag: '🇺🇸' },
@@ -55,8 +68,8 @@ const Header = () => {
       <div className="bg-blue-600 text-white text-xs py-1">
         <div className="max-w-7xl mx-auto px-4 flex justify-between items-center">
           <div className="flex items-center space-x-4">
-            <span>📧 sale@boppfilmsale.com</span>
-            <span>📞 +86 138 0000 0000</span>
+            <span>📧 {headerContent.email || 'sale@boppfilmsale.com'}</span>
+            <span>📞 {headerContent.phone || '+86 138 0000 0000'}</span>
           </div>
           <div className="flex items-center space-x-2">
             <button

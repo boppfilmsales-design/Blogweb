@@ -1,12 +1,33 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/context/LanguageContext';
 import { FiMail, FiPhone, FiMapPin, FiFacebook, FiTwitter, FiLinkedin, FiInstagram } from 'react-icons/fi';
 
 const Footer = () => {
   const { t, isRTL, locale } = useLanguage();
+  const [footerContent, setFooterContent] = useState({
+    companyDescEn: '',
+    companyDescZh: '',
+    address: '',
+    phone: '',
+    email: '',
+    facebook: '',
+    twitter: '',
+    linkedin: '',
+    instagram: '',
+    copyright: '',
+  });
+
+  useEffect(() => {
+    fetch('/api/pages')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.footer) setFooterContent(data.footer);
+      })
+      .catch((error) => console.error('Failed to load footer content:', error));
+  }, []);
 
   const quickLinks = [
     { href: '/', label: t.nav.home },
@@ -26,10 +47,10 @@ const Footer = () => {
   ];
 
   const socialLinks = [
-    { icon: FiFacebook, href: '#', label: 'Facebook' },
-    { icon: FiTwitter, href: '#', label: 'Twitter' },
-    { icon: FiLinkedin, href: '#', label: 'LinkedIn' },
-    { icon: FiInstagram, href: '#', label: 'Instagram' },
+    { icon: FiFacebook, href: footerContent.facebook || '#', label: 'Facebook' },
+    { icon: FiTwitter, href: footerContent.twitter || '#', label: 'Twitter' },
+    { icon: FiLinkedin, href: footerContent.linkedin || '#', label: 'LinkedIn' },
+    { icon: FiInstagram, href: footerContent.instagram || '#', label: 'Instagram' },
   ];
 
   return (
@@ -45,7 +66,7 @@ const Footer = () => {
                 <h3 className="text-xl font-bold">AEC Group</h3>
               </div>
             </div>
-            <p className="text-gray-400 mb-4 text-sm">{t.footer.companyDesc}</p>
+            <p className="text-gray-400 mb-4 text-sm">{locale === 'zh' ? footerContent.companyDescZh : footerContent.companyDescEn}</p>
             <div className="flex space-x-3">
               {socialLinks.map((social, index) => (
                 <a
@@ -94,15 +115,15 @@ const Footer = () => {
             <ul className="space-y-3">
               <li className="flex items-start space-x-3">
                 <FiMapPin className="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0" />
-                <span className="text-gray-400 text-sm">{t.contact.addressDetail}</span>
+                <span className="text-gray-400 text-sm">{footerContent.address}</span>
               </li>
               <li className="flex items-center space-x-3">
                 <FiPhone className="w-5 h-5 text-blue-400 flex-shrink-0" />
-                <span className="text-gray-400 text-sm">+86 138 0000 0000</span>
+                <span className="text-gray-400 text-sm">{footerContent.phone}</span>
               </li>
               <li className="flex items-center space-x-3">
                 <FiMail className="w-5 h-5 text-blue-400 flex-shrink-0" />
-                <span className="text-gray-400 text-sm">sale@boppfilmsale.com</span>
+                <span className="text-gray-400 text-sm">{footerContent.email}</span>
               </li>
             </ul>
           </div>
@@ -114,7 +135,7 @@ const Footer = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-gray-400 text-sm">
-              © 2024 AEC Group. {t.footer.copyright}
+              © 2024 AEC Group. {footerContent.copyright}
             </p>
             <div className="flex space-x-6 mt-4 md:mt-0">
               <Link href="/privacy" className="text-gray-400 hover:text-white text-sm transition-colors">
