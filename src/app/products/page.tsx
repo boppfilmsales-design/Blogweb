@@ -1,18 +1,22 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense } from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/context/LanguageContext';
 import { getProducts, Product } from '@/lib/api';
 import { FiArrowRight } from 'react-icons/fi';
 
-export default function ProductsPage() {
+function ProductsPageContent() {
   const { locale } = useLanguage();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
+    // 从URL获取搜索参数
+    const params = new URLSearchParams(window.location.search);
+    const search = params.get('search') || '';
+    setSearchTerm(search);
     loadProducts();
   }, []);
 
@@ -174,5 +178,13 @@ export default function ProductsPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function ProductsPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-gray-50 flex items-center justify-center"><p>Loading...</p></div>}>
+      <ProductsPageContent />
+    </Suspense>
   );
 }
