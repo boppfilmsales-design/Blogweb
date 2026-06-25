@@ -16,11 +16,38 @@ interface NavItem {
   visible: boolean;
 }
 
+interface AboutSection {
+  titleEn: string;
+  titleZh: string;
+  contentEn: string;
+  contentZh: string;
+}
+
+interface AboutStats {
+  clients: string;
+  countries: string;
+  years: string;
+  capacity: string;
+}
+
+interface AboutValue {
+  titleEn: string;
+  titleZh: string;
+  descEn: string;
+  descZh: string;
+}
+
 interface PageContent {
   hero: { titleEn: string; titleZh: string; descEn: string; descZh: string };
-  about: { contentEn: string; contentZh: string };
+  about: {
+    intro: AboutSection;
+    story: AboutSection;
+    stats: AboutStats;
+    values: AboutValue[];
+    certifications: string[];
+  };
   contact: { address: string; phone: string; email: string; whatsapp: string };
-  header: { logoText: string; logoSubtext: string };
+  header: { logoText: string; logoSubtext: string; email: string; phone: string };
   footer: { companyDescEn: string; companyDescZh: string; address: string; phone: string; email: string; facebook: string; twitter: string; linkedin: string; instagram: string; copyright: string };
   navigation: NavItem[];
 }
@@ -37,9 +64,20 @@ export default function AdminPage() {
   const [importStatus, setImportStatus] = useState<string>('');
   const [pageContent, setPageContent] = useState<PageContent>({
     hero: { titleEn: '', titleZh: '', descEn: '', descZh: '' },
-    about: { contentEn: '', contentZh: '' },
+    about: {
+      intro: { titleEn: '', titleZh: '', contentEn: '', contentZh: '' },
+      story: { titleEn: '', titleZh: '', contentEn: '', contentZh: '' },
+      stats: { clients: '', countries: '', years: '', capacity: '' },
+      values: [
+        { titleEn: '', titleZh: '', descEn: '', descZh: '' },
+        { titleEn: '', titleZh: '', descEn: '', descZh: '' },
+        { titleEn: '', titleZh: '', descEn: '', descZh: '' },
+        { titleEn: '', titleZh: '', descEn: '', descZh: '' },
+      ],
+      certifications: [],
+    },
     contact: { address: '', phone: '', email: '', whatsapp: '' },
-    header: { logoText: '', logoSubtext: '' },
+    header: { logoText: '', logoSubtext: '', email: '', phone: '' },
     footer: { companyDescEn: '', companyDescZh: '', address: '', phone: '', email: '', facebook: '', twitter: '', linkedin: '', instagram: '', copyright: '' },
     navigation: [],
   });
@@ -517,19 +555,143 @@ export default function AdminPage() {
 
             {/* About Tab - Dedicated About Page Editor */}
             {activeTab === 'about' && (
-              <div className="bg-white rounded-lg shadow-sm p-6">
-                <h2 className="text-xl font-semibold mb-4">{locale === 'zh' ? '关于我们页面' : 'About Us Page'}</h2>
-                <p className="text-gray-500 mb-6">{locale === 'zh' ? '编辑关于我们页面的内容' : 'Edit the content of the About Us page'}</p>
-                <div className="space-y-6">
-                  <div>
-                    <h3 className="text-lg font-medium text-gray-900 mb-3">{locale === 'zh' ? '英文内容' : 'English Content'}</h3>
-                    <textarea id="aboutEn" rows={10} value={pageContent.about.contentEn} onChange={(e) => setPageContent({ ...pageContent, about: { ...pageContent.about, contentEn: e.target.value } })} className="w-full px-4 py-3 border rounded-lg text-sm" placeholder={locale === 'zh' ? '输入关于我们页面的英文内容...' : 'Enter the English content for the About Us page...'} />
+              <div className="space-y-6">
+                {/* About Intro */}
+                <div className="bg-white rounded-lg shadow-sm p-6">
+                  <h2 className="text-xl font-semibold mb-4">{locale === 'zh' ? 'About BOPP Films Sale' : 'About BOPP Films Sale'}</h2>
+                  <p className="text-gray-500 mb-4">{locale === 'zh' ? '编辑公司简介内容' : 'Edit company introduction'}</p>
+                  <div className="space-y-4">
+                    <div>
+                      <label htmlFor="aboutIntroEn" className="block text-sm font-medium text-gray-700 mb-1">{locale === 'zh' ? '英文内容' : 'English Content'}</label>
+                      <textarea id="aboutIntroEn" rows={4} value={pageContent.about.intro.contentEn} onChange={(e) => setPageContent({ ...pageContent, about: { ...pageContent.about, intro: { ...pageContent.about.intro, contentEn: e.target.value } } })} className="w-full px-4 py-3 border rounded-lg text-sm" placeholder="Professional BOPP film manufacturer and exporter..." />
+                    </div>
+                    <div>
+                      <label htmlFor="aboutIntroZh" className="block text-sm font-medium text-gray-700 mb-1">{locale === 'zh' ? '中文内容' : 'Chinese Content'}</label>
+                      <textarea id="aboutIntroZh" rows={4} value={pageContent.about.intro.contentZh} onChange={(e) => setPageContent({ ...pageContent, about: { ...pageContent.about, intro: { ...pageContent.about.intro, contentZh: e.target.value } } })} className="w-full px-4 py-3 border rounded-lg text-sm" placeholder="专业BOPP薄膜制造商和出口商..." />
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="text-lg font-medium text-gray-900 mb-3">{locale === 'zh' ? '中文内容' : 'Chinese Content'}</h3>
-                    <textarea id="aboutZh" rows={10} value={pageContent.about.contentZh} onChange={(e) => setPageContent({ ...pageContent, about: { ...pageContent.about, contentZh: e.target.value } })} className="w-full px-4 py-3 border rounded-lg text-sm" placeholder={locale === 'zh' ? '输入关于我们页面的中文内容...' : 'Enter the Chinese content for the About Us page...'} />
+                </div>
+
+                {/* Our Story */}
+                <div className="bg-white rounded-lg shadow-sm p-6">
+                  <h2 className="text-xl font-semibold mb-4">{locale === 'zh' ? 'Our Story' : 'Our Story'}</h2>
+                  <p className="text-gray-500 mb-4">{locale === 'zh' ? '编辑公司故事内容' : 'Edit company story'}</p>
+                  <div className="space-y-4">
+                    <div>
+                      <label htmlFor="aboutStoryEn" className="block text-sm font-medium text-gray-700 mb-1">{locale === 'zh' ? '英文内容' : 'English Content'}</label>
+                      <textarea id="aboutStoryEn" rows={6} value={pageContent.about.story.contentEn} onChange={(e) => setPageContent({ ...pageContent, about: { ...pageContent.about, story: { ...pageContent.about.story, contentEn: e.target.value } } })} className="w-full px-4 py-3 border rounded-lg text-sm" placeholder="BOPP Films Sale was established with a vision..." />
+                    </div>
+                    <div>
+                      <label htmlFor="aboutStoryZh" className="block text-sm font-medium text-gray-700 mb-1">{locale === 'zh' ? '中文内容' : 'Chinese Content'}</label>
+                      <textarea id="aboutStoryZh" rows={6} value={pageContent.about.story.contentZh} onChange={(e) => setPageContent({ ...pageContent, about: { ...pageContent.about, story: { ...pageContent.about.story, contentZh: e.target.value } } })} className="w-full px-4 py-3 border rounded-lg text-sm" placeholder="BOPP Films Sale成立于..." />
+                    </div>
                   </div>
-                  <button type="button" onClick={() => handleSavePageContent('about')} disabled={savingPage} className="px-6 py-3 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 disabled:opacity-50">{savingPage ? (locale === 'zh' ? '保存中...' : 'Saving...') : (locale === 'zh' ? '保存关于我们' : 'Save About Us')}</button>
+                </div>
+
+                {/* Stats */}
+                <div className="bg-white rounded-lg shadow-sm p-6">
+                  <h2 className="text-xl font-semibold mb-4">{locale === 'zh' ? '数据统计' : 'Statistics'}</h2>
+                  <p className="text-gray-500 mb-4">{locale === 'zh' ? '编辑公司统计数据' : 'Edit company statistics'}</p>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div>
+                      <label htmlFor="statClients" className="block text-sm font-medium text-gray-700 mb-1">{locale === 'zh' ? '全球客户' : 'Global Clients'}</label>
+                      <input id="statClients" type="text" value={pageContent.about.stats.clients} onChange={(e) => setPageContent({ ...pageContent, about: { ...pageContent.about, stats: { ...pageContent.about.stats, clients: e.target.value } } })} className="w-full px-4 py-3 border rounded-lg text-sm" placeholder="500+" />
+                    </div>
+                    <div>
+                      <label htmlFor="statCountries" className="block text-sm font-medium text-gray-700 mb-1">{locale === 'zh' ? '服务国家' : 'Countries Served'}</label>
+                      <input id="statCountries" type="text" value={pageContent.about.stats.countries} onChange={(e) => setPageContent({ ...pageContent, about: { ...pageContent.about, stats: { ...pageContent.about.stats, countries: e.target.value } } })} className="w-full px-4 py-3 border rounded-lg text-sm" placeholder="50+" />
+                    </div>
+                    <div>
+                      <label htmlFor="statYears" className="block text-sm font-medium text-gray-700 mb-1">{locale === 'zh' ? '年经验' : 'Years Experience'}</label>
+                      <input id="statYears" type="text" value={pageContent.about.stats.years} onChange={(e) => setPageContent({ ...pageContent, about: { ...pageContent.about, stats: { ...pageContent.about.stats, years: e.target.value } } })} className="w-full px-4 py-3 border rounded-lg text-sm" placeholder="10+" />
+                    </div>
+                    <div>
+                      <label htmlFor="statCapacity" className="block text-sm font-medium text-gray-700 mb-1">{locale === 'zh' ? '年产能(吨)' : 'Tons Annual Capacity'}</label>
+                      <input id="statCapacity" type="text" value={pageContent.about.stats.capacity} onChange={(e) => setPageContent({ ...pageContent, about: { ...pageContent.about, stats: { ...pageContent.about.stats, capacity: e.target.value } } })} className="w-full px-4 py-3 border rounded-lg text-sm" placeholder="10000+" />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Our Values */}
+                <div className="bg-white rounded-lg shadow-sm p-6">
+                  <h2 className="text-xl font-semibold mb-4">{locale === 'zh' ? '我们的价值观' : 'Our Values'}</h2>
+                  <p className="text-gray-500 mb-4">{locale === 'zh' ? '编辑公司价值观' : 'Edit company values'}</p>
+                  <div className="space-y-6">
+                    {pageContent.about.values.map((value, index) => (
+                      <div key={index} className="border rounded-lg p-4">
+                        <h4 className="font-medium text-gray-900 mb-3">{locale === 'zh' ? `价值观 ${index + 1}` : `Value ${index + 1}`}</h4>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">{locale === 'zh' ? '标题(EN)' : 'Title (EN)'}</label>
+                            <input type="text" value={value.titleEn} onChange={(e) => {
+                              const newValues = [...pageContent.about.values];
+                              newValues[index] = { ...newValues[index], titleEn: e.target.value };
+                              setPageContent({ ...pageContent, about: { ...pageContent.about, values: newValues } });
+                            }} className="w-full px-3 py-2 border rounded-lg text-sm" />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">{locale === 'zh' ? '标题(ZH)' : 'Title (ZH)'}</label>
+                            <input type="text" value={value.titleZh} onChange={(e) => {
+                              const newValues = [...pageContent.about.values];
+                              newValues[index] = { ...newValues[index], titleZh: e.target.value };
+                              setPageContent({ ...pageContent, about: { ...pageContent.about, values: newValues } });
+                            }} className="w-full px-3 py-2 border rounded-lg text-sm" />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">{locale === 'zh' ? '描述(EN)' : 'Description (EN)'}</label>
+                            <textarea rows={2} value={value.descEn} onChange={(e) => {
+                              const newValues = [...pageContent.about.values];
+                              newValues[index] = { ...newValues[index], descEn: e.target.value };
+                              setPageContent({ ...pageContent, about: { ...pageContent.about, values: newValues } });
+                            }} className="w-full px-3 py-2 border rounded-lg text-sm" />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">{locale === 'zh' ? '描述(ZH)' : 'Description (ZH)'}</label>
+                            <textarea rows={2} value={value.descZh} onChange={(e) => {
+                              const newValues = [...pageContent.about.values];
+                              newValues[index] = { ...newValues[index], descZh: e.target.value };
+                              setPageContent({ ...pageContent, about: { ...pageContent.about, values: newValues } });
+                            }} className="w-full px-3 py-2 border rounded-lg text-sm" />
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Certifications */}
+                <div className="bg-white rounded-lg shadow-sm p-6">
+                  <h2 className="text-xl font-semibold mb-4">{locale === 'zh' ? '认证资质' : 'Certifications & Quality'}</h2>
+                  <p className="text-gray-500 mb-4">{locale === 'zh' ? '编辑认证资质列表' : 'Edit certifications list'}</p>
+                  <div className="space-y-3">
+                    {pageContent.about.certifications.map((cert, index) => (
+                      <div key={index} className="flex items-center space-x-2">
+                        <label htmlFor={`cert-${index}`} className="sr-only">Certification {index + 1}</label>
+                        <input id={`cert-${index}`} type="text" value={cert} onChange={(e) => {
+                          const newCerts = [...pageContent.about.certifications];
+                          newCerts[index] = e.target.value;
+                          setPageContent({ ...pageContent, about: { ...pageContent.about, certifications: newCerts } });
+                        }} className="flex-1 px-3 py-2 border rounded-lg text-sm" placeholder="ISO 9001" />
+                        <button type="button" onClick={() => {
+                          const newCerts = pageContent.about.certifications.filter((_, i) => i !== index);
+                          setPageContent({ ...pageContent, about: { ...pageContent.about, certifications: newCerts } });
+                        }} className="p-2 text-red-600 hover:bg-red-50 rounded-lg" aria-label="Delete certification">
+                          <FiTrash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    ))}
+                    <button type="button" onClick={() => {
+                      const newCerts = [...pageContent.about.certifications, ''];
+                      setPageContent({ ...pageContent, about: { ...pageContent.about, certifications: newCerts } });
+                    }} className="inline-flex items-center px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm">
+                      <FiPlus className="w-4 h-4 mr-1" /> {locale === 'zh' ? '添加认证' : 'Add Certification'}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Save Button */}
+                <div className="flex justify-end">
+                  <button type="button" onClick={() => handleSavePageContent('about')} disabled={savingPage} className="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50">{savingPage ? (locale === 'zh' ? '保存中...' : 'Saving...') : (locale === 'zh' ? '保存关于我们' : 'Save About Us')}</button>
                 </div>
               </div>
             )}
@@ -599,6 +761,19 @@ export default function AdminPage() {
                   <div>
                     <label htmlFor="logoSubtext" className="block text-sm font-medium text-gray-700 mb-1">{locale === 'zh' ? '副标题/标语' : 'Subtitle/Tagline'}</label>
                     <input id="logoSubtext" type="text" value={pageContent.header.logoSubtext} onChange={(e) => setPageContent({ ...pageContent, header: { ...pageContent.header, logoSubtext: e.target.value } })} className="w-full px-4 py-3 border rounded-lg text-sm" placeholder="Professional Packaging Film Supplier" />
+                  </div>
+                  <div className="border-t pt-4 mt-4">
+                    <h3 className="text-sm font-medium text-gray-900 mb-3">{locale === 'zh' ? '顶部联系信息' : 'Top Contact Info'}</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label htmlFor="headerEmail" className="block text-sm font-medium text-gray-700 mb-1">📧 Email</label>
+                        <input id="headerEmail" type="email" value={pageContent.header.email || ''} onChange={(e) => setPageContent({ ...pageContent, header: { ...pageContent.header, email: e.target.value } })} className="w-full px-4 py-3 border rounded-lg text-sm" placeholder="sale@boppfilmsale.com" />
+                      </div>
+                      <div>
+                        <label htmlFor="headerPhone" className="block text-sm font-medium text-gray-700 mb-1">📞 {locale === 'zh' ? '电话' : 'Phone'}</label>
+                        <input id="headerPhone" type="text" value={pageContent.header.phone || ''} onChange={(e) => setPageContent({ ...pageContent, header: { ...pageContent.header, phone: e.target.value } })} className="w-full px-4 py-3 border rounded-lg text-sm" placeholder="+86 138 0000 0000" />
+                      </div>
+                    </div>
                   </div>
                   <button type="button" onClick={() => handleSavePageContent('header')} disabled={savingPage} className="px-6 py-3 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 disabled:opacity-50">{savingPage ? (locale === 'zh' ? '保存中...' : 'Saving...') : (locale === 'zh' ? '保存页眉' : 'Save Header')}</button>
                 </div>
