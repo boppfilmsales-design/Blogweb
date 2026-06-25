@@ -132,9 +132,17 @@ const Header = () => {
               )}
             </div>
 
+            {/* Certifications */}
+            <Link href="/certifications" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors">
+              {locale === 'zh' ? '认证资质' : 'Certifications'}
+            </Link>
+
+            {/* About */}
             <Link href="/about" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors">
               {t.nav.about}
             </Link>
+
+            {/* Contact */}
             <Link href="/contact" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors">
               {t.nav.contact}
             </Link>
@@ -223,6 +231,9 @@ const Header = () => {
             </Link>
             <Link href="/products" className="block py-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium">
               {t.nav.products}
+            </Link>
+            <Link href="/certifications" className="block py-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium">
+              {locale === 'zh' ? '认证资质' : 'Certifications'}
             </Link>
             <Link href="/about" className="block py-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium">
               {t.nav.about}
