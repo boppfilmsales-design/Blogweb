@@ -1,37 +1,99 @@
-import React from 'react';
+'use client';
+
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { products, categories } from '@/data/products';
+import { useLanguage } from '@/context/LanguageContext';
+import { getProducts, Product } from '@/lib/api';
 import { FiArrowRight } from 'react-icons/fi';
 
 export default function ProductsPage() {
+  const { locale } = useLanguage();
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  useEffect(() => {
+    loadProducts();
+  }, []);
+
+  const loadProducts = async () => {
+    try {
+      const data = await getProducts();
+      setProducts(data);
+    } catch (error) {
+      console.error('Failed to load products:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const filteredProducts = products.filter(product => {
+    const name = locale === 'zh' ? product.nameZh : product.nameEn;
+    const desc = locale === 'zh' ? product.descriptionZh : product.descriptionEn;
+    return name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      desc.toLowerCase().includes(searchTerm.toLowerCase());
+  });
+
+  const getCategoryName = (category: string) => {
+    const categories: Record<string, Record<string, string>> = {
+      'bopp-gloss': { en: 'BOPP Gloss Film', zh: 'BOPP光膜' },
+      'bopp-matte': { en: 'BOPP Matte Film', zh: 'BOPP哑膜' },
+      'bopp-metalized': { en: 'BOPP Metalized Film', zh: 'BOPP镀铝膜' },
+      'bopp-heatseal': { en: 'BOPP Heat Sealable Film', zh: 'BOPP热封膜' },
+      'bopp-white': { en: 'BOPP White Opaque Film', zh: 'BOPP白膜' },
+      'bopp-tape': { en: 'BOPP Tape Film', zh: 'BOPP胶带膜' },
+      'bopet': { en: 'BOPET Film', zh: 'BOPET薄膜' },
+      'bops': { en: 'BOPS Film', zh: 'BOPS薄膜' },
+      'cpp': { en: 'CPP Film', zh: 'CPP薄膜' },
+      'tape': { en: 'Tape Products', zh: '胶带产品' },
+      'pof': { en: 'BOPET Film', zh: 'BOPET薄膜' },
+      'tear-tape': { en: 'Tear Tape', zh: '撕裂胶带' },
+      'stretch-film': { en: 'Stretch Film', zh: '拉伸膜' },
+      'specialty': { en: 'Specialty Films', zh: '特种薄膜' },
+    };
+    return categories[category]?.[locale] || category;
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading products...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <div className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Our Products</h1>
-          <p className="text-gray-600">Diverse BOPP film products to meet different industry needs</p>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            {locale === 'zh' ? '产品中心' : 'Our Products'}
+          </h1>
+          <p className="text-gray-600">
+            {locale === 'zh' ? '多样化的BOPP薄膜产品，满足不同行业需求' : 'Diverse packaging film products to meet different industry needs'}
+          </p>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Category Filter */}
+        {/* Search */}
         <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
-          <div className="flex flex-wrap gap-2">
-            {categories.map((category) => (
-              <button
-                key={category.id}
-                className="px-4 py-2 rounded-lg bg-gray-100 hover:bg-blue-100 text-gray-700 hover:text-blue-700 transition-colors"
-              >
-                {category.name.en}
-              </button>
-            ))}
-          </div>
+          <input
+            type="text"
+            placeholder={locale === 'zh' ? '搜索产品...' : 'Search products...'}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
         </div>
 
         {/* Products Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {products.map((product) => (
+          {filteredProducts.map((product) => (
             <div key={product.id} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow group">
               {/* Product Image */}
               <Link href={`/products/${product.slug}`}>
@@ -39,9 +101,9 @@ export default function ProductsPage() {
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-center">
                       <div className="w-16 h-16 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-2">
-                        <span className="text-blue-600 font-bold text-2xl">B</span>
+                        <span className="text-blue-600 font-bold text-2xl">A</span>
                       </div>
-                      <p className="text-blue-600 font-medium text-sm">BOPP Film</p>
+                      <p className="text-blue-600 font-medium text-sm">AEC Group</p>
                     </div>
                   </div>
 
@@ -58,27 +120,27 @@ export default function ProductsPage() {
               <div className="p-6">
                 <div className="mb-2">
                   <span className="text-sm text-blue-600 font-medium">
-                    {product.category}
+                    {getCategoryName(product.category)}
                   </span>
                 </div>
                 <Link href={`/products/${product.slug}`}>
                   <h3 className="text-xl font-semibold text-gray-900 mb-3 line-clamp-2 hover:text-blue-600">
-                    {product.name.en}
+                    {locale === 'zh' ? product.nameZh : product.nameEn}
                   </h3>
                 </Link>
-                <p className="text-gray-600 mb-4 line-clamp-3">
-                  {product.description.en}
+                <p className="text-gray-600 mb-4 line-clamp-3 text-sm">
+                  {locale === 'zh' ? product.descriptionZh : product.descriptionEn}
                 </p>
 
                 {/* Specifications Preview */}
                 <div className="grid grid-cols-2 gap-2 mb-4 text-sm">
                   <div className="bg-gray-50 rounded px-2 py-1">
                     <span className="text-gray-500">Thickness:</span>
-                    <span className="text-gray-700 ml-1">{product.specifications.thickness}</span>
+                    <span className="text-gray-700 ml-1">{product.thickness}</span>
                   </div>
                   <div className="bg-gray-50 rounded px-2 py-1">
                     <span className="text-gray-500">Width:</span>
-                    <span className="text-gray-700 ml-1">{product.specifications.width}</span>
+                    <span className="text-gray-700 ml-1">{product.width}</span>
                   </div>
                 </div>
 
@@ -86,9 +148,9 @@ export default function ProductsPage() {
                 <div className="flex space-x-3">
                   <Link
                     href={`/products/${product.slug}`}
-                    className="flex-1 bg-blue-600 text-white text-center py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors font-medium"
+                    className="flex-1 bg-blue-600 text-white text-center py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors font-medium text-sm"
                   >
-                    View Details
+                    {locale === 'zh' ? '查看详情' : 'View Details'}
                   </Link>
                   <Link
                     href={`/contact?product=${product.slug}`}
@@ -101,6 +163,15 @@ export default function ProductsPage() {
             </div>
           ))}
         </div>
+
+        {/* No Results */}
+        {filteredProducts.length === 0 && (
+          <div className="text-center py-12">
+            <p className="text-gray-500 text-lg">
+              {locale === 'zh' ? '没有找到匹配的产品' : 'No products found matching your criteria.'}
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

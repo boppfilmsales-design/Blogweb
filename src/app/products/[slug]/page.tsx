@@ -1,19 +1,43 @@
-import React from 'react';
+'use client';
+
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
 import Link from 'next/link';
-import { products } from '@/data/products';
+import { getProductBySlug, Product } from '@/lib/api';
+import InquiryForm from '@/components/contact/InquiryForm';
 import { FiCheck, FiDownload, FiArrowLeft } from 'react-icons/fi';
 
-// Generate static params for static export
-export function generateStaticParams() {
-  return products.map((product) => ({
-    slug: product.slug,
-  }));
-}
+export default function ProductDetailPage() {
+  const params = useParams();
+  const slug = params.slug as string;
 
-export default function ProductDetailPage({ params }: { params: { slug: string } }) {
-  const { slug } = params;
-  const product = products.find(p => p.slug === slug);
-  const relatedProducts = products.filter(p => p.category === product?.category && p.id !== product?.id).slice(0, 3);
+  const [product, setProduct] = useState<Product | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadProduct = async () => {
+      try {
+        const data = await getProductBySlug(slug);
+        setProduct(data);
+      } catch (error) {
+        console.error('Failed to load product:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadProduct();
+  }, [slug]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading product...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (!product) {
     return (
@@ -38,17 +62,14 @@ export default function ProductDetailPage({ params }: { params: { slug: string }
             <span className="text-gray-400">/</span>
             <Link href="/products" className="text-gray-500 hover:text-gray-700">Products</Link>
             <span className="text-gray-400">/</span>
-            <span className="text-gray-900">{product.name.en}</span>
+            <span className="text-gray-900">{product.nameEn}</span>
           </nav>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Back Button */}
-        <Link
-          href="/products"
-          className="inline-flex items-center text-blue-600 hover:text-blue-700 mb-6"
-        >
+        <Link href="/products" className="inline-flex items-center text-blue-600 hover:text-blue-700 mb-6">
           <FiArrowLeft className="w-5 h-5 mr-2" />
           View All Products
         </Link>
@@ -59,76 +80,72 @@ export default function ProductDetailPage({ params }: { params: { slug: string }
             <div className="aspect-square bg-gradient-to-br from-blue-100 to-blue-200 rounded-xl flex items-center justify-center">
               <div className="text-center">
                 <div className="w-24 h-24 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span className="text-blue-600 font-bold text-4xl">B</span>
+                  <span className="text-blue-600 font-bold text-4xl">A</span>
                 </div>
-                <p className="text-blue-600 font-medium">BOPP Film</p>
+                <p className="text-blue-600 font-medium">AEC Group</p>
               </div>
-            </div>
-            <div className="grid grid-cols-4 gap-2">
-              {[1, 2, 3, 4].map((i) => (
-                <div key={i} className="aspect-square bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg"></div>
-              ))}
             </div>
           </div>
 
-          {/* Product Info */}
+          {/* Product Info - Bilingual */}
           <div className="space-y-6">
+            {/* English */}
             <div>
-              <span className="text-sm text-blue-600 font-medium">
-                {product.category}
-              </span>
-              <h1 className="text-3xl font-bold text-gray-900 mt-2">
-                {product.name.en}
-              </h1>
-              <p className="text-gray-600 mt-4 leading-relaxed">
-                {product.description.en}
-              </p>
+              <span className="text-sm text-blue-600 font-medium">{product.category}</span>
+              <h1 className="text-3xl font-bold text-gray-900 mt-2">{product.nameEn}</h1>
+              <p className="text-gray-600 mt-4 leading-relaxed">{product.descriptionEn}</p>
+            </div>
+
+            {/* Divider */}
+            <div className="border-t border-gray-200"></div>
+
+            {/* Chinese */}
+            <div>
+              <span className="text-sm text-blue-600 font-medium">{product.category}</span>
+              <h2 className="text-2xl font-bold text-gray-900 mt-2">{product.nameZh}</h2>
+              <p className="text-gray-600 mt-4 leading-relaxed">{product.descriptionZh}</p>
             </div>
 
             {/* Features */}
             <div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">Features</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-3">Features / 产品特点</h3>
               <ul className="space-y-2">
-                {product.features.en.map((feature: string, index: number) => (
-                  <li key={index} className="flex items-center space-x-2">
-                    <FiCheck className="w-5 h-5 text-green-500" />
-                    <span className="text-gray-700">{feature}</span>
-                  </li>
-                ))}
+                {(() => {
+                  try {
+                    const features = JSON.parse(product.featuresEn);
+                    return features.map((f: string, i: number) => (
+                      <li key={i} className="flex items-center space-x-2">
+                        <FiCheck className="w-5 h-5 text-green-500" />
+                        <span className="text-gray-700">{f}</span>
+                      </li>
+                    ));
+                  } catch { return null; }
+                })()}
               </ul>
             </div>
 
             {/* Applications */}
             <div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">Applications</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-3">Applications / 应用领域</h3>
               <div className="flex flex-wrap gap-2">
-                {product.applications.en.map((app: string, index: number) => (
-                  <span key={index} className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm">
-                    {app}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            {/* Certifications */}
-            <div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">Certifications</h3>
-              <div className="flex flex-wrap gap-2">
-                {product.certifications.map((cert: string, index: number) => (
-                  <span key={index} className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm">
-                    {cert}
-                  </span>
-                ))}
+                {(() => {
+                  try {
+                    const apps = JSON.parse(product.applicationsEn);
+                    return apps.map((a: string, i: number) => (
+                      <span key={i} className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm">{a}</span>
+                    ));
+                  } catch { return null; }
+                })()}
               </div>
             </div>
 
             {/* Actions */}
-            <div className="flex space-x-4">
+            <div className="flex space-x-4 pt-4">
               <Link
                 href={`/contact?product=${product.slug}`}
                 className="flex-1 bg-blue-600 text-white text-center py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors font-medium"
               >
-                Inquire Now
+                Inquire Now / 立即询价
               </Link>
               <button
                 type="button"
@@ -143,61 +160,40 @@ export default function ProductDetailPage({ params }: { params: { slug: string }
 
         {/* Specifications */}
         <div className="mt-16 bg-white rounded-xl shadow-sm p-8">
-          <h3 className="text-2xl font-semibold text-gray-900 mb-6">Specifications</h3>
+          <h3 className="text-2xl font-semibold text-gray-900 mb-6">Specifications / 规格参数</h3>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
             <div>
-              <p className="text-sm text-gray-500 mb-1">Thickness</p>
-              <p className="font-medium text-gray-900">{product.specifications.thickness}</p>
+              <p className="text-sm text-gray-500 mb-1">Thickness / 厚度</p>
+              <p className="font-medium text-gray-900">{product.thickness}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-500 mb-1">Width</p>
-              <p className="font-medium text-gray-900">{product.specifications.width}</p>
+              <p className="text-sm text-gray-500 mb-1">Width / 宽度</p>
+              <p className="font-medium text-gray-900">{product.width}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-500 mb-1">Length</p>
-              <p className="font-medium text-gray-900">{product.specifications.length}</p>
+              <p className="text-sm text-gray-500 mb-1">Length / 长度</p>
+              <p className="font-medium text-gray-900">{product.length}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-500 mb-1">Weight</p>
-              <p className="font-medium text-gray-900">{product.specifications.weight}</p>
+              <p className="text-sm text-gray-500 mb-1">Weight / 重量</p>
+              <p className="font-medium text-gray-900">{product.weight}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-500 mb-1">Color</p>
-              <p className="font-medium text-gray-900">{product.specifications.color}</p>
+              <p className="text-sm text-gray-500 mb-1">Color / 颜色</p>
+              <p className="font-medium text-gray-900">{product.color}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-500 mb-1">Material</p>
-              <p className="font-medium text-gray-900">{product.specifications.material}</p>
+              <p className="text-sm text-gray-500 mb-1">Material / 材料</p>
+              <p className="font-medium text-gray-900">{product.material}</p>
             </div>
           </div>
         </div>
 
-        {/* Related Products */}
-        {relatedProducts.length > 0 && (
-          <div className="mt-16">
-            <h3 className="text-2xl font-semibold text-gray-900 mb-8">Related Products</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {relatedProducts.map((relatedProduct) => (
-                <div key={relatedProduct.id} className="bg-white rounded-xl shadow-lg overflow-hidden">
-                  <Link href={`/products/${relatedProduct.slug}`}>
-                    <div className="aspect-video bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center">
-                      <div className="text-center">
-                        <div className="w-16 h-16 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-2">
-                          <span className="text-blue-600 font-bold text-2xl">B</span>
-                        </div>
-                        <p className="text-blue-600 font-medium text-sm">BOPP Film</p>
-                      </div>
-                    </div>
-                    <div className="p-4">
-                      <h4 className="font-semibold text-gray-900 mb-2">{relatedProduct.name.en}</h4>
-                      <p className="text-gray-600 text-sm line-clamp-2">{relatedProduct.description.en}</p>
-                    </div>
-                  </Link>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+        {/* Inquiry Form */}
+        <div className="mt-16">
+          <h3 className="text-2xl font-semibold text-gray-900 mb-8">Contact Us / 联系我们</h3>
+          <InquiryForm productSlug={product.slug} />
+        </div>
       </div>
     </div>
   );
