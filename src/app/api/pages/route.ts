@@ -1,43 +1,24 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { readFileSync, writeFileSync, existsSync } from 'fs';
+import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'fs';
 import { join } from 'path';
 
-const PAGES_FILE = join(process.cwd(), 'src', 'data', 'pages.json');
+// 使用tmp目录存储运行时数据（Vercel Serverless可写）
+const DATA_DIR = '/tmp/aec-data';
+const PAGES_FILE = join(DATA_DIR, 'pages.json');
 
-interface PageContent {
-  hero: {
-    titleEn: string;
-    titleZh: string;
-    subtitleEn: string;
-    subtitleZh: string;
-    descEn: string;
-    descZh: string;
-    ctaTextEn: string;
-    ctaTextZh: string;
-  };
-  about: {
-    titleEn: string;
-    titleZh: string;
-    contentEn: string;
-    contentZh: string;
-  };
-  contact: {
-    titleEn: string;
-    titleZh: string;
-    address: string;
-    phone: string;
-    email: string;
-    whatsapp: string;
-  };
+// 确保目录存在
+if (!existsSync(DATA_DIR)) {
+  mkdirSync(DATA_DIR, { recursive: true });
 }
 
-const defaultPages: PageContent = {
+// 默认页面内容
+const defaultPages = {
   hero: {
     titleEn: 'Professional Packaging Film Supplier',
     titleZh: '专业BOPP薄膜供应商',
     subtitleEn: 'Providing High-Quality Packaging Film Solutions',
     subtitleZh: '为全球包装行业提供高品质BOPP薄膜解决方案',
-    descEn: 'We specialize in the production and export of packaging films.',
+    descEn: 'We specialize in the production and export of BOPP films.',
     descZh: '我们专注于BOPP薄膜的生产和出口。',
     ctaTextEn: 'Browse Products',
     ctaTextZh: '浏览产品',
@@ -56,9 +37,33 @@ const defaultPages: PageContent = {
     email: 'sale@boppfilmsale.com',
     whatsapp: '+86 138 0000 0000',
   },
+  header: {
+    logoText: 'AEC Group',
+    logoSubtext: 'Professional Packaging Film Supplier',
+  },
+  footer: {
+    companyDescEn: 'Professional supplier of BOPP, BOPET, BOPS, CPP, POF films and tape products.',
+    companyDescZh: '专业BOPP、BOPET、BOPS、CPP、POF薄膜和胶带产品供应商。',
+    address: 'Industrial Park, Suzhou, Jiangsu, China',
+    phone: '+86 138 0000 0000',
+    email: 'sale@boppfilmsale.com',
+    whatsapp: '+86 138 0000 0000',
+    facebook: '#',
+    twitter: '#',
+    linkedin: '#',
+    instagram: '#',
+    copyright: 'All Rights Reserved',
+  },
+  navigation: [
+    { id: 'home', labelEn: 'Home', labelZh: '首页', href: '/', order: 1, visible: true },
+    { id: 'products', labelEn: 'Products', labelZh: '产品中心', href: '/products', order: 2, visible: true },
+    { id: 'certifications', labelEn: 'Certifications', labelZh: '认证资质', href: '/certifications', order: 3, visible: true },
+    { id: 'about', labelEn: 'About', labelZh: '关于我们', href: '/about', order: 4, visible: true },
+    { id: 'contact', labelEn: 'Contact', labelZh: '联系我们', href: '/contact', order: 5, visible: true },
+  ],
 };
 
-function loadPages(): PageContent {
+function loadPages() {
   try {
     if (existsSync(PAGES_FILE)) {
       const data = readFileSync(PAGES_FILE, 'utf-8');
@@ -70,8 +75,12 @@ function loadPages(): PageContent {
   return defaultPages;
 }
 
-function savePages(pages: PageContent): void {
-  writeFileSync(PAGES_FILE, JSON.stringify(pages, null, 2), 'utf-8');
+function savePages(pages: typeof defaultPages): void {
+  try {
+    writeFileSync(PAGES_FILE, JSON.stringify(pages, null, 2), 'utf-8');
+  } catch (error) {
+    console.error('Failed to save pages:', error);
+  }
 }
 
 // GET - 获取页面内容
@@ -94,6 +103,9 @@ export async function POST(request: NextRequest) {
     if (body.hero) pages.hero = { ...pages.hero, ...body.hero };
     if (body.about) pages.about = { ...pages.about, ...body.about };
     if (body.contact) pages.contact = { ...pages.contact, ...body.contact };
+    if (body.header) pages.header = { ...pages.header, ...body.header };
+    if (body.footer) pages.footer = { ...pages.footer, ...body.footer };
+    if (body.navigation) pages.navigation = body.navigation;
 
     savePages(pages);
 

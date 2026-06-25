@@ -39,5 +39,12 @@
     "linkedin": "#",
     "instagram": "#",
     "copyright": "All Rights Reserved"
-  }
+  },
+  "navigation": [
+    { "id": "home", "labelEn": "Home", "labelZh": "首页", "href": "/", "order": 1, "visible": true },
+    { "id": "products", "labelEn": "Products", "labelZh": "产品中心", "href": "/products", "order": 2, "visible": true },
+    { "id": "certifications", "labelEn": "Certifications", "labelZh": "认证资质", "href": "/certifications", "order": 3, "visible": true },
+    { "id": "about", "labelEn": "About", "labelZh": "关于我们", "href": "/about", "order": 4, "visible": true },
+    { "id": "contact", "labelEn": "Contact", "labelZh": "联系我们", "href": "/contact", "order": 5, "visible": true }
+  ]
 }
