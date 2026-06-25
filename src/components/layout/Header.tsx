@@ -146,6 +146,11 @@ const Header = () => {
             <Link href="/contact" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors">
               {t.nav.contact}
             </Link>
+
+            {/* Admin Link */}
+            <Link href="/admin" className="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-sm">
+              {locale === 'zh' ? '管理' : 'Admin'}
+            </Link>
           </nav>
 
           {/* Right Actions */}
@@ -240,6 +245,9 @@ const Header = () => {
             </Link>
             <Link href="/contact" className="block py-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium">
               {t.nav.contact}
+            </Link>
+            <Link href="/admin" className="block py-2 text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 text-sm">
+              {locale === 'zh' ? '管理后台' : 'Admin'}
             </Link>
           </nav>
         </div>

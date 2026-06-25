@@ -1,13 +1,16 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { useLanguage } from '@/context/LanguageContext';
 import { getProducts, createProduct, updateProduct, deleteProduct, importProducts, exportProductsToJSON, exportProductsToCSV } from '@/lib/api';
 import type { Product } from '@/lib/api';
-import { FiDownload, FiUpload, FiEdit, FiTrash2, FiPlus, FiSave, FiX, FiImage, FiSettings, FiFileText, FiPackage, FiAward } from 'react-icons/fi';
+import { FiDownload, FiUpload, FiEdit, FiTrash2, FiPlus, FiSave, FiX, FiImage, FiSettings, FiFileText, FiPackage, FiAward, FiLogOut } from 'react-icons/fi';
 
 export default function AdminPage() {
   const { locale } = useLanguage();
+  const router = useRouter();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [activeTab, setActiveTab] = useState<'products' | 'pages' | 'media' | 'settings' | 'import-export'>('products');
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
@@ -16,8 +19,24 @@ export default function AdminPage() {
   const [importStatus, setImportStatus] = useState<string>('');
 
   useEffect(() => {
-    loadProducts();
-  }, []);
+    // 检查登录状态
+    if (typeof window !== 'undefined') {
+      const loggedIn = sessionStorage.getItem('admin_logged_in');
+      if (loggedIn === 'true') {
+        setIsAuthenticated(true);
+        loadProducts();
+      } else {
+        router.push('/admin/login');
+      }
+    }
+  }, [router]);
+
+  const handleLogout = () => {
+    if (typeof window !== 'undefined') {
+      sessionStorage.removeItem('admin_logged_in');
+    }
+    router.push('/admin/login');
+  };
 
   const loadProducts = async () => {
     try {
@@ -29,6 +48,10 @@ export default function AdminPage() {
       setLoading(false);
     }
   };
+
+  if (!isAuthenticated) {
+    return null; // 等待重定向
+  }
 
   const handleCreateProduct = () => {
     setEditingProduct({
@@ -122,9 +145,19 @@ export default function AdminPage() {
                 {locale === 'zh' ? '管理网站内容和设置' : 'Manage website content and settings'}
               </p>
             </div>
-            <a href="/" target="_blank" className="text-blue-600 hover:text-blue-800 text-sm">
-              {locale === 'zh' ? '查看网站 →' : 'View Website →'}
-            </a>
+            <div className="flex items-center space-x-4">
+              <a href="/" target="_blank" className="text-blue-600 hover:text-blue-800 text-sm">
+                {locale === 'zh' ? '查看网站 →' : 'View Website →'}
+              </a>
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="inline-flex items-center px-3 py-1.5 text-sm text-red-600 hover:text-red-800 hover:bg-red-50 rounded-lg transition-colors"
+              >
+                <FiLogOut className="w-4 h-4 mr-1" />
+                {locale === 'zh' ? '退出' : 'Logout'}
+              </button>
+            </div>
           </div>
         </div>
       </div>
