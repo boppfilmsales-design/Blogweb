@@ -19,7 +19,7 @@ interface NavItem {
 interface PageContent {
   hero: { titleEn: string; titleZh: string; descEn: string; descZh: string };
   about: { contentEn: string; contentZh: string };
-  contact: { address: string; phone: string; email: string };
+  contact: { address: string; phone: string; email: string; whatsapp: string };
   header: { logoText: string; logoSubtext: string };
   footer: { companyDescEn: string; companyDescZh: string; address: string; phone: string; email: string; facebook: string; twitter: string; linkedin: string; instagram: string; copyright: string };
   navigation: NavItem[];
@@ -38,7 +38,7 @@ export default function AdminPage() {
   const [pageContent, setPageContent] = useState<PageContent>({
     hero: { titleEn: '', titleZh: '', descEn: '', descZh: '' },
     about: { contentEn: '', contentZh: '' },
-    contact: { address: '', phone: '', email: '' },
+    contact: { address: '', phone: '', email: '', whatsapp: '' },
     header: { logoText: '', logoSubtext: '' },
     footer: { companyDescEn: '', companyDescZh: '', address: '', phone: '', email: '', facebook: '', twitter: '', linkedin: '', instagram: '', copyright: '' },
     navigation: [],
@@ -541,6 +541,7 @@ export default function AdminPage() {
                     <div><label htmlFor="contactAddress" className="block text-sm font-medium text-gray-700 mb-1">{locale === 'zh' ? '地址' : 'Address'}</label><input id="contactAddress" type="text" value={pageContent.contact.address} onChange={(e) => setPageContent({ ...pageContent, contact: { ...pageContent.contact, address: e.target.value } })} className="w-full px-3 py-2 border rounded-lg text-sm" /></div>
                     <div><label htmlFor="contactPhone" className="block text-sm font-medium text-gray-700 mb-1">{locale === 'zh' ? '电话' : 'Phone'}</label><input id="contactPhone" type="text" value={pageContent.contact.phone} onChange={(e) => setPageContent({ ...pageContent, contact: { ...pageContent.contact, phone: e.target.value } })} className="w-full px-3 py-2 border rounded-lg text-sm" /></div>
                     <div><label htmlFor="contactEmail" className="block text-sm font-medium text-gray-700 mb-1">Email</label><input id="contactEmail" type="email" value={pageContent.contact.email} onChange={(e) => setPageContent({ ...pageContent, contact: { ...pageContent.contact, email: e.target.value } })} className="w-full px-3 py-2 border rounded-lg text-sm" /></div>
+                    <div><label htmlFor="contactWhatsapp" className="block text-sm font-medium text-gray-700 mb-1">WhatsApp</label><input id="contactWhatsapp" type="text" value={pageContent.contact.whatsapp || ''} onChange={(e) => setPageContent({ ...pageContent, contact: { ...pageContent.contact, whatsapp: e.target.value } })} className="w-full px-3 py-2 border rounded-lg text-sm" placeholder="+86 138 0000 0000" /></div>
                     <button type="button" onClick={() => handleSavePageContent('contact')} disabled={savingPage} className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700">{savingPage ? 'Saving...' : (locale === 'zh' ? '保存' : 'Save')}</button>
                   </div>
                 </div>

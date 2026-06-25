@@ -11,7 +11,7 @@ interface ContactContent {
   address: string;
   phone: string;
   email: string;
-  whatsapp: string;
+  whatsapp?: string;
 }
 
 const defaultContact: ContactContent = {
