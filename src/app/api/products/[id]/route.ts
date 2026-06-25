@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { getProductById, getProductBySlug, updateProduct, deleteProduct } from '@/lib/db';
 
 export const dynamic = 'force-dynamic';
 
@@ -9,11 +9,14 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    const product = await prisma.product.findUnique({
-      where: { id: params.id },
-    });
+    const product = getProductById(params.id);
     if (!product) {
-      return NextResponse.json({ error: 'Product not found' }, { status: 404 });
+      // Try to find by slug
+      const productBySlug = getProductBySlug(params.id);
+      if (!productBySlug) {
+        return NextResponse.json({ error: 'Product not found' }, { status: 404 });
+      }
+      return NextResponse.json(productBySlug);
     }
     return NextResponse.json(product);
   } catch (error) {
@@ -28,30 +31,10 @@ export async function PUT(
 ) {
   try {
     const body = await request.json();
-    const product = await prisma.product.update({
-      where: { id: params.id },
-      data: {
-        slug: body.slug,
-        nameEn: body.nameEn,
-        nameZh: body.nameZh,
-        category: body.category,
-        descriptionEn: body.descriptionEn,
-        descriptionZh: body.descriptionZh,
-        thickness: body.thickness,
-        width: body.width,
-        length: body.length,
-        weight: body.weight,
-        color: body.color,
-        material: body.material,
-        featuresEn: body.featuresEn,
-        featuresZh: body.featuresZh,
-        applicationsEn: body.applicationsEn,
-        applicationsZh: body.applicationsZh,
-        certifications: body.certifications,
-        images: body.images,
-        featured: body.featured || false,
-      },
-    });
+    const product = updateProduct(params.id, body);
+    if (!product) {
+      return NextResponse.json({ error: 'Product not found' }, { status: 404 });
+    }
     return NextResponse.json(product);
   } catch (error) {
     return NextResponse.json({ error: 'Failed to update product' }, { status: 500 });
@@ -64,9 +47,10 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
-    await prisma.product.delete({
-      where: { id: params.id },
-    });
+    const success = deleteProduct(params.id);
+    if (!success) {
+      return NextResponse.json({ error: 'Product not found' }, { status: 404 });
+    }
     return NextResponse.json({ message: 'Product deleted successfully' });
   } catch (error) {
     return NextResponse.json({ error: 'Failed to delete product' }, { status: 500 });
