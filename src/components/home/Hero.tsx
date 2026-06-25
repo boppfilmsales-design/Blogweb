@@ -2,16 +2,51 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { useLanguage } from '@/context/LanguageContext';
-import { FiArrowRight, FiPlay } from 'react-icons/fi';
+import { FiArrowRight } from 'react-icons/fi';
+
+interface HeroContent {
+  titleEn: string;
+  titleZh: string;
+  subtitleEn: string;
+  subtitleZh: string;
+  descEn: string;
+  descZh: string;
+  ctaTextEn: string;
+  ctaTextZh: string;
+}
+
+const defaultHero: HeroContent = {
+  titleEn: 'Professional Packaging Film Supplier',
+  titleZh: '专业BOPP薄膜供应商',
+  subtitleEn: 'Providing High-Quality Packaging Film Solutions',
+  subtitleZh: '为全球包装行业提供高品质BOPP薄膜解决方案',
+  descEn: 'We specialize in the production and export of packaging films.',
+  descZh: '我们专注于BOPP薄膜的生产和出口。',
+  ctaTextEn: 'Browse Products',
+  ctaTextZh: '浏览产品',
+};
 
 const Hero = () => {
-  const { t, isRTL, locale } = useLanguage();
-  const [isVisible, setIsVisible] = useState(false);
+  const [heroContent, setHeroContent] = useState<HeroContent>(defaultHero);
+  const [locale, setLocale] = useState('en');
 
   useEffect(() => {
-    setIsVisible(true);
+    // 获取页面内容
+    fetch('/api/pages')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.hero) {
+          setHeroContent(data.hero);
+        }
+      })
+      .catch((error) => console.error('Failed to load hero content:', error));
+
+    // 获取当前语言
+    const savedLocale = localStorage.getItem('locale') || 'en';
+    setLocale(savedLocale);
   }, []);
+
+  const t = (en: string, zh: string) => (locale === 'zh' ? zh : en);
 
   return (
     <section className="relative bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 text-white overflow-hidden min-h-[600px] flex items-center">
@@ -31,49 +66,49 @@ const Hero = () => {
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Content */}
-          <div className={`text-center lg:text-left transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+          <div className="text-center lg:text-left">
             {/* English */}
             <div className="mb-8">
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 leading-tight">
-                {t.hero.title}
+                {heroContent.titleEn}
               </h1>
               <p className="text-xl md:text-2xl text-blue-200 mb-4 font-medium">
-                {t.hero.subtitle}
+                {heroContent.subtitleEn}
               </p>
               <p className="text-lg text-blue-100 mb-6 max-w-2xl mx-auto lg:mx-0">
-                {t.hero.description}
+                {heroContent.descEn}
               </p>
             </div>
 
             {/* Chinese */}
             <div className="mb-8 pb-8 border-b border-blue-700/50">
               <h2 className="text-3xl md:text-4xl font-bold mb-4 leading-tight">
-                {locale === 'zh' ? '专业BOPP薄膜供应商' : t.hero.title}
+                {heroContent.titleZh}
               </h2>
               <p className="text-lg text-blue-200 mb-4">
-                {locale === 'zh' ? '为全球包装行业提供高品质BOPP薄膜解决方案' : t.hero.subtitle}
+                {heroContent.subtitleZh}
               </p>
             </div>
 
             {/* CTA Buttons */}
-            <div className={`flex flex-col sm:flex-row gap-4 justify-center lg:justify-start transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
               <Link
                 href="/products"
                 className="inline-flex items-center justify-center px-8 py-4 bg-white text-blue-900 font-semibold rounded-lg hover:bg-blue-50 transition-colors group"
               >
-                {t.hero.cta}
-                <FiArrowRight className={`w-5 h-5 ${isRTL ? 'mr-2 rotate-180' : 'ml-2'} group-hover:translate-x-1 transition-transform`} />
+                {heroContent.ctaTextEn}
+                <FiArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link
                 href="/contact"
                 className="inline-flex items-center justify-center px-8 py-4 border-2 border-white text-white font-semibold rounded-lg hover:bg-white hover:text-blue-900 transition-colors"
               >
-                {t.hero.contact}
+                {locale === 'zh' ? '联系我们' : 'Contact Us'}
               </Link>
             </div>
 
             {/* Stats */}
-            <div className={`grid grid-cols-3 gap-8 mt-12 pt-8 border-t border-blue-700 transition-all duration-1000 delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+            <div className="grid grid-cols-3 gap-8 mt-12 pt-8 border-t border-blue-700">
               <div className="text-center lg:text-left">
                 <div className="text-3xl font-bold text-white">10+</div>
                 <div className="text-blue-200 text-sm">{locale === 'zh' ? '年经验' : 'Years Experience'}</div>
@@ -90,7 +125,7 @@ const Hero = () => {
           </div>
 
           {/* Visual Element */}
-          <div className={`relative transition-all duration-1000 delay-200 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'}`}>
+          <div className="relative">
             <div className="relative z-10">
               <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20">
                 <div className="aspect-video bg-gradient-to-br from-blue-400/20 to-blue-600/20 rounded-lg flex items-center justify-center">

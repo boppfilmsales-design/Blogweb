@@ -1,13 +1,41 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
-import { useLanguage } from '@/context/LanguageContext';
+import React, { useEffect, useState, useRef } from 'react';
 import { FiCheck, FiUsers, FiGlobe, FiAward } from 'react-icons/fi';
 
+interface AboutContent {
+  titleEn: string;
+  titleZh: string;
+  contentEn: string;
+  contentZh: string;
+}
+
+const defaultAbout: AboutContent = {
+  titleEn: 'About AEC Group',
+  titleZh: '关于我们',
+  contentEn: 'AEC Group was established in 2014.',
+  contentZh: 'AEC集团成立于2014年。',
+};
+
 const About = () => {
-  const { locale } = useLanguage();
+  const [aboutContent, setAboutContent] = useState<AboutContent>(defaultAbout);
+  const [locale, setLocale] = useState('en');
   const [isVisible, setIsVisible] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    fetch('/api/pages')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.about) {
+          setAboutContent(data.about);
+        }
+      })
+      .catch((error) => console.error('Failed to load about content:', error));
+
+    const savedLocale = localStorage.getItem('locale') || 'en';
+    setLocale(savedLocale);
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -65,7 +93,7 @@ const About = () => {
         {/* Section Header */}
         <div className={`text-center mb-16 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            {locale === 'zh' ? '关于我们' : 'About AEC Group'}
+            {locale === 'zh' ? aboutContent.titleZh : aboutContent.titleEn}
           </h2>
           <div className="w-24 h-1 bg-blue-600 mx-auto"></div>
         </div>
@@ -76,22 +104,8 @@ const About = () => {
             <h3 className="text-2xl font-bold text-gray-900 mb-4">
               {locale === 'zh' ? '我们的故事' : 'Our Story'}
             </h3>
-            <div className="space-y-4 text-gray-600">
-              <p>
-                {locale === 'zh'
-                  ? 'AEC集团成立于2014年，专注于BOPP薄膜的生产和出口。多年来，我们从一家小型制造单位发展成为全球客户信赖的合作伙伴。'
-                  : 'AEC Group was established in 2014, focusing on the production and export of packaging films. Over the years, we have grown from a small manufacturing unit to a trusted partner for customers worldwide.'}
-              </p>
-              <p>
-                {locale === 'zh'
-                  ? '我们拥有先进的生产设备和质量控制体系，专业生产各种BOPP薄膜，包括光膜、哑膜、镀铝膜、热封膜等。'
-                  : 'Our state-of-the-art manufacturing facility is equipped with advanced production lines and quality control systems. We specialize in producing a wide range of packaging films.'}
-              </p>
-              <p>
-                {locale === 'zh'
-                  ? '如今，我们为50多个国家的500多家客户提供服务，为他们提供优质的包装薄膜解决方案。'
-                  : 'Today, we serve over 500 clients across 50 countries, providing them with high-quality packaging film solutions.'}
-              </p>
+            <div className="space-y-4 text-gray-600 whitespace-pre-line">
+              {locale === 'zh' ? aboutContent.contentZh : aboutContent.contentEn}
             </div>
           </div>
           <div className="bg-gradient-to-br from-blue-100 to-blue-200 rounded-xl p-8">

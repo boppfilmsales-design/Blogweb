@@ -1,36 +1,70 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLanguage } from '@/context/LanguageContext';
 import InquiryForm from '@/components/contact/InquiryForm';
 import { FiMail, FiPhone, FiMapPin, FiClock, FiMessageCircle } from 'react-icons/fi';
 
+interface ContactContent {
+  titleEn: string;
+  titleZh: string;
+  address: string;
+  phone: string;
+  email: string;
+  whatsapp: string;
+}
+
+const defaultContact: ContactContent = {
+  titleEn: 'Contact Us',
+  titleZh: '联系我们',
+  address: 'Industrial Park, Suzhou, Jiangsu, China',
+  phone: '+86 138 0000 0000',
+  email: 'sale@boppfilmsale.com',
+  whatsapp: '+86 138 0000 0000',
+};
+
 export default function ContactPage() {
   const { t } = useLanguage();
+  const [contactContent, setContactContent] = useState<ContactContent>(defaultContact);
+  const [locale, setLocale] = useState('en');
+
+  useEffect(() => {
+    fetch('/api/pages')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.contact) {
+          setContactContent(data.contact);
+        }
+      })
+      .catch((error) => console.error('Failed to load contact content:', error));
+
+    const savedLocale = localStorage.getItem('locale') || 'en';
+    setLocale(savedLocale);
+  }, []);
 
   const contactInfo = [
     {
       icon: FiMapPin,
-      title: t.contact.address,
-      content: t.contact.addressDetail,
+      title: locale === 'zh' ? '地址' : 'Address',
+      content: contactContent.address,
       color: 'bg-blue-500',
     },
     {
       icon: FiPhone,
-      title: t.contact.phone,
-      content: '+86 138 0000 0000',
+      title: locale === 'zh' ? '电话' : 'Phone',
+      content: contactContent.phone,
       color: 'bg-green-500',
     },
     {
       icon: FiMail,
-      title: t.contact.email,
-      content: 'sale@boppfilmsale.com',
+      title: locale === 'zh' ? '邮箱' : 'Email',
+      content: contactContent.email,
       color: 'bg-purple-500',
     },
     {
       icon: FiMessageCircle,
-      title: t.contact.whatsapp,
-      content: '+86 138 0000 0000',
+      title: 'WhatsApp',
+      content: contactContent.whatsapp,
       color: 'bg-green-600',
     },
   ];
@@ -40,8 +74,12 @@ export default function ContactPage() {
       {/* Header */}
       <div className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">{t.contact.title}</h1>
-          <p className="text-gray-600">{t.contact.subtitle}</p>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            {locale === 'zh' ? contactContent.titleZh : contactContent.titleEn}
+          </h1>
+          <p className="text-gray-600">
+            {locale === 'zh' ? '获取专业的产品咨询和报价' : 'Get professional product consultation and quotation'}
+          </p>
         </div>
       </div>
 
@@ -50,7 +88,9 @@ export default function ContactPage() {
           {/* Contact Info */}
           <div className="lg:col-span-1">
             <div className="bg-white rounded-xl shadow-sm p-8">
-              <h2 className="text-xl font-semibold text-gray-900 mb-6">Contact Information</h2>
+              <h2 className="text-xl font-semibold text-gray-900 mb-6">
+                {locale === 'zh' ? '联系信息' : 'Contact Information'}
+              </h2>
 
               <div className="space-y-6">
                 {contactInfo.map((info, index) => (
@@ -70,9 +110,13 @@ export default function ContactPage() {
               <div className="mt-8 pt-6 border-t border-gray-200">
                 <div className="flex items-center space-x-2 mb-2">
                   <FiClock className="w-5 h-5 text-gray-500" />
-                  <h3 className="font-medium text-gray-900">{t.contact.businessHours}</h3>
+                  <h3 className="font-medium text-gray-900">
+                    {locale === 'zh' ? '工作时间' : 'Business Hours'}
+                  </h3>
                 </div>
-                <p className="text-gray-600 ml-7">{t.contact.businessHoursDetail}</p>
+                <p className="text-gray-600 ml-7">
+                  {locale === 'zh' ? '周一至周五 9:00-18:00' : 'Monday - Friday 9:00-18:00'}
+                </p>
               </div>
 
               {/* Map Placeholder */}
