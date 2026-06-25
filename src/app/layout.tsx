@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import { LanguageProvider } from '@/context/LanguageContext';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import BackToTop from '@/components/layout/BackToTop';
 import '@/styles/globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -19,7 +20,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="icon" href="/favicon.jpg" type="image/jpeg" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -28,12 +29,13 @@ export default function RootLayout({
       </head>
       <body className={inter.className}>
         <LanguageProvider>
-          <div className="min-h-screen flex flex-col">
+          <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900">
             <Header />
             <main className="flex-grow">
               {children}
             </main>
             <Footer />
+            <BackToTop />
           </div>
         </LanguageProvider>
       </body>

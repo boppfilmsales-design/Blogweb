@@ -6,7 +6,7 @@ import { useLanguage } from '@/context/LanguageContext';
 import { FiMail, FiPhone, FiMapPin, FiFacebook, FiTwitter, FiLinkedin, FiInstagram } from 'react-icons/fi';
 
 const Footer = () => {
-  const { t, isRTL } = useLanguage();
+  const { t, isRTL, locale } = useLanguage();
 
   const quickLinks = [
     { href: '/', label: t.nav.home },
@@ -16,13 +16,13 @@ const Footer = () => {
   ];
 
   const productCategories = [
-    { href: '/products?category=bopp-gloss', label: t.category.gloss },
-    { href: '/products?category=bopp-matte', label: t.category.matte },
-    { href: '/products?category=bopet', label: t.category.bopet || 'BOPET Film' },
-    { href: '/products?category=tape', label: t.category.tape || 'Tape Products' },
-    { href: '/products?category=cpp', label: t.category.cpp || 'CPP Film' },
-    { href: '/products?category=bops', label: t.category.bops || 'BOPS Film' },
-    { href: '/products?category=pof', label: t.category.pof || 'POF Film' },
+    { href: '/products?category=bopp-gloss', label: locale === 'zh' ? 'BOPP光膜' : 'BOPP Gloss Film' },
+    { href: '/products?category=bopp-matte', label: locale === 'zh' ? 'BOPP哑膜' : 'BOPP Matte Film' },
+    { href: '/products?category=bopet', label: locale === 'zh' ? 'BOPET薄膜' : 'BOPET Film' },
+    { href: '/products?category=tape', label: locale === 'zh' ? '胶带产品' : 'Tape Products' },
+    { href: '/products?category=cpp', label: locale === 'zh' ? 'CPP薄膜' : 'CPP Film' },
+    { href: '/products?category=bops', label: locale === 'zh' ? 'BOPS薄膜' : 'BOPS Film' },
+    { href: '/products?category=pof', label: locale === 'zh' ? 'POF薄膜' : 'POF Film' },
   ];
 
   const socialLinks = [
@@ -34,20 +34,19 @@ const Footer = () => {
 
   return (
     <footer className="bg-gray-900 text-white">
+      {/* Main Footer */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Company Info */}
           <div className="lg:col-span-1">
             <div className="flex items-center space-x-2 mb-4">
-              <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-blue-800 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xl">B</span>
-              </div>
+              <img src="/favicon.jpg" alt="AEC Group" className="w-10 h-10 rounded-lg object-cover" />
               <div className={`${isRTL ? 'mr-2' : 'ml-2'}`}>
                 <h3 className="text-xl font-bold">AEC Group</h3>
               </div>
             </div>
-            <p className="text-gray-400 mb-4">{t.footer.companyDesc}</p>
-            <div className="flex space-x-4">
+            <p className="text-gray-400 mb-4 text-sm">{t.footer.companyDesc}</p>
+            <div className="flex space-x-3">
               {socialLinks.map((social, index) => (
                 <a
                   key={index}
@@ -67,10 +66,7 @@ const Footer = () => {
             <ul className="space-y-2">
               {quickLinks.map((link, index) => (
                 <li key={index}>
-                  <Link
-                    href={link.href}
-                    className="text-gray-400 hover:text-white transition-colors"
-                  >
+                  <Link href={link.href} className="text-gray-400 hover:text-white transition-colors text-sm">
                     {link.label}
                   </Link>
                 </li>
@@ -84,10 +80,7 @@ const Footer = () => {
             <ul className="space-y-2">
               {productCategories.map((category, index) => (
                 <li key={index}>
-                  <Link
-                    href={category.href}
-                    className="text-gray-400 hover:text-white transition-colors"
-                  >
+                  <Link href={category.href} className="text-gray-400 hover:text-white transition-colors text-sm">
                     {category.label}
                   </Link>
                 </li>
@@ -101,32 +94,36 @@ const Footer = () => {
             <ul className="space-y-3">
               <li className="flex items-start space-x-3">
                 <FiMapPin className="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0" />
-                <span className="text-gray-400">Industrial Park, Suzhou, Jiangsu, China</span>
+                <span className="text-gray-400 text-sm">{t.contact.addressDetail}</span>
               </li>
               <li className="flex items-center space-x-3">
                 <FiPhone className="w-5 h-5 text-blue-400 flex-shrink-0" />
-                <span className="text-gray-400">+86 138 0000 0000</span>
+                <span className="text-gray-400 text-sm">+86 138 0000 0000</span>
               </li>
               <li className="flex items-center space-x-3">
                 <FiMail className="w-5 h-5 text-blue-400 flex-shrink-0" />
-                <span className="text-gray-400">sale@boppfilmsale.com</span>
+                <span className="text-gray-400 text-sm">sale@boppfilmsale.com</span>
               </li>
             </ul>
           </div>
         </div>
+      </div>
 
-        {/* Bottom Bar */}
-        <div className="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-gray-400 text-sm">
-            © 2024 AEC Group. {t.footer.copyright}
-          </p>
-          <div className="flex space-x-6 mt-4 md:mt-0">
-            <Link href="/privacy" className="text-gray-400 hover:text-white text-sm transition-colors">
-              {t.footer.privacy}
-            </Link>
-            <Link href="/terms" className="text-gray-400 hover:text-white text-sm transition-colors">
-              {t.footer.terms}
-            </Link>
+      {/* Bottom Bar */}
+      <div className="border-t border-gray-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div className="flex flex-col md:flex-row justify-between items-center">
+            <p className="text-gray-400 text-sm">
+              © 2024 AEC Group. {t.footer.copyright}
+            </p>
+            <div className="flex space-x-6 mt-4 md:mt-0">
+              <Link href="/privacy" className="text-gray-400 hover:text-white text-sm transition-colors">
+                {t.footer.privacy}
+              </Link>
+              <Link href="/terms" className="text-gray-400 hover:text-white text-sm transition-colors">
+                {t.footer.terms}
+              </Link>
+            </div>
           </div>
         </div>
       </div>

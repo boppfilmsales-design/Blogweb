@@ -1,15 +1,20 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/context/LanguageContext';
-import { FiArrowRight } from 'react-icons/fi';
+import { FiArrowRight, FiPlay } from 'react-icons/fi';
 
 const Hero = () => {
-  const { t, isRTL } = useLanguage();
+  const { t, isRTL, locale } = useLanguage();
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    setIsVisible(true);
+  }, []);
 
   return (
-    <section className="relative bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 text-white overflow-hidden">
+    <section className="relative bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 text-white overflow-hidden min-h-[600px] flex items-center">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-white/20 to-transparent"></div>
@@ -23,22 +28,35 @@ const Hero = () => {
         </svg>
       </div>
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Content */}
-          <div className="text-center lg:text-left">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-              {t.hero.title}
-            </h1>
-            <p className="text-xl md:text-2xl text-blue-200 mb-4 font-medium">
-              {t.hero.subtitle}
-            </p>
-            <p className="text-lg text-blue-100 mb-8 max-w-2xl mx-auto lg:mx-0">
-              {t.hero.description}
-            </p>
+          <div className={`text-center lg:text-left transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+            {/* English */}
+            <div className="mb-8">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 leading-tight">
+                {t.hero.title}
+              </h1>
+              <p className="text-xl md:text-2xl text-blue-200 mb-4 font-medium">
+                {t.hero.subtitle}
+              </p>
+              <p className="text-lg text-blue-100 mb-6 max-w-2xl mx-auto lg:mx-0">
+                {t.hero.description}
+              </p>
+            </div>
+
+            {/* Chinese */}
+            <div className="mb-8 pb-8 border-b border-blue-700/50">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 leading-tight">
+                {locale === 'zh' ? '专业BOPP薄膜供应商' : t.hero.title}
+              </h2>
+              <p className="text-lg text-blue-200 mb-4">
+                {locale === 'zh' ? '为全球包装行业提供高品质BOPP薄膜解决方案' : t.hero.subtitle}
+              </p>
+            </div>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+            <div className={`flex flex-col sm:flex-row gap-4 justify-center lg:justify-start transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
               <Link
                 href="/products"
                 className="inline-flex items-center justify-center px-8 py-4 bg-white text-blue-900 font-semibold rounded-lg hover:bg-blue-50 transition-colors group"
@@ -55,26 +73,25 @@ const Hero = () => {
             </div>
 
             {/* Stats */}
-            <div className="grid grid-cols-3 gap-8 mt-12 pt-8 border-t border-blue-700">
+            <div className={`grid grid-cols-3 gap-8 mt-12 pt-8 border-t border-blue-700 transition-all duration-1000 delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
               <div className="text-center lg:text-left">
                 <div className="text-3xl font-bold text-white">10+</div>
-                <div className="text-blue-200 text-sm">Years Experience</div>
+                <div className="text-blue-200 text-sm">{locale === 'zh' ? '年经验' : 'Years Experience'}</div>
               </div>
               <div className="text-center lg:text-left">
                 <div className="text-3xl font-bold text-white">500+</div>
-                <div className="text-blue-200 text-sm">Global Clients</div>
+                <div className="text-blue-200 text-sm">{locale === 'zh' ? '全球客户' : 'Global Clients'}</div>
               </div>
               <div className="text-center lg:text-left">
                 <div className="text-3xl font-bold text-white">50+</div>
-                <div className="text-blue-200 text-sm">Countries Served</div>
+                <div className="text-blue-200 text-sm">{locale === 'zh' ? '服务国家' : 'Countries Served'}</div>
               </div>
             </div>
           </div>
 
           {/* Visual Element */}
-          <div className="relative">
+          <div className={`relative transition-all duration-1000 delay-200 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'}`}>
             <div className="relative z-10">
-              {/* Main Image Placeholder */}
               <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20">
                 <div className="aspect-video bg-gradient-to-br from-blue-400/20 to-blue-600/20 rounded-lg flex items-center justify-center">
                   <div className="text-center">

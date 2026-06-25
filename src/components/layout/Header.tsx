@@ -1,16 +1,18 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/context/LanguageContext';
-import { categories } from '@/data/products';
-import { FiMenu, FiX, FiGlobe, FiSearch, FiChevronDown } from 'react-icons/fi';
+import { FiMenu, FiX, FiGlobe, FiSearch, FiChevronDown, FiSun, FiMoon } from 'react-icons/fi';
 
 const Header = () => {
   const { locale, setLocale, t } = useLanguage();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLangOpen, setIsLangOpen] = useState(false);
   const [isProductsOpen, setIsProductsOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isDark, setIsDark] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   const languages = [
     { code: 'en', name: 'English', flag: '🇺🇸' },
@@ -20,112 +22,133 @@ const Header = () => {
     { code: 'pt', name: 'Português', flag: '🇧🇷' },
   ];
 
-  const navItems = [
-    { href: '/', label: t.nav.home },
-    { href: '/products', label: t.nav.products, hasDropdown: true },
-    { href: '/about', label: t.nav.about },
-    { href: '/contact', label: t.nav.contact },
+  const categories = [
+    { id: 'bopp-gloss', en: 'BOPP Gloss', zh: 'BOPP光膜' },
+    { id: 'bopp-matte', en: 'BOPP Matte', zh: 'BOPP哑膜' },
+    { id: 'bopp-metalized', en: 'BOPP Metalized', zh: 'BOPP镀铝膜' },
+    { id: 'bopet', en: 'BOPET Film', zh: 'BOPET薄膜' },
+    { id: 'bops', en: 'BOPS Film', zh: 'BOPS薄膜' },
+    { id: 'cpp', en: 'CPP Film', zh: 'CPP薄膜' },
+    { id: 'tape', en: 'Tape Products', zh: '胶带产品' },
+    { id: 'pof', en: 'POF Film', zh: 'POF薄膜' },
   ];
 
-  const getLocalizedText = (textObj: any) => {
-    return textObj[locale] || textObj.en;
-  };
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    if (isDark) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [isDark]);
 
   return (
-    <header className="bg-white shadow-md sticky top-0 z-50">
+    <header className={`sticky top-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-lg' : 'bg-white dark:bg-gray-900'}`}>
+      {/* Top Bar */}
+      <div className="bg-blue-600 text-white text-xs py-1">
+        <div className="max-w-7xl mx-auto px-4 flex justify-between items-center">
+          <div className="flex items-center space-x-4">
+            <span>📧 sale@boppfilmsale.com</span>
+            <span>📞 +86 138 0000 0000</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <button
+              type="button"
+              onClick={() => setIsDark(!isDark)}
+              className="p-1 hover:bg-blue-500 rounded transition-colors"
+              aria-label="Toggle theme"
+            >
+              {isDark ? <FiSun className="w-4 h-4" /> : <FiMoon className="w-4 h-4" />}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Header */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
+          <Link href="/" className="flex items-center space-x-3">
             <img src="/favicon.jpg" alt="AEC Group" className="w-10 h-10 rounded-lg object-cover" />
-            <div className="ml-2">
-              <h1 className="text-xl font-bold text-gray-900">AEC Group</h1>
-              <p className="text-xs text-gray-500">Professional Packaging Film Supplier</p>
+            <div>
+              <h1 className="text-xl font-bold text-gray-900 dark:text-white">AEC Group</h1>
+              <p className="text-xs text-gray-500 dark:text-gray-400">Professional Packaging Film Supplier</p>
             </div>
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
-            {navItems.map((item) => (
-              <div key={item.href} className="relative group">
-                {item.hasDropdown ? (
-                  <div
-                    className="relative"
-                    onMouseEnter={() => setIsProductsOpen(true)}
-                    onMouseLeave={() => setIsProductsOpen(false)}
-                  >
-                    <Link
-                      href={item.href}
-                      className="text-gray-700 hover:text-blue-600 font-medium transition-colors flex items-center space-x-1"
-                    >
-                      <span>{item.label}</span>
-                      <FiChevronDown className={`w-4 h-4 transition-transform ${isProductsOpen ? 'rotate-180' : ''}`} />
-                    </Link>
+          <nav className="hidden lg:flex items-center space-x-8">
+            <Link href="/" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors">
+              {t.nav.home}
+            </Link>
 
-                    {/* Dropdown Menu */}
-                    {isProductsOpen && (
-                      <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-[600px] bg-white rounded-lg shadow-2xl border border-gray-200 z-50">
-                        <div className="p-6">
-                          <h3 className="text-lg font-bold text-gray-900 mb-4 border-b pb-2">Product Categories</h3>
-                          <div className="grid grid-cols-2 gap-4">
-                            {categories.filter(cat => cat.id !== 'all').map((category) => (
-                              <div key={category.id} className="mb-3">
-                                <Link
-                                  href={`/products?category=${category.id}`}
-                                  className="font-semibold text-blue-600 hover:text-blue-800 block py-1 text-sm font-bold"
-                                  onClick={() => setIsProductsOpen(false)}
-                                >
-                                  {getLocalizedText(category.name)}
-                                </Link>
-                                {category.subcategories && (
-                                  <div className="ml-2 mt-1 space-y-0.5">
-                                    {category.subcategories.slice(0, 4).map((sub) => (
-                                      <Link
-                                        key={sub.id}
-                                        href={`/products?subcategory=${sub.id}`}
-                                        className="text-xs text-gray-500 hover:text-blue-600 block py-0.5"
-                                        onClick={() => setIsProductsOpen(false)}
-                                      >
-                                        • {getLocalizedText(sub.name)}
-                                      </Link>
-                                    ))}
-                                    {category.subcategories.length > 4 && (
-                                      <span className="text-xs text-gray-400">+{category.subcategories.length - 4} more</span>
-                                    )}
-                                  </div>
-                                )}
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                        <div className="border-t border-gray-200 p-4 bg-gray-50 rounded-b-lg">
-                          <Link
-                            href="/products"
-                            className="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center justify-center"
-                            onClick={() => setIsProductsOpen(false)}
-                          >
-                            View All Products →
-                          </Link>
-                        </div>
-                      </div>
-                    )}
+            {/* Products Dropdown */}
+            <div
+              className="relative group"
+              onMouseEnter={() => setIsProductsOpen(true)}
+              onMouseLeave={() => setIsProductsOpen(false)}
+            >
+              <button className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors flex items-center space-x-1">
+                <span>{t.nav.products}</span>
+                <FiChevronDown className={`w-4 h-4 transition-transform ${isProductsOpen ? 'rotate-180' : ''}`} />
+              </button>
+
+              {isProductsOpen && (
+                <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-[500px] bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 z-50">
+                  <div className="p-4">
+                    <h3 className="text-sm font-bold text-gray-900 dark:text-white mb-3 border-b dark:border-gray-700 pb-2">
+                      {locale === 'zh' ? '产品分类' : 'Product Categories'}
+                    </h3>
+                    <div className="grid grid-cols-2 gap-2">
+                      {categories.map((cat) => (
+                        <Link
+                          key={cat.id}
+                          href={`/products?category=${cat.id}`}
+                          className="text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 py-1 px-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                          onClick={() => setIsProductsOpen(false)}
+                        >
+                          {locale === 'zh' ? cat.zh : cat.en}
+                        </Link>
+                      ))}
+                    </div>
                   </div>
-                ) : (
-                  <Link
-                    href={item.href}
-                    className="text-gray-700 hover:text-blue-600 font-medium transition-colors"
-                  >
-                    {item.label}
-                  </Link>
-                )}
-              </div>
-            ))}
+                  <div className="border-t border-gray-200 dark:border-gray-700 p-3 bg-gray-50 dark:bg-gray-800/50 rounded-b-xl">
+                    <Link
+                      href="/products"
+                      className="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center justify-center"
+                      onClick={() => setIsProductsOpen(false)}
+                    >
+                      {locale === 'zh' ? '查看全部产品 →' : 'View All Products →'}
+                    </Link>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <Link href="/about" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors">
+              {t.nav.about}
+            </Link>
+            <Link href="/contact" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors">
+              {t.nav.contact}
+            </Link>
           </nav>
 
-          {/* Language Selector & Search */}
-          <div className="flex items-center space-x-4">
+          {/* Right Actions */}
+          <div className="flex items-center space-x-3">
             {/* Search */}
-            <button type="button" className="p-2 text-gray-600 hover:text-blue-600 transition-colors" aria-label="Search">
+            <button
+              type="button"
+              onClick={() => setIsSearchOpen(!isSearchOpen)}
+              className="p-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+              aria-label="Search"
+            >
               <FiSearch className="w-5 h-5" />
             </button>
 
@@ -134,27 +157,26 @@ const Header = () => {
               <button
                 type="button"
                 onClick={() => setIsLangOpen(!isLangOpen)}
-                className="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors"
+                className="flex items-center space-x-1 px-2 py-1 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
                 aria-label="Select language"
               >
-                <FiGlobe className="w-5 h-5 text-gray-600" />
-                <span className="hidden sm:inline text-sm font-medium text-gray-700">
-                  {languages.find(l => l.code === locale)?.flag} {languages.find(l => l.code === locale)?.name}
+                <FiGlobe className="w-5 h-5" />
+                <span className="hidden sm:inline text-sm">
+                  {languages.find(l => l.code === locale)?.flag}
                 </span>
               </button>
 
               {isLangOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
+                <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 py-2 z-50">
                   {languages.map((lang) => (
                     <button
-                      type="button"
                       key={lang.code}
                       onClick={() => {
                         setLocale(lang.code as any);
                         setIsLangOpen(false);
                       }}
-                      className={`w-full px-4 py-2 text-left hover:bg-gray-100 flex items-center space-x-3 ${
-                        locale === lang.code ? 'bg-blue-50 text-blue-600' : 'text-gray-700'
+                      className={`w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center space-x-3 ${
+                        locale === lang.code ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300'
                       }`}
                     >
                       <span className="text-lg">{lang.flag}</span>
@@ -169,31 +191,48 @@ const Header = () => {
             <button
               type="button"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="md:hidden p-2 text-gray-600 hover:text-blue-600"
+              className="lg:hidden p-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400"
+              aria-label="Menu"
             >
               {isMenuOpen ? <FiX className="w-6 h-6" /> : <FiMenu className="w-6 h-6" />}
             </button>
           </div>
         </div>
 
-        {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <div className="md:hidden py-4 border-t border-gray-200">
-            <nav className="flex flex-col space-y-4">
-              {navItems.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setIsMenuOpen(false)}
-                  className="text-gray-700 hover:text-blue-600 font-medium transition-colors px-4 py-2"
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </nav>
+        {/* Search Bar */}
+        {isSearchOpen && (
+          <div className="py-4 border-t border-gray-200 dark:border-gray-700">
+            <div className="relative">
+              <input
+                type="text"
+                placeholder={locale === 'zh' ? '搜索产品...' : 'Search products...'}
+                className="w-full px-4 py-3 pl-10 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 dark:text-white"
+              />
+              <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+            </div>
           </div>
         )}
       </div>
+
+      {/* Mobile Navigation */}
+      {isMenuOpen && (
+        <div className="lg:hidden bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
+          <nav className="max-w-7xl mx-auto px-4 py-4 space-y-2">
+            <Link href="/" className="block py-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium">
+              {t.nav.home}
+            </Link>
+            <Link href="/products" className="block py-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium">
+              {t.nav.products}
+            </Link>
+            <Link href="/about" className="block py-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium">
+              {t.nav.about}
+            </Link>
+            <Link href="/contact" className="block py-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium">
+              {t.nav.contact}
+            </Link>
+          </nav>
+        </div>
+      )}
     </header>
   );
 };
