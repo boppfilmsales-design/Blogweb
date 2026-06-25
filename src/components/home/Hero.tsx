@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/context/LanguageContext';
-import { FiArrowRight, FiPlay } from 'react-icons/fi';
+import { FiArrowRight } from 'react-icons/fi';
 
 const Hero = () => {
   const { t, isRTL } = useLanguage();
@@ -79,10 +79,10 @@ const Hero = () => {
                 <div className="aspect-video bg-gradient-to-br from-blue-400/20 to-blue-600/20 rounded-lg flex items-center justify-center">
                   <div className="text-center">
                     <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <FiPlay className="w-8 h-8 text-white" />
+                      <span className="text-white font-bold text-3xl">A</span>
                     </div>
-                    <p className="text-white font-medium">BOPP Film Production</p>
-                    <p className="text-blue-200 text-sm">Watch Our Factory Tour</p>
+                    <p className="text-white font-medium">AEC Group</p>
+                    <p className="text-blue-200 text-sm">Professional Packaging Film Supplier</p>
                   </div>
                 </div>
               </div>
