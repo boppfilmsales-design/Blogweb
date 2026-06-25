@@ -110,13 +110,81 @@ export default function AdminPage() {
     }
   };
 
+  const defaultAbout = {
+    intro: { titleEn: '', titleZh: '', contentEn: '', contentZh: '' },
+    story: { titleEn: '', titleZh: '', contentEn: '', contentZh: '' },
+    stats: { clients: '', countries: '', years: '', capacity: '' },
+    values: [
+      { titleEn: '', titleZh: '', descEn: '', descZh: '' },
+      { titleEn: '', titleZh: '', descEn: '', descZh: '' },
+      { titleEn: '', titleZh: '', descEn: '', descZh: '' },
+      { titleEn: '', titleZh: '', descEn: '', descZh: '' },
+    ],
+    certifications: [],
+  };
+
+  // 从localStorage加载数据
+  const loadFromStorage = (): Partial<PageContent> | null => {
+    try {
+      if (typeof window !== 'undefined') {
+        const saved = localStorage.getItem('aec-page-content');
+        if (saved) {
+          return JSON.parse(saved);
+        }
+      }
+    } catch (error) {
+      console.error('Failed to load from localStorage:', error);
+    }
+    return null;
+  };
+
+  // 保存数据到localStorage
+  const saveToStorage = (data: PageContent) => {
+    try {
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('aec-page-content', JSON.stringify(data));
+      }
+    } catch (error) {
+      console.error('Failed to save to localStorage:', error);
+    }
+  };
+
   const loadPageContent = async () => {
     try {
+      // 首先尝试从localStorage加载
+      const savedData = loadFromStorage();
+
+      // 然后从API加载（API可能有更新的数据）
       const res = await fetch('/api/pages');
-      const data = await res.json();
-      setPageContent(data);
+      const apiData = await res.json();
+
+      // 合并数据：localStorage优先，然后是API，最后是默认值
+      const mergedData: PageContent = {
+        hero: { ...(savedData?.hero || apiData.hero || { titleEn: '', titleZh: '', descEn: '', descZh: '' }) },
+        about: {
+          intro: { ...defaultAbout.intro, ...(savedData?.about?.intro || apiData.about?.intro || {}) },
+          story: { ...defaultAbout.story, ...(savedData?.about?.story || apiData.about?.story || {}) },
+          stats: { ...defaultAbout.stats, ...(savedData?.about?.stats || apiData.about?.stats || {}) },
+          values: Array.isArray(savedData?.about?.values) ? savedData.about.values :
+                  Array.isArray(apiData.about?.values) ? apiData.about.values : defaultAbout.values,
+          certifications: Array.isArray(savedData?.about?.certifications) ? savedData.about.certifications :
+                          Array.isArray(apiData.about?.certifications) ? apiData.about.certifications : defaultAbout.certifications,
+        },
+        contact: { ...(savedData?.contact || apiData.contact || { address: '', phone: '', email: '', whatsapp: '' }) },
+        header: { ...(savedData?.header || apiData.header || { logoText: '', logoSubtext: '', email: '', phone: '' }) },
+        footer: { ...(savedData?.footer || apiData.footer || { companyDescEn: '', companyDescZh: '', address: '', phone: '', email: '', facebook: '', twitter: '', linkedin: '', instagram: '', copyright: '' }) },
+        navigation: Array.isArray(savedData?.navigation) ? savedData.navigation :
+                    Array.isArray(apiData.navigation) ? apiData.navigation : [],
+      };
+
+      setPageContent(mergedData);
     } catch (error) {
       console.error('Failed to load page content:', error);
+      // 出错时尝试从localStorage加载
+      const savedData = loadFromStorage();
+      if (savedData) {
+        setPageContent(savedData as PageContent);
+      }
     }
   };
 
@@ -623,7 +691,7 @@ export default function AdminPage() {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">{locale === 'zh' ? '标题(EN)' : 'Title (EN)'}</label>
-                            <input type="text" value={value.titleEn} onChange={(e) => {
+                            <input type="text" value={value.titleEn} aria-label={`Value ${index + 1} Title EN`} onChange={(e) => {
                               const newValues = [...pageContent.about.values];
                               newValues[index] = { ...newValues[index], titleEn: e.target.value };
                               setPageContent({ ...pageContent, about: { ...pageContent.about, values: newValues } });
