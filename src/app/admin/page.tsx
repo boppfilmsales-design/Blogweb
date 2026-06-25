@@ -101,10 +101,22 @@ export default function AdminPage() {
 
   const loadProducts = async () => {
     try {
+      // 首先尝试从API加载
       const data = await getProducts();
-      setProducts(data);
+      // 合并localStorage数据（localStorage优先）
+      const localData = loadProductsFromStorage();
+      if (localData.length > 0) {
+        setProducts(localData);
+      } else {
+        setProducts(data);
+      }
     } catch (error) {
-      console.error('Failed to load products:', error);
+      console.error('Failed to load products from API:', error);
+      // 出错时尝试从localStorage加载
+      const localData = loadProductsFromStorage();
+      if (localData.length > 0) {
+        setProducts(localData);
+      }
     } finally {
       setLoading(false);
     }
@@ -209,19 +221,75 @@ export default function AdminPage() {
     setIsEditing(true);
   };
 
+  // 保存产品到localStorage（备份）
+  const saveProductToStorage = (product: Product) => {
+    try {
+      if (typeof window !== 'undefined') {
+        const savedProducts = localStorage.getItem('aec-products');
+        const products: Product[] = savedProducts ? JSON.parse(savedProducts) : [];
+        const existingIndex = products.findIndex(p => p.id === product.id);
+
+        if (existingIndex >= 0) {
+          products[existingIndex] = product;
+        } else {
+          products.push(product);
+        }
+
+        localStorage.setItem('aec-products', JSON.stringify(products));
+      }
+    } catch (error) {
+      console.error('Failed to save product to localStorage:', error);
+    }
+  };
+
+  // 从localStorage加载产品
+  const loadProductsFromStorage = (): Product[] => {
+    try {
+      if (typeof window !== 'undefined') {
+        const savedProducts = localStorage.getItem('aec-products');
+        if (savedProducts) {
+          return JSON.parse(savedProducts);
+        }
+      }
+    } catch (error) {
+      console.error('Failed to load products from localStorage:', error);
+    }
+    return [];
+  };
+
   const handleSaveProduct = async () => {
     if (!editingProduct) return;
     try {
+      // 限制图片数量最多5张，防止localStorage超出限制
+      const productToSave = {
+        ...editingProduct,
+        images: JSON.stringify(JSON.parse(editingProduct.images || '[]').slice(0, 5))
+      };
+
       if (editingProduct.id) {
-        await updateProduct(editingProduct.id, editingProduct);
+        await updateProduct(editingProduct.id, productToSave);
       } else {
-        await createProduct(editingProduct);
+        await createProduct(productToSave);
       }
+
+      // 同时保存到localStorage
+      saveProductToStorage(productToSave);
+
       setIsEditing(false);
       setEditingProduct(null);
       loadProducts();
     } catch (error) {
-      alert('Failed to save product');
+      console.error('Failed to save product:', error);
+      // 即使API失败，也尝试保存到localStorage
+      try {
+        saveProductToStorage(editingProduct);
+        alert('Saved to browser storage. Note: Server save failed, data stored locally.');
+        setIsEditing(false);
+        setEditingProduct(null);
+        loadProducts();
+      } catch (localError) {
+        alert('Failed to save product');
+      }
     }
   };
 
