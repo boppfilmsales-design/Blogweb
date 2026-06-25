@@ -29,7 +29,7 @@ export default function AdminPage() {
   const { locale } = useLanguage();
   const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [activeTab, setActiveTab] = useState<'products' | 'navigation' | 'pages' | 'media' | 'settings' | 'import-export'>('products');
+  const [activeTab, setActiveTab] = useState<'products' | 'navigation' | 'about' | 'pages' | 'media' | 'settings' | 'import-export'>('products');
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
@@ -270,6 +270,7 @@ export default function AdminPage() {
   const tabs = [
     { id: 'products', label: locale === 'zh' ? '产品管理' : 'Products', icon: FiPackage },
     { id: 'navigation', label: locale === 'zh' ? '导航管理' : 'Navigation', icon: FiMenu },
+    { id: 'about', label: locale === 'zh' ? '关于我们' : 'About Us', icon: FiFileText },
     { id: 'pages', label: locale === 'zh' ? '页面管理' : 'Pages', icon: FiFileText },
     { id: 'media', label: locale === 'zh' ? '媒体库' : 'Media', icon: FiImage },
     { id: 'settings', label: locale === 'zh' ? '网站设置' : 'Settings', icon: FiSettings },
@@ -512,6 +513,25 @@ export default function AdminPage() {
               </div>
             )}
 
+            {/* About Tab - Dedicated About Page Editor */}
+            {activeTab === 'about' && (
+              <div className="bg-white rounded-lg shadow-sm p-6">
+                <h2 className="text-xl font-semibold mb-4">{locale === 'zh' ? '关于我们页面' : 'About Us Page'}</h2>
+                <p className="text-gray-500 mb-6">{locale === 'zh' ? '编辑关于我们页面的内容' : 'Edit the content of the About Us page'}</p>
+                <div className="space-y-6">
+                  <div>
+                    <h3 className="text-lg font-medium text-gray-900 mb-3">{locale === 'zh' ? '英文内容' : 'English Content'}</h3>
+                    <textarea id="aboutEn" rows={10} value={pageContent.about.contentEn} onChange={(e) => setPageContent({ ...pageContent, about: { ...pageContent.about, contentEn: e.target.value } })} className="w-full px-4 py-3 border rounded-lg text-sm" placeholder={locale === 'zh' ? '输入关于我们页面的英文内容...' : 'Enter the English content for the About Us page...'} />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-medium text-gray-900 mb-3">{locale === 'zh' ? '中文内容' : 'Chinese Content'}</h3>
+                    <textarea id="aboutZh" rows={10} value={pageContent.about.contentZh} onChange={(e) => setPageContent({ ...pageContent, about: { ...pageContent.about, contentZh: e.target.value } })} className="w-full px-4 py-3 border rounded-lg text-sm" placeholder={locale === 'zh' ? '输入关于我们页面的中文内容...' : 'Enter the Chinese content for the About Us page...'} />
+                  </div>
+                  <button type="button" onClick={() => handleSavePageContent('about')} disabled={savingPage} className="px-6 py-3 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 disabled:opacity-50">{savingPage ? (locale === 'zh' ? '保存中...' : 'Saving...') : (locale === 'zh' ? '保存关于我们' : 'Save About Us')}</button>
+                </div>
+              </div>
+            )}
+
             {/* Pages Tab */}
             {activeTab === 'pages' && (
               <div className="space-y-4">
@@ -523,15 +543,6 @@ export default function AdminPage() {
                     <div><label htmlFor="heroDescEn" className="block text-sm font-medium text-gray-700 mb-1">Description (EN)</label><textarea id="heroDescEn" rows={2} value={pageContent.hero.descEn} onChange={(e) => setPageContent({ ...pageContent, hero: { ...pageContent.hero, descEn: e.target.value } })} className="w-full px-3 py-2 border rounded-lg text-sm" /></div>
                     <div><label htmlFor="heroDescZh" className="block text-sm font-medium text-gray-700 mb-1">Description (ZH)</label><textarea id="heroDescZh" rows={2} value={pageContent.hero.descZh} onChange={(e) => setPageContent({ ...pageContent, hero: { ...pageContent.hero, descZh: e.target.value } })} className="w-full px-3 py-2 border rounded-lg text-sm" /></div>
                     <button type="button" onClick={() => handleSavePageContent('hero')} disabled={savingPage} className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700">{savingPage ? 'Saving...' : (locale === 'zh' ? '保存' : 'Save')}</button>
-                  </div>
-                </div>
-
-                <div className="bg-white rounded-lg shadow-sm p-4">
-                  <h2 className="text-lg font-semibold mb-3">{locale === 'zh' ? '关于页面' : 'About Page'}</h2>
-                  <div className="space-y-3">
-                    <div><label htmlFor="aboutEn" className="block text-sm font-medium text-gray-700 mb-1">Content (EN)</label><textarea id="aboutEn" rows={4} value={pageContent.about.contentEn} onChange={(e) => setPageContent({ ...pageContent, about: { ...pageContent.about, contentEn: e.target.value } })} className="w-full px-3 py-2 border rounded-lg text-sm" /></div>
-                    <div><label htmlFor="aboutZh" className="block text-sm font-medium text-gray-700 mb-1">Content (ZH)</label><textarea id="aboutZh" rows={4} value={pageContent.about.contentZh} onChange={(e) => setPageContent({ ...pageContent, about: { ...pageContent.about, contentZh: e.target.value } })} className="w-full px-3 py-2 border rounded-lg text-sm" /></div>
-                    <button type="button" onClick={() => handleSavePageContent('about')} disabled={savingPage} className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700">{savingPage ? 'Saving...' : (locale === 'zh' ? '保存' : 'Save')}</button>
                   </div>
                 </div>
 
