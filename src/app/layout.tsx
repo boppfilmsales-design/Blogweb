@@ -9,8 +9,8 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
   title: 'AEC Group | Professional Packaging Film Supplier',
-  description: 'Professional supplier of BOPP, BOPET, BOPS, CPP, POF films and tape products for packaging industry. Factory direct supply, quality assurance, global export.',
-  keywords: 'BOPP film, packaging film, gloss film, matte film, metalized film, heat sealable film, BOPP supplier, China manufacturer',
+  description: 'Professional supplier of BOPP, BOPET, BOPS, CPP, POF films and tape products for packaging industry.',
+  keywords: 'BOPP film, BOPET film, BOPS film, CPP film, POF film, packaging film, China manufacturer',
 };
 
 export default function RootLayout({
