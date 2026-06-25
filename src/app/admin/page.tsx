@@ -29,7 +29,7 @@ export default function AdminPage() {
   const { locale } = useLanguage();
   const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [activeTab, setActiveTab] = useState<'products' | 'navigation' | 'about' | 'pages' | 'media' | 'settings' | 'import-export'>('products');
+  const [activeTab, setActiveTab] = useState<'products' | 'navigation' | 'about' | 'pages' | 'header' | 'footer' | 'media' | 'settings' | 'import-export'>('products');
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
@@ -272,6 +272,8 @@ export default function AdminPage() {
     { id: 'navigation', label: locale === 'zh' ? '导航管理' : 'Navigation', icon: FiMenu },
     { id: 'about', label: locale === 'zh' ? '关于我们' : 'About Us', icon: FiFileText },
     { id: 'pages', label: locale === 'zh' ? '页面管理' : 'Pages', icon: FiFileText },
+    { id: 'header', label: locale === 'zh' ? '页眉设置' : 'Header', icon: FiPackage },
+    { id: 'footer', label: locale === 'zh' ? '页脚设置' : 'Footer', icon: FiPackage },
     { id: 'media', label: locale === 'zh' ? '媒体库' : 'Media', icon: FiImage },
     { id: 'settings', label: locale === 'zh' ? '网站设置' : 'Settings', icon: FiSettings },
     { id: 'import-export', label: locale === 'zh' ? '导入/导出' : 'Import/Export', icon: FiUpload },
@@ -584,7 +586,63 @@ export default function AdminPage() {
               </div>
             )}
 
-            {/* Settings Tab - Header/Footer */}
+            {/* Header Tab */}
+            {activeTab === 'header' && (
+              <div className="bg-white rounded-lg shadow-sm p-6">
+                <h2 className="text-xl font-semibold mb-4">{locale === 'zh' ? '页眉设置' : 'Header Settings'}</h2>
+                <p className="text-gray-500 mb-6">{locale === 'zh' ? '编辑网站顶部的Logo和导航内容' : 'Edit the logo and navigation content at the top of the website'}</p>
+                <div className="space-y-4">
+                  <div>
+                    <label htmlFor="logoText" className="block text-sm font-medium text-gray-700 mb-1">{locale === 'zh' ? 'Logo文字' : 'Logo Text'}</label>
+                    <input id="logoText" type="text" value={pageContent.header.logoText} onChange={(e) => setPageContent({ ...pageContent, header: { ...pageContent.header, logoText: e.target.value } })} className="w-full px-4 py-3 border rounded-lg text-sm" placeholder="AEC Group" />
+                  </div>
+                  <div>
+                    <label htmlFor="logoSubtext" className="block text-sm font-medium text-gray-700 mb-1">{locale === 'zh' ? '副标题/标语' : 'Subtitle/Tagline'}</label>
+                    <input id="logoSubtext" type="text" value={pageContent.header.logoSubtext} onChange={(e) => setPageContent({ ...pageContent, header: { ...pageContent.header, logoSubtext: e.target.value } })} className="w-full px-4 py-3 border rounded-lg text-sm" placeholder="Professional Packaging Film Supplier" />
+                  </div>
+                  <button type="button" onClick={() => handleSavePageContent('header')} disabled={savingPage} className="px-6 py-3 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 disabled:opacity-50">{savingPage ? (locale === 'zh' ? '保存中...' : 'Saving...') : (locale === 'zh' ? '保存页眉' : 'Save Header')}</button>
+                </div>
+              </div>
+            )}
+
+            {/* Footer Tab */}
+            {activeTab === 'footer' && (
+              <div className="bg-white rounded-lg shadow-sm p-6">
+                <h2 className="text-xl font-semibold mb-4">{locale === 'zh' ? '页脚设置' : 'Footer Settings'}</h2>
+                <p className="text-gray-500 mb-6">{locale === 'zh' ? '编辑网站底部的联系信息和链接' : 'Edit the contact information and links at the bottom of the website'}</p>
+                <div className="space-y-6">
+                  <div>
+                    <h3 className="text-lg font-medium text-gray-900 mb-3">{locale === 'zh' ? '公司信息' : 'Company Information'}</h3>
+                    <div className="space-y-3">
+                      <div><label htmlFor="footerDescEn" className="block text-sm font-medium text-gray-700 mb-1">{locale === 'zh' ? '公司简介(EN)' : 'Company Description (EN)'}</label><textarea id="footerDescEn" rows={3} value={pageContent.footer.companyDescEn} onChange={(e) => setPageContent({ ...pageContent, footer: { ...pageContent.footer, companyDescEn: e.target.value } })} className="w-full px-4 py-3 border rounded-lg text-sm" /></div>
+                      <div><label htmlFor="footerDescZh" className="block text-sm font-medium text-gray-700 mb-1">{locale === 'zh' ? '公司简介(ZH)' : 'Company Description (ZH)'}</label><textarea id="footerDescZh" rows={3} value={pageContent.footer.companyDescZh} onChange={(e) => setPageContent({ ...pageContent, footer: { ...pageContent.footer, companyDescZh: e.target.value } })} className="w-full px-4 py-3 border rounded-lg text-sm" /></div>
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-medium text-gray-900 mb-3">{locale === 'zh' ? '联系方式' : 'Contact Information'}</h3>
+                    <div className="space-y-3">
+                      <div><label htmlFor="footerAddress" className="block text-sm font-medium text-gray-700 mb-1">{locale === 'zh' ? '地址' : 'Address'}</label><input id="footerAddress" type="text" value={pageContent.footer.address} onChange={(e) => setPageContent({ ...pageContent, footer: { ...pageContent.footer, address: e.target.value } })} className="w-full px-4 py-3 border rounded-lg text-sm" /></div>
+                      <div className="grid grid-cols-2 gap-3">
+                        <div><label htmlFor="footerPhone" className="block text-sm font-medium text-gray-700 mb-1">{locale === 'zh' ? '电话' : 'Phone'}</label><input id="footerPhone" type="text" value={pageContent.footer.phone} onChange={(e) => setPageContent({ ...pageContent, footer: { ...pageContent.footer, phone: e.target.value } })} className="w-full px-4 py-3 border rounded-lg text-sm" /></div>
+                        <div><label htmlFor="footerEmail" className="block text-sm font-medium text-gray-700 mb-1">Email</label><input id="footerEmail" type="email" value={pageContent.footer.email} onChange={(e) => setPageContent({ ...pageContent, footer: { ...pageContent.footer, email: e.target.value } })} className="w-full px-4 py-3 border rounded-lg text-sm" /></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-medium text-gray-900 mb-3">{locale === 'zh' ? '社交媒体' : 'Social Media'}</h3>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div><label htmlFor="footerFb" className="block text-sm font-medium text-gray-700 mb-1">Facebook</label><input id="footerFb" type="text" value={pageContent.footer.facebook} onChange={(e) => setPageContent({ ...pageContent, footer: { ...pageContent.footer, facebook: e.target.value } })} className="w-full px-4 py-3 border rounded-lg text-sm" placeholder="https://facebook.com/..." /></div>
+                      <div><label htmlFor="footerTw" className="block text-sm font-medium text-gray-700 mb-1">Twitter</label><input id="footerTw" type="text" value={pageContent.footer.twitter} onChange={(e) => setPageContent({ ...pageContent, footer: { ...pageContent.footer, twitter: e.target.value } })} className="w-full px-4 py-3 border rounded-lg text-sm" placeholder="https://twitter.com/..." /></div>
+                      <div><label htmlFor="footerLi" className="block text-sm font-medium text-gray-700 mb-1">LinkedIn</label><input id="footerLi" type="text" value={pageContent.footer.linkedin} onChange={(e) => setPageContent({ ...pageContent, footer: { ...pageContent.footer, linkedin: e.target.value } })} className="w-full px-4 py-3 border rounded-lg text-sm" placeholder="https://linkedin.com/..." /></div>
+                      <div><label htmlFor="footerIg" className="block text-sm font-medium text-gray-700 mb-1">Instagram</label><input id="footerIg" type="text" value={pageContent.footer.instagram} onChange={(e) => setPageContent({ ...pageContent, footer: { ...pageContent.footer, instagram: e.target.value } })} className="w-full px-4 py-3 border rounded-lg text-sm" placeholder="https://instagram.com/..." /></div>
+                    </div>
+                  </div>
+                  <button type="button" onClick={() => handleSavePageContent('footer')} disabled={savingPage} className="px-6 py-3 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 disabled:opacity-50">{savingPage ? (locale === 'zh' ? '保存中...' : 'Saving...') : (locale === 'zh' ? '保存页脚' : 'Save Footer')}</button>
+                </div>
+              </div>
+            )}
+
+            {/* Settings Tab */}
             {activeTab === 'settings' && (
               <div className="space-y-4">
                 <div className="bg-white rounded-lg shadow-sm p-4">
