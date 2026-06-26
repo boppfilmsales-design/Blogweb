@@ -69,7 +69,7 @@ export default function AdminPage() {
   const { locale } = useLanguage();
   const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [activeTab, setActiveTab] = useState<'products' | 'navigation' | 'about' | 'pages' | 'header' | 'footer' | 'cta' | 'media' | 'settings' | 'import-export'>('products');
+  const [activeTab, setActiveTab] = useState<'products' | 'categories' | 'navigation' | 'about' | 'pages' | 'header' | 'footer' | 'cta' | 'media' | 'settings' | 'import-export'>('products');
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
@@ -632,6 +632,7 @@ export default function AdminPage() {
 
   const tabs = [
     { id: 'products', label: locale === 'zh' ? '产品管理' : 'Products', icon: FiPackage },
+    { id: 'categories', label: locale === 'zh' ? '分类管理' : 'Categories', icon: FiPackage },
     { id: 'navigation', label: locale === 'zh' ? '导航管理' : 'Navigation', icon: FiMenu },
     { id: 'about', label: locale === 'zh' ? '关于我们' : 'About Us', icon: FiFileText },
     { id: 'pages', label: locale === 'zh' ? '页面管理' : 'Pages', icon: FiFileText },
@@ -905,6 +906,77 @@ export default function AdminPage() {
                     )}
                   </div>
                 )}
+              </div>
+            )}
+
+            {/* Categories Tab */}
+            {activeTab === 'categories' && (
+              <div className="bg-white rounded-lg shadow-sm p-6">
+                <h2 className="text-xl font-semibold mb-4">{locale === 'zh' ? '分类管理' : 'Category Management'}</h2>
+                <p className="text-gray-500 mb-6">{locale === 'zh' ? '管理产品分类，可以添加、编辑、删除分类' : 'Manage product categories. You can add, edit, and delete categories.'}</p>
+
+                {/* Add Category Button */}
+                {!isEditingCategory && (
+                  <button type="button" onClick={handleAddCategory} className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg text-sm hover:bg-green-700 mb-4">
+                    <FiPlus className="w-4 h-4 mr-2" /> {locale === 'zh' ? '添加分类' : 'Add Category'}
+                  </button>
+                )}
+
+                {/* Edit Category Form */}
+                {isEditingCategory && editingCategory && (
+                  <div className="border rounded-lg p-4 bg-gray-50 mb-4">
+                    <h3 className="font-medium text-gray-900 mb-3">{locale === 'zh' ? '编辑分类' : 'Edit Category'}</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-3">
+                      <div>
+                        <label htmlFor="editCatId" className="block text-sm font-medium text-gray-700 mb-1">Category ID</label>
+                        <input id="editCatId" type="text" value={editingCategory.id} onChange={(e) => setEditingCategory({ ...editingCategory, id: e.target.value })} className="w-full px-3 py-2 border rounded-lg text-sm" placeholder="bopp-gloss" />
+                      </div>
+                      <div>
+                        <label htmlFor="editCatEn" className="block text-sm font-medium text-gray-700 mb-1">Name (EN)</label>
+                        <input id="editCatEn" type="text" value={editingCategory.nameEn} onChange={(e) => setEditingCategory({ ...editingCategory, nameEn: e.target.value })} className="w-full px-3 py-2 border rounded-lg text-sm" placeholder="BOPP Gloss" />
+                      </div>
+                      <div>
+                        <label htmlFor="editCatZh" className="block text-sm font-medium text-gray-700 mb-1">Name (ZH)</label>
+                        <input id="editCatZh" type="text" value={editingCategory.nameZh} onChange={(e) => setEditingCategory({ ...editingCategory, nameZh: e.target.value })} className="w-full px-3 py-2 border rounded-lg text-sm" placeholder="BOPP光膜" />
+                      </div>
+                    </div>
+                    <div className="flex space-x-2">
+                      <button type="button" onClick={handleSaveCategory} className="px-4 py-2 bg-green-600 text-white rounded-lg text-sm hover:bg-green-700">{locale === 'zh' ? '保存' : 'Save'}</button>
+                      <button type="button" onClick={() => { setIsEditingCategory(false); setEditingCategory(null); }} className="px-4 py-2 border rounded-lg text-sm hover:bg-gray-50">{locale === 'zh' ? '取消' : 'Cancel'}</button>
+                    </div>
+                  </div>
+                )}
+
+                {/* Categories List */}
+                <div className="space-y-2">
+                  <h3 className="font-medium text-gray-900">{locale === 'zh' ? '现有分类' : 'Existing Categories'} ({categories.length})</h3>
+                  {categories.length === 0 ? (
+                    <p className="text-gray-500 text-sm">{locale === 'zh' ? '暂无分类，请添加' : 'No categories yet. Please add one.'}</p>
+                  ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                      {categories.map((cat) => (
+                        <div key={cat.id} className="border rounded-lg p-3 hover:shadow-sm">
+                          <div className="flex justify-between items-start">
+                            <div>
+                              <span className="text-xs text-gray-500 block">{cat.id}</span>
+                              <span className="font-medium text-sm">{locale === 'zh' ? cat.nameZh : cat.nameEn}</span>
+                              {locale === 'zh' && cat.nameEn && <span className="text-xs text-gray-400 block">{cat.nameEn}</span>}
+                              {locale === 'en' && cat.nameZh && <span className="text-xs text-gray-400 block">{cat.nameZh}</span>}
+                            </div>
+                            <div className="flex space-x-1">
+                              <button type="button" onClick={() => handleEditCategory(cat)} className="p-1 text-blue-600 hover:bg-blue-50 rounded" title="Edit">
+                                <FiEdit className="w-4 h-4" />
+                              </button>
+                              <button type="button" onClick={() => handleDeleteCategory(cat.id)} className="p-1 text-red-600 hover:bg-red-50 rounded" title="Delete">
+                                <FiTrash2 className="w-4 h-4" />
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
             )}
 
