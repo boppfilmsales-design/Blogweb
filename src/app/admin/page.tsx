@@ -252,7 +252,12 @@ export default function AdminPage() {
         },
         contact: { ...(savedData?.contact || apiData.contact || { address: '', phone: '', email: '', whatsapp: '' }) },
         header: { ...(savedData?.header || apiData.header || { logoText: '', logoSubtext: '', email: '', phone: '' }) },
-        footer: { ...(savedData?.footer || apiData.footer || { companyDescEn: '', companyDescZh: '', address: '', phone: '', email: '', facebook: '', twitter: '', linkedin: '', instagram: '', copyright: '' }) },
+        footer: {
+          ...(savedData?.footer || apiData.footer || { companyDescEn: '', companyDescZh: '', address: '', phone: '', email: '', facebook: '', twitter: '', linkedin: '', instagram: '', copyright: '' }),
+          friendLinks: Array.isArray(savedData?.footer?.friendLinks) && savedData.footer.friendLinks.length > 0
+            ? savedData.footer.friendLinks
+            : Array.isArray(apiData.footer?.friendLinks) ? apiData.footer.friendLinks : []
+        },
         cta: {
           titleEn: savedData?.cta?.titleEn || apiData.cta?.titleEn || 'Ready to Get Started?',
           titleZh: savedData?.cta?.titleZh || apiData.cta?.titleZh || '准备开始合作？',
