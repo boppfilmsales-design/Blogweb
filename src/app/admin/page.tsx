@@ -75,6 +75,72 @@ export default function AdminPage() {
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [importStatus, setImportStatus] = useState<string>('');
+  const [categories, setCategories] = useState<Array<{id: string; nameEn: string; nameZh: string}>>([]);
+  const [editingCategory, setEditingCategory] = useState<{id: string; nameEn: string; nameZh: string} | null>(null);
+  const [isEditingCategory, setIsEditingCategory] = useState(false);
+
+  // 从产品数据中提取所有分类
+  const loadCategoriesFromProducts = (productList: Product[]) => {
+    const categoryMap = new Map<string, {id: string; nameEn: string; nameZh: string}>();
+    productList.forEach(p => {
+      if (p.category && !categoryMap.has(p.category)) {
+        // 从产品名称中获取分类名称
+        const nameEn = p.nameEn.split(' ')[0];
+        const nameZh = p.nameZh.split(' ')[0];
+        categoryMap.set(p.category, { id: p.category, nameEn, nameZh });
+      }
+    });
+    return Array.from(categoryMap.values());
+  };
+
+  // 加载分类
+  useEffect(() => {
+    if (products.length > 0) {
+      const cats = loadCategoriesFromProducts(products);
+      setCategories(cats);
+    }
+  }, [products]);
+
+  // 添加分类
+  const handleAddCategory = () => {
+    const newId = 'cat-' + Date.now();
+    setEditingCategory({ id: newId, nameEn: '', nameZh: '' });
+    setIsEditingCategory(true);
+  };
+
+  // 编辑分类
+  const handleEditCategory = (category: {id: string; nameEn: string; nameZh: string}) => {
+    setEditingCategory({ ...category });
+    setIsEditingCategory(true);
+  };
+
+  // 保存分类
+  const handleSaveCategory = () => {
+    if (!editingCategory) return;
+    if (!editingCategory.nameEn.trim() || !editingCategory.nameZh.trim()) {
+      alert('Please enter both English and Chinese names');
+      return;
+    }
+
+    const existingIndex = categories.findIndex(c => c.id === editingCategory.id);
+    let newCategories;
+    if (existingIndex >= 0) {
+      newCategories = [...categories];
+      newCategories[existingIndex] = editingCategory;
+    } else {
+      newCategories = [...categories, editingCategory];
+    }
+    setCategories(newCategories);
+    setIsEditingCategory(false);
+    setEditingCategory(null);
+    alert('Category saved!');
+  };
+
+  // 删除分类
+  const handleDeleteCategory = (id: string) => {
+    if (!confirm('Are you sure you want to delete this category?')) return;
+    setCategories(categories.filter(c => c.id !== id));
+  };
   // 从localStorage初始化状态（同步，避免闪烁）
   const getInitialPageContent = (): PageContent => {
     try {
@@ -638,11 +704,27 @@ export default function AdminPage() {
                       </div>
                       <div>
                         <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-1">Category</label>
-                        <select id="category" value={editingProduct.category} onChange={(e) => setEditingProduct({ ...editingProduct, category: e.target.value })} className="w-full px-3 py-2 border rounded-lg text-sm">
-                          <option value="bopp-gloss">BOPP Gloss</option><option value="bopp-matte">BOPP Matte</option><option value="bopp-metalized">BOPP Metalized</option>
-                          <option value="bopp-heatseal">BOPP Heat Seal</option><option value="bopp-white">BOPP White</option><option value="bopp-tape">BOPP Tape</option>
-                          <option value="bopet">BOPET</option><option value="bops">BOPS</option><option value="cpp">CPP</option><option value="tape">Tape</option><option value="pof">POF</option>
-                        </select>
+                        <div className="flex items-center space-x-2">
+                          <select id="category" value={editingProduct.category} onChange={(e) => setEditingProduct({ ...editingProduct, category: e.target.value })} className="flex-1 px-3 py-2 border rounded-lg text-sm">
+                            <option value="">Select a category</option>
+                            {categories.map(cat => (
+                              <option key={cat.id} value={cat.id}>
+                                {locale === 'zh' ? cat.nameZh : cat.nameEn}
+                              </option>
+                            ))}
+                          </select>
+                          <button type="button" onClick={handleAddCategory} className="px-3 py-2 bg-green-600 text-white rounded-lg text-sm hover:bg-green-700" title="Add Category">
+                            <FiPlus className="w-4 h-4" />
+                          </button>
+                          {editingProduct.category && (
+                            <button type="button" onClick={() => {
+                              const cat = categories.find(c => c.id === editingProduct.category);
+                              if (cat) handleEditCategory(cat);
+                            }} className="px-3 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700" title="Edit Category">
+                              <FiEdit className="w-4 h-4" />
+                            </button>
+                          )}
+                        </div>
                       </div>
                       <div>
                         <label htmlFor="nameEn" className="block text-sm font-medium text-gray-700 mb-1">Name (EN)</label>
@@ -700,6 +782,51 @@ export default function AdminPage() {
                           <FiUpload className="w-4 h-4 mr-1" /> {locale === 'zh' ? '上传图片' : 'Upload Images'}
                         </label>
                       </div>
+                    </div>
+                    {/* Category Management */}
+                    <div className="mt-6 border-t pt-4">
+                      <h3 className="text-sm font-medium text-gray-900 mb-3">{locale === 'zh' ? '分类管理' : 'Category Management'}</h3>
+                      {isEditingCategory ? (
+                        <div className="border rounded-lg p-4 bg-gray-50">
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
+                            <div>
+                              <label htmlFor="catId" className="block text-sm font-medium text-gray-700 mb-1">Category ID</label>
+                              <input id="catId" type="text" value={editingCategory?.id || ''} onChange={(e) => setEditingCategory(editingCategory ? { ...editingCategory, id: e.target.value } : null)} className="w-full px-3 py-2 border rounded-lg text-sm" placeholder="bopp-gloss" aria-label="Category ID" />
+                            </div>
+                            <div>
+                              <label htmlFor="catNameEn" className="block text-sm font-medium text-gray-700 mb-1">Name (EN)</label>
+                              <input id="catNameEn" type="text" value={editingCategory?.nameEn || ''} onChange={(e) => setEditingCategory(editingCategory ? { ...editingCategory, nameEn: e.target.value } : null)} className="w-full px-3 py-2 border rounded-lg text-sm" placeholder="BOPP Gloss" aria-label="Category Name English" />
+                            </div>
+                            <div>
+                              <label htmlFor="catNameZh" className="block text-sm font-medium text-gray-700 mb-1">Name (ZH)</label>
+                              <input id="catNameZh" type="text" value={editingCategory?.nameZh || ''} onChange={(e) => setEditingCategory(editingCategory ? { ...editingCategory, nameZh: e.target.value } : null)} className="w-full px-3 py-2 border rounded-lg text-sm" placeholder="BOPP光膜" aria-label="Category Name Chinese" />
+                            </div>
+                          </div>
+                          <div className="flex space-x-2">
+                            <button type="button" onClick={handleSaveCategory} className="px-3 py-1.5 bg-green-600 text-white rounded text-sm hover:bg-green-700">{locale === 'zh' ? '保存' : 'Save'}</button>
+                            <button type="button" onClick={() => { setIsEditingCategory(false); setEditingCategory(null); }} className="px-3 py-1.5 border rounded text-sm hover:bg-gray-50">{locale === 'zh' ? '取消' : 'Cancel'}</button>
+                          </div>
+                        </div>
+                      ) : (
+                        <div>
+                          <div className="flex flex-wrap gap-2 mb-3">
+                            {categories.map(cat => (
+                              <div key={cat.id} className="flex items-center space-x-1 bg-gray-100 rounded px-2 py-1">
+                                <span className="text-sm">{locale === 'zh' ? cat.nameZh : cat.nameEn}</span>
+                                <button type="button" onClick={() => handleEditCategory(cat)} className="text-blue-600 hover:text-blue-800" title="Edit">
+                                  <FiEdit className="w-3 h-3" />
+                                </button>
+                                <button type="button" onClick={() => handleDeleteCategory(cat.id)} className="text-red-600 hover:text-red-800" title="Delete">
+                                  <FiTrash2 className="w-3 h-3" />
+                                </button>
+                              </div>
+                            ))}
+                          </div>
+                          <button type="button" onClick={handleAddCategory} className="inline-flex items-center px-3 py-1.5 bg-green-600 text-white rounded text-sm hover:bg-green-700">
+                            <FiPlus className="w-4 h-4 mr-1" /> {locale === 'zh' ? '添加分类' : 'Add Category'}
+                          </button>
+                        </div>
+                      )}
                     </div>
                     <div className="mt-4 flex justify-end space-x-3">
                       <button type="button" onClick={() => { setIsEditing(false); setEditingProduct(null); }} className="px-4 py-2 border rounded-lg text-sm hover:bg-gray-50">{locale === 'zh' ? '取消' : 'Cancel'}</button>
