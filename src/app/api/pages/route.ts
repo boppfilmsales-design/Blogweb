@@ -62,6 +62,17 @@ const defaultPages = {
     instagram: '#',
     copyright: 'All Rights Reserved',
   },
+  cta: {
+    titleEn: 'Ready to Get Started?',
+    titleZh: '准备开始合作？',
+    descEn: 'Contact us today for professional product consultation and competitive quotations',
+    descZh: '联系我们，获取专业的产品咨询和报价',
+    buttonTextEn: 'Contact Us Now',
+    buttonTextZh: '立即联系我们',
+    email: 'sale@boppfilmsale.com',
+    phone: '86-551-64687285',
+    whatsapp: '86-18919659471',
+  },
   navigation: [
     { id: 'home', labelEn: 'Home', labelZh: '首页', href: '/', order: 1, visible: true },
     { id: 'products', labelEn: 'Products', labelZh: '产品中心', href: '/products', order: 2, visible: true },

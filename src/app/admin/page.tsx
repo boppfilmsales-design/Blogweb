@@ -37,6 +37,18 @@ interface AboutValue {
   descZh: string;
 }
 
+interface CTASection {
+  titleEn: string;
+  titleZh: string;
+  descEn: string;
+  descZh: string;
+  buttonTextEn: string;
+  buttonTextZh: string;
+  email: string;
+  phone: string;
+  whatsapp: string;
+}
+
 interface PageContent {
   hero: { titleEn: string; titleZh: string; descEn: string; descZh: string };
   about: {
@@ -49,6 +61,7 @@ interface PageContent {
   contact: { address: string; phone: string; email: string; whatsapp: string };
   header: { logoText: string; logoSubtext: string; email: string; phone: string };
   footer: { companyDescEn: string; companyDescZh: string; address: string; phone: string; email: string; facebook: string; twitter: string; linkedin: string; instagram: string; copyright: string };
+  cta: CTASection;
   navigation: NavItem[];
 }
 
@@ -56,7 +69,7 @@ export default function AdminPage() {
   const { locale } = useLanguage();
   const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [activeTab, setActiveTab] = useState<'products' | 'navigation' | 'about' | 'pages' | 'header' | 'footer' | 'media' | 'settings' | 'import-export'>('products');
+  const [activeTab, setActiveTab] = useState<'products' | 'navigation' | 'about' | 'pages' | 'header' | 'footer' | 'cta' | 'media' | 'settings' | 'import-export'>('products');
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
@@ -91,6 +104,17 @@ export default function AdminPage() {
       contact: { address: '', phone: '', email: '', whatsapp: '' },
       header: { logoText: '', logoSubtext: '', email: '', phone: '' },
       footer: { companyDescEn: '', companyDescZh: '', address: '', phone: '', email: '', facebook: '', twitter: '', linkedin: '', instagram: '', copyright: '' },
+      cta: {
+        titleEn: 'Ready to Get Started?',
+        titleZh: '准备开始合作？',
+        descEn: 'Contact us today for professional product consultation and competitive quotations',
+        descZh: '联系我们，获取专业的产品咨询和报价',
+        buttonTextEn: 'Contact Us Now',
+        buttonTextZh: '立即联系我们',
+        email: 'sale@boppfilmsale.com',
+        phone: '86-551-64687285',
+        whatsapp: '86-18919659471',
+      },
       navigation: [],
     };
   };
@@ -100,6 +124,26 @@ export default function AdminPage() {
   const [editingNav, setEditingNav] = useState<NavItem | null>(null);
   const [uploadedFiles, setUploadedFiles] = useState<string[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // 加载已上传的文件列表
+  const loadUploadedFiles = async () => {
+    try {
+      const res = await fetch('/api/upload');
+      const data = await res.json();
+      if (data.files) {
+        setUploadedFiles(data.files.map((f: any) => f.url));
+      }
+    } catch (error) {
+      console.error('Failed to load uploaded files:', error);
+    }
+  };
+
+  // 当切换到媒体标签时加载文件列表
+  useEffect(() => {
+    if (activeTab === 'media') {
+      loadUploadedFiles();
+    }
+  }, [activeTab]);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -200,6 +244,17 @@ export default function AdminPage() {
         contact: { ...(savedData?.contact || apiData.contact || { address: '', phone: '', email: '', whatsapp: '' }) },
         header: { ...(savedData?.header || apiData.header || { logoText: '', logoSubtext: '', email: '', phone: '' }) },
         footer: { ...(savedData?.footer || apiData.footer || { companyDescEn: '', companyDescZh: '', address: '', phone: '', email: '', facebook: '', twitter: '', linkedin: '', instagram: '', copyright: '' }) },
+        cta: {
+          titleEn: savedData?.cta?.titleEn || apiData.cta?.titleEn || 'Ready to Get Started?',
+          titleZh: savedData?.cta?.titleZh || apiData.cta?.titleZh || '准备开始合作？',
+          descEn: savedData?.cta?.descEn || apiData.cta?.descEn || '',
+          descZh: savedData?.cta?.descZh || apiData.cta?.descZh || '',
+          buttonTextEn: savedData?.cta?.buttonTextEn || apiData.cta?.buttonTextEn || 'Contact Us Now',
+          buttonTextZh: savedData?.cta?.buttonTextZh || apiData.cta?.buttonTextZh || '立即联系我们',
+          email: savedData?.cta?.email || apiData.cta?.email || '',
+          phone: savedData?.cta?.phone || apiData.cta?.phone || '',
+          whatsapp: savedData?.cta?.whatsapp || apiData.cta?.whatsapp || '',
+        },
         navigation: Array.isArray(savedData?.navigation) ? savedData.navigation :
                     Array.isArray(apiData.navigation) ? apiData.navigation : [],
       };
@@ -347,6 +402,11 @@ export default function AdminPage() {
       });
     }
 
+    // 刷新媒体库文件列表
+    if (uploadedUrls.length > 0) {
+      setUploadedFiles(prev => [...prev, ...uploadedUrls]);
+    }
+
     if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
@@ -359,7 +419,7 @@ export default function AdminPage() {
     });
   };
 
-  const handleSavePageContent = async (page: 'hero' | 'about' | 'contact' | 'header' | 'footer') => {
+  const handleSavePageContent = async (page: 'hero' | 'about' | 'contact' | 'header' | 'footer' | 'cta') => {
     setSavingPage(true);
     try {
       // 保存到API
@@ -472,6 +532,7 @@ export default function AdminPage() {
     { id: 'pages', label: locale === 'zh' ? '页面管理' : 'Pages', icon: FiFileText },
     { id: 'header', label: locale === 'zh' ? '页眉设置' : 'Header', icon: FiPackage },
     { id: 'footer', label: locale === 'zh' ? '页脚设置' : 'Footer', icon: FiPackage },
+    { id: 'cta', label: locale === 'zh' ? 'CTA设置' : 'CTA Section', icon: FiPackage },
     { id: 'media', label: locale === 'zh' ? '媒体库' : 'Media', icon: FiImage },
     { id: 'settings', label: locale === 'zh' ? '网站设置' : 'Settings', icon: FiSettings },
     { id: 'import-export', label: locale === 'zh' ? '导入/导出' : 'Import/Export', icon: FiUpload },
@@ -791,7 +852,7 @@ export default function AdminPage() {
                           </div>
                           <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">{locale === 'zh' ? '标题(ZH)' : 'Title (ZH)'}</label>
-                            <input type="text" value={value.titleZh} onChange={(e) => {
+                            <input type="text" value={value.titleZh} aria-label={`Value ${index + 1} Title ZH`} onChange={(e) => {
                               const newValues = [...pageContent.about.values];
                               newValues[index] = { ...newValues[index], titleZh: e.target.value };
                               setPageContent({ ...pageContent, about: { ...pageContent.about, values: newValues } });
@@ -936,6 +997,55 @@ export default function AdminPage() {
                     </div>
                   </div>
                   <button type="button" onClick={() => handleSavePageContent('header')} disabled={savingPage} className="px-6 py-3 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 disabled:opacity-50">{savingPage ? (locale === 'zh' ? '保存中...' : 'Saving...') : (locale === 'zh' ? '保存页眉' : 'Save Header')}</button>
+                </div>
+              </div>
+            )}
+
+            {/* CTA Tab */}
+            {activeTab === 'cta' && (
+              <div className="bg-white rounded-lg shadow-sm p-6">
+                <h2 className="text-xl font-semibold mb-4">{locale === 'zh' ? 'CTA设置' : 'CTA Section Settings'}</h2>
+                <p className="text-gray-500 mb-6">{locale === 'zh' ? '编辑网站底部的行动号召区域内容' : 'Edit the Call-to-Action section at the bottom of the website'}</p>
+                <div className="space-y-4">
+                  <div>
+                    <label htmlFor="ctaTitleEn" className="block text-sm font-medium text-gray-700 mb-1">{locale === 'zh' ? '标题(EN)' : 'Title (EN)'}</label>
+                    <input id="ctaTitleEn" type="text" value={pageContent.cta?.titleEn || ''} onChange={(e) => setPageContent({ ...pageContent, cta: { ...pageContent.cta, titleEn: e.target.value } })} className="w-full px-4 py-3 border rounded-lg text-sm" />
+                  </div>
+                  <div>
+                    <label htmlFor="ctaTitleZh" className="block text-sm font-medium text-gray-700 mb-1">{locale === 'zh' ? '标题(ZH)' : 'Title (ZH)'}</label>
+                    <input id="ctaTitleZh" type="text" value={pageContent.cta?.titleZh || ''} onChange={(e) => setPageContent({ ...pageContent, cta: { ...pageContent.cta, titleZh: e.target.value } })} className="w-full px-4 py-3 border rounded-lg text-sm" />
+                  </div>
+                  <div>
+                    <label htmlFor="ctaDescEn" className="block text-sm font-medium text-gray-700 mb-1">{locale === 'zh' ? '描述(EN)' : 'Description (EN)'}</label>
+                    <textarea id="ctaDescEn" rows={2} value={pageContent.cta?.descEn || ''} onChange={(e) => setPageContent({ ...pageContent, cta: { ...pageContent.cta, descEn: e.target.value } })} className="w-full px-4 py-3 border rounded-lg text-sm" />
+                  </div>
+                  <div>
+                    <label htmlFor="ctaDescZh" className="block text-sm font-medium text-gray-700 mb-1">{locale === 'zh' ? '描述(ZH)' : 'Description (ZH)'}</label>
+                    <textarea id="ctaDescZh" rows={2} value={pageContent.cta?.descZh || ''} onChange={(e) => setPageContent({ ...pageContent, cta: { ...pageContent.cta, descZh: e.target.value } })} className="w-full px-4 py-3 border rounded-lg text-sm" />
+                  </div>
+                  <div>
+                    <label htmlFor="ctaBtnEn" className="block text-sm font-medium text-gray-700 mb-1">{locale === 'zh' ? '按钮文字(EN)' : 'Button Text (EN)'}</label>
+                    <input id="ctaBtnEn" type="text" value={pageContent.cta?.buttonTextEn || ''} onChange={(e) => setPageContent({ ...pageContent, cta: { ...pageContent.cta, buttonTextEn: e.target.value } })} className="w-full px-4 py-3 border rounded-lg text-sm" />
+                  </div>
+                  <div>
+                    <label htmlFor="ctaBtnZh" className="block text-sm font-medium text-gray-700 mb-1">{locale === 'zh' ? '按钮文字(ZH)' : 'Button Text (ZH)'}</label>
+                    <input id="ctaBtnZh" type="text" value={pageContent.cta?.buttonTextZh || ''} onChange={(e) => setPageContent({ ...pageContent, cta: { ...pageContent.cta, buttonTextZh: e.target.value } })} className="w-full px-4 py-3 border rounded-lg text-sm" />
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 border-t">
+                    <div>
+                      <label htmlFor="ctaEmail" className="block text-sm font-medium text-gray-700 mb-1">📧 Email</label>
+                      <input id="ctaEmail" type="email" value={pageContent.cta?.email || ''} onChange={(e) => setPageContent({ ...pageContent, cta: { ...pageContent.cta, email: e.target.value } })} className="w-full px-4 py-3 border rounded-lg text-sm" placeholder="sale@boppfilmsale.com" />
+                    </div>
+                    <div>
+                      <label htmlFor="ctaPhone" className="block text-sm font-medium text-gray-700 mb-1">📞 {locale === 'zh' ? '电话' : 'Phone'}</label>
+                      <input id="ctaPhone" type="text" value={pageContent.cta?.phone || ''} onChange={(e) => setPageContent({ ...pageContent, cta: { ...pageContent.cta, phone: e.target.value } })} className="w-full px-4 py-3 border rounded-lg text-sm" placeholder="86-551-64687285" />
+                    </div>
+                    <div>
+                      <label htmlFor="ctaWhatsapp" className="block text-sm font-medium text-gray-700 mb-1">💬 WhatsApp</label>
+                      <input id="ctaWhatsapp" type="text" value={pageContent.cta?.whatsapp || ''} onChange={(e) => setPageContent({ ...pageContent, cta: { ...pageContent.cta, whatsapp: e.target.value } })} className="w-full px-4 py-3 border rounded-lg text-sm" placeholder="86-18919659471" />
+                    </div>
+                  </div>
+                  <button type="button" onClick={() => handleSavePageContent('cta')} disabled={savingPage} className="px-6 py-3 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 disabled:opacity-50">{savingPage ? (locale === 'zh' ? '保存中...' : 'Saving...') : (locale === 'zh' ? '保存CTA' : 'Save CTA')}</button>
                 </div>
               </div>
             )}

@@ -77,14 +77,44 @@ export default function ProductDetailPage() {
         <div className="grid lg:grid-cols-2 gap-12">
           {/* Product Images */}
           <div className="space-y-4">
-            <div className="aspect-square bg-gradient-to-br from-blue-100 to-blue-200 rounded-xl flex items-center justify-center">
-              <div className="text-center">
-                <div className="w-24 h-24 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span className="text-blue-600 font-bold text-4xl">A</span>
-                </div>
-                <p className="text-blue-600 font-medium">AEC Group</p>
-              </div>
+            <div className="aspect-square bg-gradient-to-br from-blue-100 to-blue-200 rounded-xl overflow-hidden">
+              {(() => {
+                try {
+                  const images = JSON.parse(product.images || '[]');
+                  if (images.length > 0) {
+                    return <img src={images[0]} alt={product.nameEn} className="w-full h-full object-cover" />;
+                  }
+                } catch {}
+                return (
+                  <div className="w-full h-full flex items-center justify-center">
+                    <div className="text-center">
+                      <div className="w-24 h-24 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span className="text-blue-600 font-bold text-4xl">A</span>
+                      </div>
+                      <p className="text-blue-600 font-medium">AEC Group</p>
+                    </div>
+                  </div>
+                );
+              })()}
             </div>
+            {/* Thumbnail images */}
+            {(() => {
+              try {
+                const images = JSON.parse(product.images || '[]');
+                if (images.length > 1) {
+                  return (
+                    <div className="flex gap-2">
+                      {images.slice(1, 5).map((img: string, idx: number) => (
+                        <div key={idx} className="w-20 h-20 rounded-lg overflow-hidden bg-gray-100">
+                          <img src={img} alt="" className="w-full h-full object-cover" />
+                        </div>
+                      ))}
+                    </div>
+                  );
+                }
+              } catch {}
+              return null;
+            })()}
           </div>
 
           {/* Product Info - Bilingual */}
