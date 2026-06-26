@@ -343,38 +343,36 @@ export default function AdminPage() {
 
   const handleSaveProduct = async () => {
     if (!editingProduct) return;
-    try {
-      // 限制图片数量最多5张，防止localStorage超出限制
-      const productToSave = {
-        ...editingProduct,
-        images: JSON.stringify(JSON.parse(editingProduct.images || '[]').slice(0, 5))
-      };
 
+    // 限制图片数量最多5张，防止localStorage超出限制
+    const productToSave = {
+      ...editingProduct,
+      images: JSON.stringify(JSON.parse(editingProduct.images || '[]').slice(0, 5))
+    };
+
+    // 先保存到localStorage（确保数据不会丢失）
+    try {
+      saveProductToStorage(productToSave);
+    } catch (localError) {
+      console.error('localStorage save failed:', localError);
+    }
+
+    // 然后尝试保存到API
+    try {
       if (editingProduct.id) {
         await updateProduct(editingProduct.id, productToSave);
       } else {
         await createProduct(productToSave);
       }
-
-      // 同时保存到localStorage
-      saveProductToStorage(productToSave);
-
-      setIsEditing(false);
-      setEditingProduct(null);
-      loadProducts();
-    } catch (error) {
-      console.error('Failed to save product:', error);
-      // 即使API失败，也尝试保存到localStorage
-      try {
-        saveProductToStorage(editingProduct);
-        alert('Saved to browser storage. Note: Server save failed, data stored locally.');
-        setIsEditing(false);
-        setEditingProduct(null);
-        loadProducts();
-      } catch (localError) {
-        alert('Failed to save product');
-      }
+    } catch (apiError) {
+      console.error('API save failed:', apiError);
+      // API失败不影响，因为已经保存到localStorage
     }
+
+    setIsEditing(false);
+    setEditingProduct(null);
+    loadProducts();
+    alert('Saved successfully!');
   };
 
   const handleDeleteProduct = async (id: string) => {

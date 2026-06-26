@@ -28,6 +28,16 @@ const defaultPages = {
     titleZh: '关于我们',
     contentEn: 'AEC Group was established in 2014.',
     contentZh: 'AEC集团成立于2014年。',
+    story: {
+      contentEn: 'Anhui Eastern Communication Group was established with a vision to become a leading supplier of high-quality packaging films to the global packaging industry.\n\nOur state-of-the-art manufacturing facility is equipped with advanced production lines and quality control systems. We specialize in producing a wide range of packaging films including gloss, matte, metalized, heat sealable, and white opaque films.\n\nToday, we serve over 500 clients across 50 countries, providing them with premium packaging film solutions for various applications including food packaging, printing, electronics, and more.',
+      contentZh: '安徽东渐进出口集团成立于2014年，专注于为全球包装行业提供高品质的包装薄膜。\n\n我们拥有先进的生产设备和质量控制体系，专业生产各种包装薄膜，包括光膜、哑膜、镀铝膜、热封膜等。\n\n如今，我们为50多个国家的500多家客户提供服务，为他们提供优质的包装薄膜解决方案。',
+    },
+    values: [
+      { titleEn: 'Quality First', titleZh: '质量优先', descEn: 'We maintain the highest quality standards in every product we manufacture.', descZh: '我们在每个产品中保持最高的质量标准。' },
+      { titleEn: 'Customer Focus', titleZh: '客户至上', descEn: 'Our customers success is our success. We provide comprehensive support.', descZh: '客户的成功就是我们的成功。我们提供全方位的支持。' },
+      { titleEn: 'Innovation', titleZh: '创新驱动', descEn: 'Continuous improvement and innovation drive our product development.', descZh: '持续改进和创新推动我们的产品开发。' },
+      { titleEn: 'Sustainability', titleZh: '可持续发展', descEn: 'Committed to environmentally responsible manufacturing practices.', descZh: '致力于环保的制造实践。' },
+    ],
   },
   contact: {
     titleEn: 'Contact Us',
