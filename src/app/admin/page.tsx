@@ -1261,6 +1261,26 @@ export default function AdminPage() {
                     <button type="button" onClick={() => exportProductsToJSON(products)} className="flex items-center justify-center px-4 py-3 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700"><FiDownload className="w-4 h-4 mr-2" /> Export JSON</button>
                     <button type="button" onClick={() => exportProductsToCSV(products)} className="flex items-center justify-center px-4 py-3 bg-green-600 text-white rounded-lg text-sm hover:bg-green-700"><FiDownload className="w-4 h-4 mr-2" /> Export CSV</button>
                   </div>
+                  <div className="mt-3">
+                    <button type="button" onClick={() => {
+                      const allData = {
+                        pageContent,
+                        products,
+                        exportDate: new Date().toISOString(),
+                      };
+                      const dataStr = JSON.stringify(allData, null, 2);
+                      const blob = new Blob([dataStr], { type: 'application/json' });
+                      const url = URL.createObjectURL(blob);
+                      const a = document.createElement('a');
+                      a.href = url;
+                      a.download = `aec-backup-${new Date().toISOString().split('T')[0]}.json`;
+                      a.click();
+                      URL.revokeObjectURL(url);
+                      alert('All data exported successfully!');
+                    }} className="w-full flex items-center justify-center px-4 py-3 bg-purple-600 text-white rounded-lg text-sm hover:bg-purple-700">
+                      <FiDownload className="w-4 h-4 mr-2" /> {locale === 'zh' ? '导出全部数据' : 'Export All Data'}
+                    </button>
+                  </div>
                 </div>
                 <div className="bg-white rounded-lg shadow-sm p-4">
                   <h2 className="text-lg font-semibold mb-3">{locale === 'zh' ? '导入数据' : 'Import Data'}</h2>
