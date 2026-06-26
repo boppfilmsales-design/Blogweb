@@ -17,8 +17,25 @@ export default function ProductDetailPage() {
   useEffect(() => {
     const loadProduct = async () => {
       try {
+        // 首先尝试从localStorage加载最新数据
+        const savedProducts = localStorage.getItem('aec-products');
+        if (savedProducts) {
+          try {
+            const products: Product[] = JSON.parse(savedProducts);
+            const localProduct = products.find(p => p.slug === slug);
+            if (localProduct) {
+              setProduct(localProduct);
+            }
+          } catch (e) {
+            console.error('Failed to parse saved products:', e);
+          }
+        }
+
+        // 然后从API加载（可能更新localStorage中没有的数据）
         const data = await getProductBySlug(slug);
-        setProduct(data);
+        if (data) {
+          setProduct(data);
+        }
       } catch (error) {
         console.error('Failed to load product:', error);
       } finally {
