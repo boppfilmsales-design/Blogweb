@@ -59,7 +59,7 @@ interface PageContent {
     certifications: string[];
   };
   contact: { address: string; phone: string; email: string; whatsapp: string };
-  header: { logoText: string; logoSubtext: string; email: string; phone: string; mobile: string };
+  header: { logoText: string; logoTextZh: string; logoSubtext: string; logoSubtextZh: string; email: string; phone: string; mobile: string };
   footer: { companyDescEn: string; companyDescZh: string; address: string; phone: string; email: string; facebook: string; twitter: string; linkedin: string; instagram: string; copyright: string; friendLinks: Array<{name: string; url: string}> };
   cta: CTASection;
   navigation: NavItem[];
@@ -102,7 +102,7 @@ export default function AdminPage() {
         certifications: [],
       },
       contact: { address: '', phone: '', email: '', whatsapp: '' },
-      header: { logoText: '', logoSubtext: '', email: '', phone: '', mobile: '' },
+      header: { logoText: '', logoTextZh: '', logoSubtext: '', logoSubtextZh: '', email: '', phone: '', mobile: '' },
       footer: { companyDescEn: '', companyDescZh: '', address: '', phone: '', email: '', facebook: '', twitter: '', linkedin: '', instagram: '', copyright: '', friendLinks: [] },
       cta: {
         titleEn: 'Ready to Get Started?',
@@ -989,13 +989,25 @@ export default function AdminPage() {
                 <h2 className="text-xl font-semibold mb-4">{locale === 'zh' ? '页眉设置' : 'Header Settings'}</h2>
                 <p className="text-gray-500 mb-6">{locale === 'zh' ? '编辑网站顶部的Logo和导航内容' : 'Edit the logo and navigation content at the top of the website'}</p>
                 <div className="space-y-4">
-                  <div>
-                    <label htmlFor="logoText" className="block text-sm font-medium text-gray-700 mb-1">{locale === 'zh' ? 'Logo文字' : 'Logo Text'}</label>
-                    <input id="logoText" type="text" value={pageContent.header.logoText} onChange={(e) => setPageContent({ ...pageContent, header: { ...pageContent.header, logoText: e.target.value } })} className="w-full px-4 py-3 border rounded-lg text-sm" placeholder="AEC Group" />
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label htmlFor="logoText" className="block text-sm font-medium text-gray-700 mb-1">Logo Text (EN)</label>
+                      <input id="logoText" type="text" value={pageContent.header.logoText} onChange={(e) => setPageContent({ ...pageContent, header: { ...pageContent.header, logoText: e.target.value } })} className="w-full px-4 py-3 border rounded-lg text-sm" placeholder="AEC Group" />
+                    </div>
+                    <div>
+                      <label htmlFor="logoTextZh" className="block text-sm font-medium text-gray-700 mb-1">Logo文字 (中文)</label>
+                      <input id="logoTextZh" type="text" value={pageContent.header.logoTextZh || ''} onChange={(e) => setPageContent({ ...pageContent, header: { ...pageContent.header, logoTextZh: e.target.value } })} className="w-full px-4 py-3 border rounded-lg text-sm" placeholder="安徽东渐进出口" />
+                    </div>
                   </div>
-                  <div>
-                    <label htmlFor="logoSubtext" className="block text-sm font-medium text-gray-700 mb-1">{locale === 'zh' ? '副标题/标语' : 'Subtitle/Tagline'}</label>
-                    <input id="logoSubtext" type="text" value={pageContent.header.logoSubtext} onChange={(e) => setPageContent({ ...pageContent, header: { ...pageContent.header, logoSubtext: e.target.value } })} className="w-full px-4 py-3 border rounded-lg text-sm" placeholder="Professional Packaging Film Supplier" />
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label htmlFor="logoSubtext" className="block text-sm font-medium text-gray-700 mb-1">Subtitle (EN)</label>
+                      <input id="logoSubtext" type="text" value={pageContent.header.logoSubtext} onChange={(e) => setPageContent({ ...pageContent, header: { ...pageContent.header, logoSubtext: e.target.value } })} className="w-full px-4 py-3 border rounded-lg text-sm" placeholder="Professional Packaging Film Supplier" />
+                    </div>
+                    <div>
+                      <label htmlFor="logoSubtextZh" className="block text-sm font-medium text-gray-700 mb-1">副标题 (中文)</label>
+                      <input id="logoSubtextZh" type="text" value={pageContent.header.logoSubtextZh || ''} onChange={(e) => setPageContent({ ...pageContent, header: { ...pageContent.header, logoSubtextZh: e.target.value } })} className="w-full px-4 py-3 border rounded-lg text-sm" placeholder="专业BOPP薄膜供应商" />
+                    </div>
                   </div>
                   <div className="border-t pt-4 mt-4">
                     <h3 className="text-sm font-medium text-gray-900 mb-3">{locale === 'zh' ? '顶部联系信息' : 'Top Contact Info'}</h3>

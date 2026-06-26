@@ -13,7 +13,7 @@ const Header = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isDark, setIsDark] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [headerContent, setHeaderContent] = useState({ logoText: '', logoSubtext: '', email: '', phone: '', mobile: '' });
+  const [headerContent, setHeaderContent] = useState({ logoText: '', logoTextZh: '', logoSubtext: '', logoSubtextZh: '', email: '', phone: '', mobile: '' });
   const [navItems, setNavItems] = useState<Array<{id: string; labelEn: string; labelZh: string; href: string; visible: boolean}>>([]);
 
   useEffect(() => {
@@ -37,7 +37,9 @@ const Header = () => {
         if (data.header) {
           setHeaderContent(prev => ({
             logoText: prev.logoText || data.header.logoText || '',
+            logoTextZh: prev.logoTextZh || data.header.logoTextZh || '',
             logoSubtext: prev.logoSubtext || data.header.logoSubtext || '',
+            logoSubtextZh: prev.logoSubtextZh || data.header.logoSubtextZh || '',
             email: prev.email || data.header.email || '',
             phone: prev.phone || data.header.phone || '',
             mobile: prev.mobile || data.header.mobile || '',
@@ -116,8 +118,12 @@ const Header = () => {
           <Link href="/" className="flex items-center space-x-3">
             <img src="/favicon.jpg" alt="AEC Group" className="w-10 h-10 rounded-lg object-cover" />
             <div>
-              <h1 className="text-xl font-bold text-gray-900 dark:text-white">AEC Group</h1>
-              <p className="text-xs text-gray-500 dark:text-gray-400">Professional Packaging Film Supplier</p>
+              <h1 className="text-xl font-bold text-gray-900 dark:text-white">
+                {locale === 'zh' ? (headerContent.logoTextZh || '安徽东渐进出口') : (headerContent.logoText || 'AEC Group')}
+              </h1>
+              <p className="text-xs text-gray-500 dark:text-gray-400">
+                {locale === 'zh' ? (headerContent.logoSubtextZh || '专业BOPP薄膜供应商') : (headerContent.logoSubtext || 'Professional Packaging Film Supplier')}
+              </p>
             </div>
           </Link>
 

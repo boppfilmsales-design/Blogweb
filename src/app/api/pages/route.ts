@@ -42,7 +42,9 @@ const defaultPages = {
   },
   header: {
     logoText: 'AEC Group',
+    logoTextZh: '安徽东渐进出口',
     logoSubtext: 'Professional Packaging Film Supplier',
+    logoSubtextZh: '专业BOPP薄膜供应商',
     email: 'sale@boppfilmsale.com',
     phone: '86-551-64687285',
     mobile: '86-18919659471',
