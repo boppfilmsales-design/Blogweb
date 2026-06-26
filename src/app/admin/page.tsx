@@ -59,8 +59,8 @@ interface PageContent {
     certifications: string[];
   };
   contact: { address: string; phone: string; email: string; whatsapp: string };
-  header: { logoText: string; logoSubtext: string; email: string; phone: string };
-  footer: { companyDescEn: string; companyDescZh: string; address: string; phone: string; email: string; facebook: string; twitter: string; linkedin: string; instagram: string; copyright: string };
+  header: { logoText: string; logoSubtext: string; email: string; phone: string; mobile: string };
+  footer: { companyDescEn: string; companyDescZh: string; address: string; phone: string; email: string; facebook: string; twitter: string; linkedin: string; instagram: string; copyright: string; friendLinks: Array<{name: string; url: string}> };
   cta: CTASection;
   navigation: NavItem[];
 }
@@ -102,8 +102,8 @@ export default function AdminPage() {
         certifications: [],
       },
       contact: { address: '', phone: '', email: '', whatsapp: '' },
-      header: { logoText: '', logoSubtext: '', email: '', phone: '' },
-      footer: { companyDescEn: '', companyDescZh: '', address: '', phone: '', email: '', facebook: '', twitter: '', linkedin: '', instagram: '', copyright: '' },
+      header: { logoText: '', logoSubtext: '', email: '', phone: '', mobile: '' },
+      footer: { companyDescEn: '', companyDescZh: '', address: '', phone: '', email: '', facebook: '', twitter: '', linkedin: '', instagram: '', copyright: '', friendLinks: [] },
       cta: {
         titleEn: 'Ready to Get Started?',
         titleZh: '准备开始合作？',
@@ -994,14 +994,18 @@ export default function AdminPage() {
                   </div>
                   <div className="border-t pt-4 mt-4">
                     <h3 className="text-sm font-medium text-gray-900 mb-3">{locale === 'zh' ? '顶部联系信息' : 'Top Contact Info'}</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <div>
                         <label htmlFor="headerEmail" className="block text-sm font-medium text-gray-700 mb-1">📧 Email</label>
                         <input id="headerEmail" type="email" value={pageContent.header.email || ''} onChange={(e) => setPageContent({ ...pageContent, header: { ...pageContent.header, email: e.target.value } })} className="w-full px-4 py-3 border rounded-lg text-sm" placeholder="sale@boppfilmsale.com" />
                       </div>
                       <div>
                         <label htmlFor="headerPhone" className="block text-sm font-medium text-gray-700 mb-1">📞 {locale === 'zh' ? '电话' : 'Phone'}</label>
-                        <input id="headerPhone" type="text" value={pageContent.header.phone || ''} onChange={(e) => setPageContent({ ...pageContent, header: { ...pageContent.header, phone: e.target.value } })} className="w-full px-4 py-3 border rounded-lg text-sm" placeholder="+86 138 0000 0000" />
+                        <input id="headerPhone" type="text" value={pageContent.header.phone || ''} onChange={(e) => setPageContent({ ...pageContent, header: { ...pageContent.header, phone: e.target.value } })} className="w-full px-4 py-3 border rounded-lg text-sm" placeholder="86-551-64687285" />
+                      </div>
+                      <div>
+                        <label htmlFor="headerMobile" className="block text-sm font-medium text-gray-700 mb-1">📱 {locale === 'zh' ? '手机' : 'Mobile'}</label>
+                        <input id="headerMobile" type="text" value={pageContent.header.mobile || ''} onChange={(e) => setPageContent({ ...pageContent, header: { ...pageContent.header, mobile: e.target.value } })} className="w-full px-4 py-3 border rounded-lg text-sm" placeholder="86-18919659471" />
                       </div>
                     </div>
                   </div>
@@ -1089,6 +1093,59 @@ export default function AdminPage() {
                       <div><label htmlFor="footerTw" className="block text-sm font-medium text-gray-700 mb-1">Twitter</label><input id="footerTw" type="text" value={pageContent.footer.twitter} onChange={(e) => setPageContent({ ...pageContent, footer: { ...pageContent.footer, twitter: e.target.value } })} className="w-full px-4 py-3 border rounded-lg text-sm" placeholder="https://twitter.com/..." /></div>
                       <div><label htmlFor="footerLi" className="block text-sm font-medium text-gray-700 mb-1">LinkedIn</label><input id="footerLi" type="text" value={pageContent.footer.linkedin} onChange={(e) => setPageContent({ ...pageContent, footer: { ...pageContent.footer, linkedin: e.target.value } })} className="w-full px-4 py-3 border rounded-lg text-sm" placeholder="https://linkedin.com/..." /></div>
                       <div><label htmlFor="footerIg" className="block text-sm font-medium text-gray-700 mb-1">Instagram</label><input id="footerIg" type="text" value={pageContent.footer.instagram} onChange={(e) => setPageContent({ ...pageContent, footer: { ...pageContent.footer, instagram: e.target.value } })} className="w-full px-4 py-3 border rounded-lg text-sm" placeholder="https://instagram.com/..." /></div>
+                    </div>
+                  </div>
+                  {/* 友情链接 */}
+                  <div>
+                    <h3 className="text-lg font-medium text-gray-900 mb-3">{locale === 'zh' ? '友情链接' : 'Friend Links'}</h3>
+                    <div className="space-y-3">
+                      {(pageContent.footer.friendLinks || []).map((link, index) => (
+                        <div key={index} className="flex items-center space-x-2">
+                          <input
+                            type="text"
+                            value={link.name}
+                            onChange={(e) => {
+                              const newLinks = [...(pageContent.footer.friendLinks || [])];
+                              newLinks[index] = { ...newLinks[index], name: e.target.value };
+                              setPageContent({ ...pageContent, footer: { ...pageContent.footer, friendLinks: newLinks } });
+                            }}
+                            className="flex-1 px-3 py-2 border rounded-lg text-sm"
+                            placeholder={locale === 'zh' ? '链接名称' : 'Link Name'}
+                          />
+                          <input
+                            type="text"
+                            value={link.url}
+                            onChange={(e) => {
+                              const newLinks = [...(pageContent.footer.friendLinks || [])];
+                              newLinks[index] = { ...newLinks[index], url: e.target.value };
+                              setPageContent({ ...pageContent, footer: { ...pageContent.footer, friendLinks: newLinks } });
+                            }}
+                            className="flex-1 px-3 py-2 border rounded-lg text-sm"
+                            placeholder="https://..."
+                          />
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const newLinks = (pageContent.footer.friendLinks || []).filter((_, i) => i !== index);
+                              setPageContent({ ...pageContent, footer: { ...pageContent.footer, friendLinks: newLinks } });
+                            }}
+                            className="p-2 text-red-600 hover:bg-red-50 rounded-lg"
+                            aria-label="Delete"
+                          >
+                            <FiTrash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      ))}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const newLinks = [...(pageContent.footer.friendLinks || []), { name: '', url: '' }];
+                          setPageContent({ ...pageContent, footer: { ...pageContent.footer, friendLinks: newLinks } });
+                        }}
+                        className="inline-flex items-center px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm"
+                      >
+                        <FiPlus className="w-4 h-4 mr-1" /> {locale === 'zh' ? '添加链接' : 'Add Link'}
+                      </button>
                     </div>
                   </div>
                   <button type="button" onClick={() => handleSavePageContent('footer')} disabled={savingPage} className="px-6 py-3 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 disabled:opacity-50">{savingPage ? (locale === 'zh' ? '保存中...' : 'Saving...') : (locale === 'zh' ? '保存页脚' : 'Save Footer')}</button>

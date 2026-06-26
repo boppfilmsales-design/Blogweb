@@ -13,7 +13,7 @@ const Header = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isDark, setIsDark] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [headerContent, setHeaderContent] = useState({ logoText: '', logoSubtext: '', email: '', phone: '' });
+  const [headerContent, setHeaderContent] = useState({ logoText: '', logoSubtext: '', email: '', phone: '', mobile: '' });
   const [navItems, setNavItems] = useState<Array<{id: string; labelEn: string; labelZh: string; href: string; visible: boolean}>>([]);
 
   useEffect(() => {
@@ -40,6 +40,7 @@ const Header = () => {
             logoSubtext: prev.logoSubtext || data.header.logoSubtext || '',
             email: prev.email || data.header.email || '',
             phone: prev.phone || data.header.phone || '',
+            mobile: prev.mobile || data.header.mobile || '',
           }));
         }
         if (data.navigation) {
@@ -92,7 +93,8 @@ const Header = () => {
         <div className="max-w-7xl mx-auto px-4 flex justify-between items-center">
           <div className="flex items-center space-x-4">
             <span>📧 {headerContent.email || 'sale@boppfilmsale.com'}</span>
-            <span>📞 {headerContent.phone || '+86 138 0000 0000'}</span>
+            <span>📞 {headerContent.phone || '86-551-64687285'}</span>
+            <span>📱 {headerContent.mobile || '86-18919659471'}</span>
           </div>
           <div className="flex items-center space-x-2">
             <button

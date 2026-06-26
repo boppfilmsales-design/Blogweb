@@ -2,7 +2,7 @@ import React from 'react';
 import { Inter } from 'next/font/google';
 import { LanguageProvider } from '@/context/LanguageContext';
 import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
+import FooterSection from '@/components/layout/Footer';
 import BackToTop from '@/components/layout/BackToTop';
 import '@/styles/globals.css';
 
@@ -34,7 +34,7 @@ export default function RootLayout({
             <main className="flex-grow">
               {children}
             </main>
-            <Footer />
+            <FooterSection />
             <BackToTop />
           </div>
         </LanguageProvider>

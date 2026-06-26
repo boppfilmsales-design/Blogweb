@@ -45,6 +45,7 @@ const defaultPages = {
     logoSubtext: 'Professional Packaging Film Supplier',
     email: 'sale@boppfilmsale.com',
     phone: '86-551-64687285',
+    mobile: '86-18919659471',
   },
   footer: {
     companyDescEn: 'Professional supplier of BOPP, BOPET, BOPS, CPP, POF films and tape products.',
@@ -61,6 +62,11 @@ const defaultPages = {
     linkedin: '#',
     instagram: '#',
     copyright: 'All Rights Reserved',
+    friendLinks: [
+      { name: '东渐公司官网新版', url: 'http://www.boppfilmsale.com' },
+      { name: '东渐公司官网旧版', url: '#' },
+      { name: 'CNZZ', url: '#' },
+    ],
   },
   cta: {
     titleEn: 'Ready to Get Started?',

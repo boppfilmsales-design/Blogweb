@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useLanguage } from '@/context/LanguageContext';
 import { FiMail, FiPhone, FiMapPin, FiFacebook, FiTwitter, FiLinkedin, FiInstagram } from 'react-icons/fi';
 
-const Footer = () => {
+const FooterSection = () => {
   const { t, isRTL, locale } = useLanguage();
   const [footerContent, setFooterContent] = useState({
     companyDescEn: '',
@@ -18,6 +18,7 @@ const Footer = () => {
     linkedin: '',
     instagram: '',
     copyright: '',
+    friendLinks: [] as Array<{name: string; url: string}>,
   });
 
   useEffect(() => {
@@ -49,6 +50,7 @@ const Footer = () => {
             linkedin: prev.linkedin || data.footer.linkedin || '',
             instagram: prev.instagram || data.footer.instagram || '',
             copyright: prev.copyright || data.footer.copyright || '',
+            friendLinks: Array.isArray(data.footer.friendLinks) ? data.footer.friendLinks : prev.friendLinks,
           }));
         }
       })
@@ -80,7 +82,7 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-gray-900 text-white">
+    <div className="bg-gray-900 text-white" role="contentinfo">
       {/* Main Footer */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -152,6 +154,21 @@ const Footer = () => {
                 <span className="text-gray-400 text-sm">{footerContent.email}</span>
               </li>
             </ul>
+            {/* Friend Links */}
+            {footerContent.friendLinks && footerContent.friendLinks.length > 0 && (
+              <div className="mt-6">
+                <h4 className="text-lg font-semibold mb-3">{locale === 'zh' ? '友情链接' : 'Friend Links'}</h4>
+                <ul className="space-y-2">
+                  {footerContent.friendLinks.map((link, index) => (
+                    <li key={index}>
+                      <a href={link.url} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors text-sm">
+                        {link.name}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -174,8 +191,8 @@ const Footer = () => {
           </div>
         </div>
       </div>
-    </footer>
+    </div>
   );
 };
 
-export default Footer;
+export default FooterSection;
