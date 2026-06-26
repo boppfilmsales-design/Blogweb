@@ -160,22 +160,31 @@ export default function AdminPage() {
 
   const loadProducts = async () => {
     try {
-      // 首先尝试从API加载
-      const data = await getProducts();
-      // 合并localStorage数据（localStorage优先）
-      const localData = loadProductsFromStorage();
-      if (localData.length > 0) {
-        setProducts(localData);
-      } else {
-        setProducts(data);
+      // 从API加载数据
+      let apiData: Product[] = [];
+      try {
+        apiData = await getProducts();
+      } catch (apiError) {
+        console.error('Failed to load products from API:', apiError);
       }
+
+      // 从localStorage加载数据
+      const localData = loadProductsFromStorage();
+
+      // 合并数据：以API数据为基础，补充localStorage中的额外产品
+      const allProducts = [...apiData];
+      localData.forEach(localProduct => {
+        if (!allProducts.find(p => p.id === localProduct.id)) {
+          allProducts.push(localProduct);
+        }
+      });
+
+      setProducts(allProducts);
     } catch (error) {
-      console.error('Failed to load products from API:', error);
+      console.error('Failed to load products:', error);
       // 出错时尝试从localStorage加载
       const localData = loadProductsFromStorage();
-      if (localData.length > 0) {
-        setProducts(localData);
-      }
+      setProducts(localData);
     } finally {
       setLoading(false);
     }
