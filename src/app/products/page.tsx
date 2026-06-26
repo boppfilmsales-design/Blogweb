@@ -22,10 +22,26 @@ function ProductsPageContent() {
 
   const loadProducts = async () => {
     try {
+      // 首先尝试从localStorage加载最新数据
+      const savedProducts = localStorage.getItem('aec-products');
+      if (savedProducts) {
+        try {
+          const localData = JSON.parse(savedProducts);
+          if (Array.isArray(localData) && localData.length > 0) {
+            setProducts(localData);
+          }
+        } catch (e) {
+          console.error('Failed to parse saved products:', e);
+        }
+      }
+
+      // 然后从API加载（可能更新localStorage中没有的数据）
       const data = await getProducts();
-      setProducts(data);
+      if (data && data.length > 0) {
+        setProducts(data);
+      }
     } catch (error) {
-      console.error('Failed to load products:', error);
+      console.error('Failed to load products from API:', error);
     } finally {
       setLoading(false);
     }

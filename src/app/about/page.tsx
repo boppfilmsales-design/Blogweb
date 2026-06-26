@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/context/LanguageContext';
-import { FiCheck, FiUsers, FiAward, FiGlobe, FiTrendingUp } from 'react-icons/fi';
+import { FiCheck, FiUsers, FiAward, FiGlobe, FiTrendingUp, FiChevronDown, FiChevronUp } from 'react-icons/fi';
 
 interface AboutContent {
   introEn: string;
@@ -20,6 +20,7 @@ export default function AboutPage() {
     storyEn: '',
     storyZh: '',
   });
+  const [showFullStory, setShowFullStory] = useState(false);
 
   useEffect(() => {
     // 从API加载About页面内容
@@ -101,8 +102,45 @@ export default function AboutPage() {
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
               {locale === 'zh' ? '我们的故事' : 'Our Story'}
             </h2>
-            <div className="space-y-4 text-gray-600 whitespace-pre-line">
-              {locale === 'zh' ? aboutContent.storyZh : aboutContent.storyEn}
+            <div className="space-y-4 text-gray-600">
+              {(() => {
+                const storyText = locale === 'zh' ? aboutContent.storyZh : aboutContent.storyEn;
+                const lines = storyText.split('\n');
+                const previewLines = 3; // 只显示前3行
+                const hasMore = lines.length > previewLines;
+
+                if (!showFullStory && hasMore) {
+                  return (
+                    <>
+                      <p className="whitespace-pre-line">{lines.slice(0, previewLines).join('\n')}</p>
+                      <button
+                        type="button"
+                        onClick={() => setShowFullStory(true)}
+                        className="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium mt-2"
+                      >
+                        {locale === 'zh' ? '阅读更多' : 'Read more'}
+                        <FiChevronDown className="w-4 h-4 ml-1" />
+                      </button>
+                    </>
+                  );
+                }
+
+                return (
+                  <>
+                    <p className="whitespace-pre-line">{storyText}</p>
+                    {hasMore && (
+                      <button
+                        type="button"
+                        onClick={() => setShowFullStory(false)}
+                        className="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium mt-2"
+                      >
+                        {locale === 'zh' ? '收起' : 'Show less'}
+                        <FiChevronUp className="w-4 h-4 ml-1" />
+                      </button>
+                    )}
+                  </>
+                );
+              })()}
             </div>
           </div>
           <div className="bg-gradient-to-br from-blue-100 to-blue-200 rounded-xl p-8">

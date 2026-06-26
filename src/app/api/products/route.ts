@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getProducts, createProduct } from '@/lib/db';
+import { getProducts as dbGetProducts, createProduct, updateProduct, deleteProduct, importProducts } from '@/lib/db';
 
 export const dynamic = 'force-dynamic';
 
 // GET all products
 export async function GET() {
   try {
-    const products = getProducts();
+    const products = dbGetProducts();
     return NextResponse.json(products);
   } catch (error) {
     return NextResponse.json({ error: 'Failed to fetch products' }, { status: 500 });
