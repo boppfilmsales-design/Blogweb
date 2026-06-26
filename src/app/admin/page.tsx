@@ -392,6 +392,12 @@ export default function AdminPage() {
     const uploadedUrls: string[] = [];
 
     for (let i = 0; i < files.length; i++) {
+      // 检查文件大小，跳过过大的文件
+      if (files[i].size > 1 * 1024 * 1024) {
+        alert(`Image ${files[i].name} is too large. Please use images smaller than 1MB.`);
+        continue;
+      }
+
       const formData = new FormData();
       formData.append('file', files[i]);
 
@@ -400,18 +406,38 @@ export default function AdminPage() {
         const data = await res.json();
         if (data.url) {
           uploadedUrls.push(data.url);
+          console.log('Image uploaded successfully:', files[i].name);
+        } else {
+          console.error('Upload failed:', data.error);
         }
       } catch (error) {
         console.error('Upload error:', error);
+        alert(`Failed to upload ${files[i].name}`);
       }
     }
 
     if (uploadedUrls.length > 0 && editingProduct) {
-      const currentImages = JSON.parse(editingProduct.images || '[]');
-      setEditingProduct({
-        ...editingProduct,
-        images: JSON.stringify([...currentImages, ...uploadedUrls])
-      });
+      try {
+        // 解析当前图片，如果失败则使用空数组
+        let currentImages: string[] = [];
+        try {
+          currentImages = JSON.parse(editingProduct.images || '[]');
+        } catch (parseError) {
+          console.error('Failed to parse current images, resetting:', parseError);
+          currentImages = [];
+        }
+
+        // 限制最多5张图片
+        const newImages = [...currentImages, ...uploadedUrls].slice(0, 5);
+
+        setEditingProduct({
+          ...editingProduct,
+          images: JSON.stringify(newImages)
+        });
+        console.log('Updated product images:', newImages.length, 'images');
+      } catch (error) {
+        console.error('Failed to update product images:', error);
+      }
     }
 
     // 刷新媒体库文件列表
@@ -419,6 +445,7 @@ export default function AdminPage() {
       setUploadedFiles(prev => [...prev, ...uploadedUrls]);
     }
 
+    // 清空input，允许重复上传同一文件
     if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
@@ -700,8 +727,33 @@ export default function AdminPage() {
                                 <div className="flex items-center space-x-2">
                                   {(() => {
                                     try {
-                                      const images = JSON.parse(product.images || '[]');
-                                      if (images.length > 0) return <img src={images[0]} alt="" className="w-10 h-10 object-cover rounded" />;
+                                      {(() => {
+                                        try {
+                                          const images = JSON.parse(product.images || '[]');
+                                          if (images.length > 0) {
+                                            const imgSrc = images[0];
+                                            // 检查是否是base64格式
+                                            const isBase64 = imgSrc.startsWith('data:image');
+                                            return (
+                                              <div className="relative">
+                                                <img
+                                                  src={imgSrc}
+                                                  alt={product.nameEn}
+                                                  className="w-10 h-10 object-cover rounded"
+                                                  onError={(e) => {
+                                                    console.error('Image load error:', imgSrc.substring(0, 50));
+                                                    (e.target as HTMLImageElement).style.display = 'none';
+                                                  }}
+                                                />
+                                                {isBase64 && <span className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full" title="Base64 image" />}
+                                              </div>
+                                            );
+                                          }
+                                        } catch (e) {
+                                          console.error('Failed to parse images:', e);
+                                        }
+                                        return <div className="w-10 h-10 bg-gray-200 rounded flex items-center justify-center"><FiImage className="w-4 h-4 text-gray-400" /></div>;
+                                      })()}
                                     } catch {}
                                     return <div className="w-10 h-10 bg-gray-200 rounded flex items-center justify-center"><FiImage className="w-4 h-4 text-gray-400" /></div>;
                                   })()}
