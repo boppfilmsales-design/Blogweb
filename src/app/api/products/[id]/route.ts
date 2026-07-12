@@ -9,10 +9,10 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    const product = getProductById(params.id);
+    const product = await getProductById(params.id);
     if (!product) {
       // Try to find by slug
-      const productBySlug = getProductBySlug(params.id);
+      const productBySlug = await getProductBySlug(params.id);
       if (!productBySlug) {
         return NextResponse.json({ error: 'Product not found' }, { status: 404 });
       }
@@ -31,7 +31,7 @@ export async function PUT(
 ) {
   try {
     const body = await request.json();
-    const product = updateProduct(params.id, body);
+    const product = await updateProduct(params.id, body);
     if (!product) {
       return NextResponse.json({ error: 'Product not found' }, { status: 404 });
     }
@@ -47,7 +47,7 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
-    const success = deleteProduct(params.id);
+    const success = await deleteProduct(params.id);
     if (!success) {
       return NextResponse.json({ error: 'Product not found' }, { status: 404 });
     }

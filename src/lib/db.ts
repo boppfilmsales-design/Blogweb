@@ -1,7 +1,4 @@
-import { readFileSync, writeFileSync } from 'fs';
-import { join } from 'path';
-
-const DB_PATH = join(process.cwd(), 'src', 'data', 'products-db.json');
+import { prisma } from './prisma';
 
 export interface Product {
   id: string;
@@ -28,129 +25,106 @@ export interface Product {
   updatedAt: string;
 }
 
-// Read database
-export function getDB(): Product[] {
-  try {
-    const data = readFileSync(DB_PATH, 'utf-8');
-    return JSON.parse(data);
-  } catch {
-    return [];
-  }
-}
-
-// Write database
-export function setDB(products: Product[]): void {
-  writeFileSync(DB_PATH, JSON.stringify(products, null, 2), 'utf-8');
+// Convert Prisma Product to our Product type
+function toProduct(prismaProduct: any): Product {
+  return {
+    ...prismaProduct,
+    createdAt: prismaProduct.createdAt?.toISOString() || new Date().toISOString(),
+    updatedAt: prismaProduct.updatedAt?.toISOString() || new Date().toISOString(),
+  };
 }
 
 // Get all products
-export function getProducts(): Product[] {
-  return getDB();
+export async function getProducts(): Promise<Product[]> {
+  const products = await prisma.product.findMany({
+    orderBy: { createdAt: 'desc' }
+  });
+  return products.map(toProduct);
 }
 
 // Get product by ID
-export function getProductById(id: string): Product | null {
-  const products = getDB();
-  return products.find(p => p.id === id) || null;
+export async function getProductById(id: string): Promise<Product | null> {
+  const product = await prisma.product.findUnique({
+    where: { id }
+  });
+  return product ? toProduct(product) : null;
 }
 
 // Get product by slug
-export function getProductBySlug(slug: string): Product | null {
-  const products = getDB();
-  return products.find(p => p.slug === slug) || null;
+export async function getProductBySlug(slug: string): Promise<Product | null> {
+  const product = await prisma.product.findUnique({
+    where: { slug }
+  });
+  return product ? toProduct(product) : null;
 }
 
 // Create product
-export function createProduct(product: Omit<Product, 'id' | 'createdAt' | 'updatedAt'>): Product {
-  const products = getDB();
-  const newProduct: Product = {
-    ...product,
-    id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  };
-  products.push(newProduct);
-  setDB(products);
-  return newProduct;
+export async function createProduct(product: Omit<Product, 'id' | 'createdAt' | 'updatedAt'>): Promise<Product> {
+  const prismaProduct = await prisma.product.create({
+    data: product
+  });
+  return toProduct(prismaProduct);
 }
 
 // Update product
-export function updateProduct(id: string, updates: Partial<Product>): Product | null {
-  const products = getDB();
-  const index = products.findIndex(p => p.id === id);
-  if (index === -1) return null;
-
-  products[index] = {
-    ...products[index],
-    ...updates,
-    updatedAt: new Date().toISOString(),
-  };
-  setDB(products);
-  return products[index];
+export async function updateProduct(id: string, updates: Partial<Product>): Promise<Product | null> {
+  try {
+    const prismaProduct = await prisma.product.update({
+      where: { id },
+      data: updates
+    });
+    return toProduct(prismaProduct);
+  } catch {
+    return null;
+  }
 }
 
 // Delete product
-export function deleteProduct(id: string): boolean {
-  const products = getDB();
-  const index = products.findIndex(p => p.id === id);
-  if (index === -1) return false;
-
-  products.splice(index, 1);
-  setDB(products);
-  return true;
+export async function deleteProduct(id: string): Promise<boolean> {
+  try {
+    await prisma.product.delete({
+      where: { id }
+    });
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 // Import products
-export function importProducts(newProducts: Partial<Product>[]): {
+export async function importProducts(newProducts: Partial<Product>[]): Promise<{
   created: number;
   updated: number;
   failed: number;
-} {
-  const products = getDB();
+}> {
   const results = { created: 0, updated: 0, failed: 0 };
 
   for (const product of newProducts) {
-    const existingIndex = products.findIndex(p => p.slug === product.slug);
+    try {
+      if (product.slug) {
+        const existing = await prisma.product.findUnique({
+          where: { slug: product.slug }
+        });
 
-    if (existingIndex >= 0) {
-      // Update existing
-      products[existingIndex] = {
-        ...products[existingIndex],
-        ...product,
-        updatedAt: new Date().toISOString(),
-      } as Product;
-      results.updated++;
-    } else {
-      // Create new
-      const newProduct: Product = {
-        id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
-        slug: product.slug || '',
-        nameEn: product.nameEn || '',
-        nameZh: product.nameZh || '',
-        category: product.category || '',
-        descriptionEn: product.descriptionEn || '',
-        descriptionZh: product.descriptionZh || '',
-        thickness: product.thickness || '',
-        width: product.width || '',
-        length: product.length || '',
-        weight: product.weight || '',
-        color: product.color || '',
-        material: product.material || '',
-        featuresEn: product.featuresEn || '[]',
-        featuresZh: product.featuresZh || '[]',
-        applicationsEn: product.applicationsEn || '[]',
-        applicationsZh: product.applicationsZh || '[]',
-        certifications: product.certifications || '[]',
-        images: product.images || '[]',
-        featured: product.featured || false,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      };
-      products.push(newProduct);
-      results.created++;
+        if (existing) {
+          await prisma.product.update({
+            where: { slug: product.slug },
+            data: product
+          });
+          results.updated++;
+        } else {
+          await prisma.product.create({
+            data: product as Omit<Product, 'id' | 'createdAt' | 'updatedAt'>
+          });
+          results.created++;
+        }
+      } else {
+        results.failed++;
+      }
+    } catch {
+      results.failed++;
     }
   }
 
-  setDB(products);
   return results;
 }

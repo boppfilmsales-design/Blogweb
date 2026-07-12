@@ -6,10 +6,12 @@ export const dynamic = 'force-dynamic';
 // GET all products
 export async function GET() {
   try {
-    const products = dbGetProducts();
+    console.log('DATABASE_URL:', process.env.DATABASE_URL ? 'set' : 'not set');
+    const products = await dbGetProducts();
     return NextResponse.json(products);
-  } catch (error) {
-    return NextResponse.json({ error: 'Failed to fetch products' }, { status: 500 });
+  } catch (error: any) {
+    console.error('API Error:', error);
+    return NextResponse.json({ error: 'Failed to fetch products', details: error.message }, { status: 500 });
   }
 }
 
@@ -17,9 +19,10 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const product = createProduct(body);
+    const product = await createProduct(body);
     return NextResponse.json(product, { status: 201 });
-  } catch (error) {
-    return NextResponse.json({ error: 'Failed to create product' }, { status: 500 });
+  } catch (error: any) {
+    console.error('API Error:', error);
+    return NextResponse.json({ error: 'Failed to create product', details: error.message }, { status: 500 });
   }
 }

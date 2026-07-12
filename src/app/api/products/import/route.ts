@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Invalid data format. Expected { products: [...] }' }, { status: 400 });
     }
 
-    const results = importProducts(products);
+    const results = await importProducts(products);
     return NextResponse.json(results);
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });

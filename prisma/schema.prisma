@@ -3,8 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model Product {
@@ -29,5 +30,22 @@ model Product {
   images      String
   featured    Boolean  @default(false)
   createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  updatedAt   DateTime @default(now()) @updatedAt
+}
+
+model Visitor {
+  id        String   @id @default(cuid())
+  ip        String
+  userAgent String
+  referer   String?
+  page      String
+  country   String?
+  city      String?
+  browser   String?
+  os        String?
+  device    String?
+  timestamp DateTime @default(now())
+
+  @@index([timestamp])
+  @@index([ip])
 }
