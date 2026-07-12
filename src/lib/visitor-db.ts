@@ -1,4 +1,4 @@
-import { prisma } from './prisma';
+import { getSupabase } from './supabase';
 
 export interface Visitor {
   id: string;
@@ -36,37 +36,32 @@ function parseUserAgent(ua: string): { browser?: string; os?: string; device?: s
   return result;
 }
 
-// Convert Prisma Visitor to our Visitor type
-function toVisitor(prismaVisitor: any): Visitor {
-  return {
-    ...prismaVisitor,
-    timestamp: prismaVisitor.timestamp?.toISOString() || new Date().toISOString(),
-  };
-}
-
 export async function recordVisitor(
   ip: string,
   userAgent: string,
   referer: string,
   page: string
 ): Promise<void> {
+  const client = getSupabase();
   const uaInfo = parseUserAgent(userAgent);
   
-  await prisma.visitor.create({
-    data: {
-      ip,
-      userAgent,
-      referer: referer || '',
-      page,
-      ...uaInfo,
-    }
+  await client.from('Visitor').insert({
+    ip,
+    userAgent,
+    referer: referer || '',
+    page,
+    ...uaInfo,
   });
 }
 
 export async function getVisitors(): Promise<Visitor[]> {
-  const visitors = await prisma.visitor.findMany({
-    orderBy: { timestamp: 'desc' },
-    take: 500
-  });
-  return visitors.map(toVisitor);
+  const client = getSupabase();
+  const { data, error } = await client
+    .from('Visitor')
+    .select('*')
+    .order('timestamp', { ascending: false })
+    .limit(500);
+  
+  if (error) throw error;
+  return data || [];
 }
