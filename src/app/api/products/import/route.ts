@@ -7,7 +7,7 @@ export const dynamic = 'force-dynamic';
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const products = body.products;
+    const products = Array.isArray(body) ? body : body.products;
 
     if (!Array.isArray(products)) {
       return NextResponse.json({ error: 'Invalid data format. Expected { products: [...] }' }, { status: 400 });
