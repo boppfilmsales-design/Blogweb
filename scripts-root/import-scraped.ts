@@ -672,3 +672,9 @@ async function importProducts() {
     
     const result = await response.json();
     console.log("导入结果:", JSON.stringify(result, null, 2));
+  } catch (error) {
+    console.error("导入失败:", error);
+  }
+}
+
+importProducts();

@@ -1,8 +1,6 @@
-import { getProducts as dbGetProducts, getProductBySlug as dbGetProductBySlug, Product } from './db';
+import { Product } from './api-types';
 
 const API_BASE = '/api';
-
-export type { Product };
 
 // Fetch all products
 export async function getProducts(): Promise<Product[]> {
@@ -105,3 +103,5 @@ export function exportProductsToCSV(products: Product[]) {
   link.click();
   URL.revokeObjectURL(url);
 }
+
+export type { Product };

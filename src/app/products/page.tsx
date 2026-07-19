@@ -4,6 +4,8 @@ import React, { useEffect, useState, Suspense } from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/context/LanguageContext';
 import { getProducts, Product } from '@/lib/api';
+import { CATEGORIES, getCategoryName } from '@/lib/categories';
+import { parseProductImages } from '@/lib/images';
 import { FiArrowRight } from 'react-icons/fi';
 
 function ProductsPageContent() {
@@ -11,18 +13,19 @@ function ProductsPageContent() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const [activeCategory, setActiveCategory] = useState<string>('');
 
   useEffect(() => {
-    // 从URL获取搜索参数
     const params = new URLSearchParams(window.location.search);
     const search = params.get('search') || '';
+    const category = params.get('category') || '';
     setSearchTerm(search);
+    setActiveCategory(category);
     loadProducts();
   }, []);
 
   const loadProducts = async () => {
     try {
-      // 首先尝试从localStorage加载最新数据
       const savedProducts = localStorage.getItem('aec-products');
       if (savedProducts) {
         try {
@@ -35,7 +38,6 @@ function ProductsPageContent() {
         }
       }
 
-      // 然后从API加载（可能更新localStorage中没有的数据）
       const data = await getProducts();
       if (data && data.length > 0) {
         setProducts(data);
@@ -48,31 +50,15 @@ function ProductsPageContent() {
   };
 
   const filteredProducts = products.filter(product => {
+    const matchCategory = !activeCategory || product.category === activeCategory;
+    if (!matchCategory) return false;
+
+    if (!searchTerm) return true;
     const name = locale === 'zh' ? product.nameZh : product.nameEn;
     const desc = locale === 'zh' ? product.descriptionZh : product.descriptionEn;
     return name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       desc.toLowerCase().includes(searchTerm.toLowerCase());
   });
-
-  const getCategoryName = (category: string) => {
-    const categories: Record<string, Record<string, string>> = {
-      'bopp-gloss': { en: 'BOPP Gloss Film', zh: 'BOPP光膜' },
-      'bopp-matte': { en: 'BOPP Matte Film', zh: 'BOPP哑膜' },
-      'bopp-metalized': { en: 'BOPP Metalized Film', zh: 'BOPP镀铝膜' },
-      'bopp-heatseal': { en: 'BOPP Heat Sealable Film', zh: 'BOPP热封膜' },
-      'bopp-white': { en: 'BOPP White Opaque Film', zh: 'BOPP白膜' },
-      'bopp-tape': { en: 'BOPP Tape Film', zh: 'BOPP胶带膜' },
-      'bopet': { en: 'BOPET Film', zh: 'BOPET薄膜' },
-      'bops': { en: 'BOPS Film', zh: 'BOPS薄膜' },
-      'cpp': { en: 'CPP Film', zh: 'CPP薄膜' },
-      'tape': { en: 'Tape Products', zh: '胶带产品' },
-      'pof': { en: 'BOPET Film', zh: 'BOPET薄膜' },
-      'tear-tape': { en: 'Tear Tape', zh: '撕裂胶带' },
-      'stretch-film': { en: 'Stretch Film', zh: '拉伸膜' },
-      'specialty': { en: 'Specialty Films', zh: '特种薄膜' },
-    };
-    return categories[category]?.[locale] || category;
-  };
 
   if (loading) {
     return (
@@ -94,14 +80,33 @@ function ProductsPageContent() {
             {locale === 'zh' ? '产品中心' : 'Our Products'}
           </h1>
           <p className="text-gray-600">
-            {locale === 'zh' ? '多样化的BOPP薄膜产品，满足不同行业需求' : 'Diverse packaging film products to meet different industry needs'}
+            {locale === 'zh' ? '多样化的薄膜产品，满足不同行业需求' : 'Diverse packaging film products to meet different industry needs'}
           </p>
+          {activeCategory && (
+            <div className="mt-4 inline-flex items-center space-x-2 bg-blue-50 text-blue-700 px-4 py-2 rounded-lg">
+              <span className="text-sm font-medium">
+                {locale === 'zh' ? '当前分类：' : 'Category: '}{getCategoryName(activeCategory, locale)}
+              </span>
+              <button
+                type="button"
+                onClick={() => {
+                  setActiveCategory('');
+                  const url = new URL(window.location.href);
+                  url.searchParams.delete('category');
+                  window.history.replaceState({}, '', url);
+                }}
+                className="text-blue-500 hover:text-blue-700"
+              >
+                ✕
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Search */}
-        <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
+        <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
           <input
             type="text"
             placeholder={locale === 'zh' ? '搜索产品...' : 'Search products...'}
@@ -111,20 +116,58 @@ function ProductsPageContent() {
           />
         </div>
 
+        {/* Category Filter - Horizontal Scroll */}
+        <div className="bg-white rounded-lg shadow-sm p-4 mb-8">
+          <div className="flex flex-wrap gap-2">
+            <button
+              type="button"
+              onClick={() => {
+                setActiveCategory('');
+                const url = new URL(window.location.href);
+                url.searchParams.delete('category');
+                window.history.replaceState({}, '', url);
+              }}
+              className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                !activeCategory
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              }`}
+            >
+              {locale === 'zh' ? '全部' : 'All'}
+            </button>
+            {CATEGORIES.map((cat) => (
+              <button
+                key={cat.id}
+                type="button"
+                onClick={() => {
+                  setActiveCategory(cat.id);
+                  const url = new URL(window.location.href);
+                  url.searchParams.set('category', cat.id);
+                  window.history.replaceState({}, '', url);
+                }}
+                className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                  activeCategory === cat.id
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                }`}
+              >
+                {locale === 'zh' ? cat.zh : cat.en}
+              </button>
+            ))}
+          </div>
+        </div>
+
         {/* Products Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredProducts.map((product) => (
             <div key={product.id} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow group">
-              {/* Product Image */}
               <Link href={`/products/${product.slug}`}>
                 <div className="relative aspect-video bg-gradient-to-br from-blue-100 to-blue-200 overflow-hidden">
                   {(() => {
-                    try {
-                      const images = JSON.parse(product.images || '[]');
-                      if (images.length > 0) {
-                        return <img src={images[0]} alt={product.nameEn} className="w-full h-full object-cover" />;
-                      }
-                    } catch {}
+                    const images = parseProductImages(product.images);
+                    if (images.length > 0) {
+                      return <img src={images[0]} alt={product.nameEn} className="w-full h-full object-cover" />;
+                    }
                     return (
                       <div className="absolute inset-0 flex items-center justify-center">
                         <div className="text-center">
@@ -137,7 +180,6 @@ function ProductsPageContent() {
                     );
                   })()}
 
-                  {/* Featured Badge */}
                   {product.featured && (
                     <div className="absolute top-4 left-4 bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-medium">
                       Featured
@@ -146,11 +188,10 @@ function ProductsPageContent() {
                 </div>
               </Link>
 
-              {/* Product Info */}
               <div className="p-6">
                 <div className="mb-2">
                   <span className="text-sm text-blue-600 font-medium">
-                    {getCategoryName(product.category)}
+                    {getCategoryName(product.category, locale)}
                   </span>
                 </div>
                 <Link href={`/products/${product.slug}`}>
@@ -162,7 +203,6 @@ function ProductsPageContent() {
                   {locale === 'zh' ? product.descriptionZh : product.descriptionEn}
                 </p>
 
-                {/* Specifications Preview */}
                 <div className="grid grid-cols-2 gap-2 mb-4 text-sm">
                   <div className="bg-gray-50 rounded px-2 py-1">
                     <span className="text-gray-500">Thickness:</span>
@@ -174,7 +214,6 @@ function ProductsPageContent() {
                   </div>
                 </div>
 
-                {/* Actions */}
                 <div className="flex space-x-3">
                   <Link
                     href={`/products/${product.slug}`}
@@ -194,7 +233,6 @@ function ProductsPageContent() {
           ))}
         </div>
 
-        {/* No Results */}
         {filteredProducts.length === 0 && (
           <div className="text-center py-12">
             <p className="text-gray-500 text-lg">

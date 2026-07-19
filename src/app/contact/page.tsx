@@ -17,10 +17,10 @@ interface ContactContent {
 const defaultContact: ContactContent = {
   titleEn: 'Contact Us',
   titleZh: '联系我们',
-  address: 'Industrial Park, Suzhou, Jiangsu, China',
-  phone: '+86 138 0000 0000',
+  address: 'No.1158 Huizhou Ave., Baohe Industrial District, 230051, Hefei city, Anhui Province, P.R.China',
+  phone: '86-551-64687285',
   email: 'sale@boppfilmsale.com',
-  whatsapp: '+86 138 0000 0000',
+  whatsapp: '86-18919659471',
 };
 
 export default function ContactPage() {

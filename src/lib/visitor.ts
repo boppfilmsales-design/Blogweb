@@ -1,4 +1,13 @@
-import { getSupabase } from './supabase';
+import { PrismaClient } from '@prisma/client';
+
+let prisma: PrismaClient | null = null;
+
+function getPrisma(): PrismaClient {
+  if (!prisma) {
+    prisma = new PrismaClient();
+  }
+  return prisma;
+}
 
 export interface Visitor {
   id: string;
@@ -42,26 +51,44 @@ export async function recordVisitor(
   referer: string,
   page: string
 ): Promise<void> {
-  const client = getSupabase();
+  const client = getPrisma();
   const uaInfo = parseUserAgent(userAgent);
-  
-  await client.from('Visitor').insert({
-    ip,
-    userAgent,
-    referer: referer || '',
-    page,
-    ...uaInfo,
+
+  await client.visitor.create({
+    data: {
+      ip,
+      userAgent,
+      referer: referer || '',
+      page,
+      browser: uaInfo.browser,
+      os: uaInfo.os,
+      device: uaInfo.device,
+    },
   });
 }
 
 export async function getVisitors(): Promise<Visitor[]> {
-  const client = getSupabase();
-  const { data, error } = await client
-    .from('Visitor')
-    .select('*')
-    .order('timestamp', { ascending: false })
-    .limit(500);
-  
-  if (error) throw error;
-  return data || [];
+  const client = getPrisma();
+  const visitors = await client.visitor.findMany({
+    orderBy: { timestamp: 'desc' },
+    take: 500,
+  });
+  return visitors.map(v => ({
+    id: v.id,
+    ip: v.ip,
+    userAgent: v.userAgent,
+    referer: v.referer || undefined,
+    page: v.page,
+    country: v.country || undefined,
+    city: v.city || undefined,
+    browser: v.browser || undefined,
+    os: v.os || undefined,
+    device: v.device || undefined,
+    timestamp: v.timestamp.toISOString(),
+  }));
+}
+
+export async function clearVisitors(): Promise<void> {
+  const client = getPrisma();
+  await client.visitor.deleteMany();
 }

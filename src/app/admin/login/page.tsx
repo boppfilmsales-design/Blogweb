@@ -4,28 +4,34 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { FiLock, FiLogIn } from 'react-icons/fi';
 
-const ADMIN_PASSWORD = 'aecgroup2024'; // 默认密码
-
 export default function AdminLoginPage() {
   const router = useRouter();
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError('');
 
-    // 验证密码
-    if (password === ADMIN_PASSWORD) {
-      // 保存登录状态到sessionStorage
-      if (typeof window !== 'undefined') {
-        sessionStorage.setItem('admin_logged_in', 'true');
+    try {
+      const res = await fetch('/api/admin/auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password }),
+      });
+
+      if (res.ok) {
+        if (typeof window !== 'undefined') {
+          sessionStorage.setItem('admin_logged_in', 'true');
+        }
+        router.push('/admin');
+      } else {
+        setError('密码错误，请重试');
       }
-      router.push('/admin');
-    } else {
-      setError('密码错误，请重试');
+    } catch {
+      setError('验证失败，请重试');
     }
     setLoading(false);
   };
@@ -82,7 +88,7 @@ export default function AdminLoginPage() {
 
           <div className="mt-6 p-4 bg-gray-50 rounded-lg">
             <p className="text-xs text-gray-500 text-center">
-              默认密码: aecgroup2024
+              请输入管理员密码登录后台
             </p>
           </div>
         </div>

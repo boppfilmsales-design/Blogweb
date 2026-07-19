@@ -4,12 +4,15 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { getProductBySlug, Product } from '@/lib/api';
+import { getCategoryName } from '@/lib/categories';
+import { parseProductImages } from '@/lib/images';
 import InquiryForm from '@/components/contact/InquiryForm';
 import { FiCheck, FiDownload, FiArrowLeft } from 'react-icons/fi';
 
 export default function ProductDetailPage() {
   const params = useParams();
   const slug = params.slug as string;
+  const [locale, setLocale] = useState<'zh' | 'en'>('en');
 
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
@@ -44,6 +47,11 @@ export default function ProductDetailPage() {
     };
     loadProduct();
   }, [slug]);
+
+  useEffect(() => {
+    const savedLocale = localStorage.getItem('locale') as 'zh' | 'en';
+    if (savedLocale) setLocale(savedLocale);
+  }, []);
 
   if (loading) {
     return (
@@ -96,12 +104,10 @@ export default function ProductDetailPage() {
           <div className="space-y-4">
             <div className="aspect-square bg-gradient-to-br from-blue-100 to-blue-200 rounded-xl overflow-hidden">
               {(() => {
-                try {
-                  const images = JSON.parse(product.images || '[]');
-                  if (images.length > 0) {
-                    return <img src={images[0]} alt={product.nameEn} className="w-full h-full object-cover" />;
-                  }
-                } catch {}
+                const images = parseProductImages(product.images);
+                if (images.length > 0) {
+                  return <img src={images[0]} alt={product.nameEn} className="w-full h-full object-cover" />;
+                }
                 return (
                   <div className="w-full h-full flex items-center justify-center">
                     <div className="text-center">
@@ -116,20 +122,18 @@ export default function ProductDetailPage() {
             </div>
             {/* Thumbnail images */}
             {(() => {
-              try {
-                const images = JSON.parse(product.images || '[]');
-                if (images.length > 1) {
-                  return (
-                    <div className="flex gap-2">
-                      {images.slice(1, 5).map((img: string, idx: number) => (
-                        <div key={idx} className="w-20 h-20 rounded-lg overflow-hidden bg-gray-100">
-                          <img src={img} alt="" className="w-full h-full object-cover" />
-                        </div>
-                      ))}
-                    </div>
-                  );
-                }
-              } catch {}
+              const images = parseProductImages(product.images);
+              if (images.length > 1) {
+                return (
+                  <div className="flex gap-2">
+                    {images.slice(1, 5).map((img: string, idx: number) => (
+                      <div key={idx} className="w-20 h-20 rounded-lg overflow-hidden bg-gray-100">
+                        <img src={img} alt="" className="w-full h-full object-cover" />
+                      </div>
+                    ))}
+                  </div>
+                );
+              }
               return null;
             })()}
           </div>
@@ -138,7 +142,7 @@ export default function ProductDetailPage() {
           <div className="space-y-6">
             {/* English */}
             <div>
-              <span className="text-sm text-blue-600 font-medium">{product.category}</span>
+              <span className="text-sm text-blue-600 font-medium">{getCategoryName(product.category, locale)}</span>
               <h1 className="text-3xl font-bold text-gray-900 mt-2">{product.nameEn}</h1>
               <p className="text-gray-600 mt-4 leading-relaxed">{product.descriptionEn}</p>
             </div>
@@ -148,7 +152,7 @@ export default function ProductDetailPage() {
 
             {/* Chinese */}
             <div>
-              <span className="text-sm text-blue-600 font-medium">{product.category}</span>
+              <span className="text-sm text-blue-600 font-medium">{getCategoryName(product.category, locale)}</span>
               <h2 className="text-2xl font-bold text-gray-900 mt-2">{product.nameZh}</h2>
               <p className="text-gray-600 mt-4 leading-relaxed">{product.descriptionZh}</p>
             </div>

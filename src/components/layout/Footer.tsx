@@ -65,13 +65,18 @@ const FooterSection = () => {
   ];
 
   const productCategories = [
-    { href: '/products?category=bopp-gloss', label: locale === 'zh' ? 'BOPP光膜' : 'BOPP Gloss Film' },
-    { href: '/products?category=bopp-matte', label: locale === 'zh' ? 'BOPP哑膜' : 'BOPP Matte Film' },
-    { href: '/products?category=bopet', label: locale === 'zh' ? 'BOPET薄膜' : 'BOPET Film' },
-    { href: '/products?category=tape', label: locale === 'zh' ? '胶带产品' : 'Tape Products' },
+    { href: '/products?category=boppfilm-printing', label: locale === 'zh' ? 'BOPP印刷膜' : 'BOPP Printing Film' },
+    { href: '/products?category=boppfilm-cigarette', label: locale === 'zh' ? 'BOPP烟膜' : 'BOPP Cigarette Film' },
+    { href: '/products?category=boppfilm-metallized', label: locale === 'zh' ? 'BOPP镀铝膜' : 'BOPP Metallized Film' },
+    { href: '/products?category=bopet-clear', label: locale === 'zh' ? 'BOPET透明膜' : 'BOPET Clear Film' },
+    { href: '/products?category=bopet-thermal', label: locale === 'zh' ? 'BOPET热敏膜' : 'BOPET Thermal Film' },
+    { href: '/products?category=bopa-12mic', label: locale === 'zh' ? 'BOPA薄膜' : 'BOPA Film' },
+    { href: '/products?category=bops-glossy', label: locale === 'zh' ? 'BOPS光膜' : 'BOPS Glossy Film' },
     { href: '/products?category=cpp', label: locale === 'zh' ? 'CPP薄膜' : 'CPP Film' },
-    { href: '/products?category=bops', label: locale === 'zh' ? 'BOPS薄膜' : 'BOPS Film' },
-    { href: '/products?category=pof', label: locale === 'zh' ? 'POF薄膜' : 'POF Film' },
+    { href: '/products?category=pof-central', label: locale === 'zh' ? 'POF薄膜' : 'POF Film' },
+    { href: '/products?category=tear-tape', label: locale === 'zh' ? '撕裂胶带' : 'Tear Tape' },
+    { href: '/products?category=labels-rolls', label: locale === 'zh' ? '标签' : 'Labels' },
+    { href: '/products?category=bags-sheets-group', label: locale === 'zh' ? '包装袋与片材' : 'Bags & Sheets' },
   ];
 
   const socialLinks = [

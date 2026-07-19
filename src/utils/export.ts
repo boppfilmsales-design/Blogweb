@@ -1,6 +1,7 @@
-import { products } from '@/data/products';
+import { getProducts, Product } from '@/lib/api';
 
-export const exportProductsToJSON = () => {
+export const exportProductsToJSON = async () => {
+  const products = await getProducts();
   const dataStr = JSON.stringify(products, null, 2);
   const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
 
@@ -12,7 +13,9 @@ export const exportProductsToJSON = () => {
   linkElement.click();
 };
 
-export const exportProductsToCSV = () => {
+export const exportProductsToCSV = async () => {
+  const products = await getProducts();
+
   const headers = [
     'ID',
     'Slug',
@@ -40,22 +43,22 @@ export const exportProductsToCSV = () => {
     ...products.map(product => [
       product.id,
       product.slug,
-      `"${product.name.en}"`,
-      `"${product.name.zh}"`,
+      `"${product.nameEn}"`,
+      `"${product.nameZh}"`,
       product.category,
-      `"${product.description.en}"`,
-      `"${product.description.zh}"`,
-      product.specifications.thickness,
-      product.specifications.width,
-      product.specifications.length,
-      product.specifications.weight,
-      product.specifications.color,
-      product.specifications.material,
-      `"${product.features.en.join('; ')}"`,
-      `"${product.features.zh.join('; ')}"`,
-      `"${product.applications.en.join('; ')}"`,
-      `"${product.applications.zh.join('; ')}"`,
-      `"${product.certifications.join('; ')}"`,
+      `"${product.descriptionEn}"`,
+      `"${product.descriptionZh}"`,
+      product.thickness,
+      product.width,
+      product.length,
+      product.weight,
+      product.color,
+      product.material,
+      `"${product.featuresEn}"`,
+      `"${product.featuresZh}"`,
+      `"${product.applicationsEn}"`,
+      `"${product.applicationsZh}"`,
+      `"${product.certifications}"`,
       product.featured ? 'Yes' : 'No'
     ].join(','))
   ].join('\n');

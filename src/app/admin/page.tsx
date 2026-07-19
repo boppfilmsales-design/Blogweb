@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useLanguage } from '@/context/LanguageContext';
 import { getProducts, createProduct, updateProduct, deleteProduct, importProducts, exportProductsToJSON, exportProductsToCSV } from '@/lib/api';
 import type { Product } from '@/lib/api';
+import { parseProductImages } from '@/lib/images';
 import { FiDownload, FiUpload, FiEdit, FiTrash2, FiPlus, FiSave, FiX, FiImage, FiSettings, FiFileText, FiPackage, FiLogOut, FiRefreshCw, FiMenu, FiLink, FiEye, FiEyeOff } from 'react-icons/fi';
 
 interface NavItem {
@@ -854,35 +855,25 @@ export default function AdminPage() {
                               <td className="px-4 py-3">
                                 <div className="flex items-center space-x-2">
                                   {(() => {
-                                    try {
-                                      {(() => {
-                                        try {
-                                          const images = JSON.parse(product.images || '[]');
-                                          if (images.length > 0) {
-                                            const imgSrc = images[0];
-                                            // 检查是否是base64格式
-                                            const isBase64 = imgSrc.startsWith('data:image');
-                                            return (
-                                              <div className="relative">
-                                                <img
-                                                  src={imgSrc}
-                                                  alt={product.nameEn}
-                                                  className="w-10 h-10 object-cover rounded"
-                                                  onError={(e) => {
-                                                    console.error('Image load error:', imgSrc.substring(0, 50));
-                                                    (e.target as HTMLImageElement).style.display = 'none';
-                                                  }}
-                                                />
-                                                {isBase64 && <span className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full" title="Base64 image" />}
-                                              </div>
-                                            );
-                                          }
-                                        } catch (e) {
-                                          console.error('Failed to parse images:', e);
-                                        }
-                                        return <div className="w-10 h-10 bg-gray-200 rounded flex items-center justify-center"><FiImage className="w-4 h-4 text-gray-400" /></div>;
-                                      })()}
-                                    } catch {}
+                                    const images = parseProductImages(product.images);
+                                    if (images.length > 0) {
+                                      const imgSrc = images[0];
+                                      const isBase64 = imgSrc.startsWith('data:image');
+                                      return (
+                                        <div className="relative">
+                                          <img
+                                            src={imgSrc}
+                                            alt={product.nameEn}
+                                            className="w-10 h-10 object-cover rounded"
+                                            onError={(e) => {
+                                              console.error('Image load error:', imgSrc.substring(0, 50));
+                                              (e.target as HTMLImageElement).style.display = 'none';
+                                            }}
+                                          />
+                                          {isBase64 && <span className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full" title="Base64 image" />}
+                                        </div>
+                                      );
+                                    }
                                     return <div className="w-10 h-10 bg-gray-200 rounded flex items-center justify-center"><FiImage className="w-4 h-4 text-gray-400" /></div>;
                                   })()}
                                   <div>

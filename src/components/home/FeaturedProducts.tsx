@@ -1,15 +1,57 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/context/LanguageContext';
 import ProductCard from '@/components/products/ProductCard';
-import { products } from '@/data/products';
+import { getProducts, Product } from '@/lib/api';
 import { FiArrowRight } from 'react-icons/fi';
 
 const FeaturedProducts = () => {
   const { t, isRTL } = useLanguage();
-  const featuredProducts = products.filter(product => product.featured);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadProducts = async () => {
+      try {
+        // 从 localStorage 优先加载
+        const savedProducts = localStorage.getItem('aec-products');
+        if (savedProducts) {
+          try {
+            const localData = JSON.parse(savedProducts);
+            if (Array.isArray(localData) && localData.length > 0) {
+              setProducts(localData.filter((p: Product) => p.featured).slice(0, 6));
+              setLoading(false);
+              return;
+            }
+          } catch (e) {
+            console.error('Failed to parse saved products:', e);
+          }
+        }
+
+        // 从 API 加载
+        const data = await getProducts();
+        const featured = data.filter(p => p.featured).slice(0, 6);
+        setProducts(featured.length > 0 ? featured : data.slice(0, 6));
+      } catch (error) {
+        console.error('Failed to load products:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadProducts();
+  }, []);
+
+  if (loading) {
+    return (
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="py-20 bg-white">
@@ -27,7 +69,7 @@ const FeaturedProducts = () => {
 
         {/* Products Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-          {featuredProducts.map((product) => (
+          {products.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
