@@ -1,6 +1,15 @@
-// Visitor tracking: deprecated Prisma dependency removed.
-// Kept as no-op stubs so /api/visitors still builds and runs without a DB table.
-// If you later want visitor analytics on Turso, implement here with @libsql/client.
+// Visitor tracking with Prisma
+import { PrismaClient } from '@prisma/client';
+
+const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
+
+function getPrisma() {
+  return globalForPrisma.prisma || new PrismaClient();
+}
+
+if (process.env.NODE_ENV !== 'production') {
+  globalForPrisma.prisma = getPrisma();
+}
 
 export interface Visitor {
   id: string;
@@ -43,15 +52,58 @@ export async function recordVisitor(
   referer: string,
   page: string
 ): Promise<void> {
-  // No-op: visitor analytics disabled (no DB table). Safe to call.
-  void parseUserAgent(userAgent);
-  void ip; void referer; void page;
+  try {
+    const prisma = getPrisma();
+    const parsed = parseUserAgent(userAgent);
+    
+    await prisma.visitor.create({
+      data: {
+        ip,
+        userAgent,
+        referer,
+        page,
+        browser: parsed.browser,
+        os: parsed.os,
+        device: parsed.device,
+      }
+    });
+  } catch (error) {
+    console.error('Failed to record visitor:', error);
+  }
 }
 
 export async function getVisitors(): Promise<Visitor[]> {
-  return [];
+  try {
+    const prisma = getPrisma();
+    const visitors = await prisma.visitor.findMany({
+      orderBy: { timestamp: 'desc' },
+      take: 100
+    });
+    
+    return visitors.map(v => ({
+      id: v.id,
+      ip: v.ip,
+      userAgent: v.userAgent,
+      referer: v.referer || undefined,
+      page: v.page,
+      country: v.country || undefined,
+      city: v.city || undefined,
+      browser: v.browser || undefined,
+      os: v.os || undefined,
+      device: v.device || undefined,
+      timestamp: v.timestamp.toISOString(),
+    }));
+  } catch (error) {
+    console.error('Failed to get visitors:', error);
+    return [];
+  }
 }
 
 export async function clearVisitors(): Promise<void> {
-  // No-op
+  try {
+    const prisma = getPrisma();
+    await prisma.visitor.deleteMany();
+  } catch (error) {
+    console.error('Failed to clear visitors:', error);
+  }
 }
