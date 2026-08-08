@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  umami:
+    image: ghcr.io/umami-software/umami:postgresql-latest
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      DATABASE_TYPE: postgresql
+      APP_SECRET: ${APP_SECRET:-$(openssl rand -base64 32)}
+      HASH_SALT: ${HASH_SALT:-$(openssl rand -base64 32)}
+      # 可选：启用地理位置解析（需要 MaxMind License Key）
+      # GEOIP_UPDATE_KEY: ${GEOIP_UPDATE_KEY}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/heartbeat"]
+      interval: 30s
+      timeout: 10s
+      retries: 3

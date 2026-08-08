@@ -4,6 +4,7 @@ import { LanguageProvider } from '@/context/LanguageContext';
 import Header from '@/components/layout/Header';
 import FooterSection from '@/components/layout/Footer';
 import BackToTop from '@/components/layout/BackToTop';
+import UmamiScript from '@/components/analytics/UmamiScript';
 import '@/styles/globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -19,6 +20,9 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const umamiSrc = process.env.NEXT_PUBLIC_UMAMI_SRC;
+  const umamiWebsiteId = process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID;
+
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -38,6 +42,9 @@ export default function RootLayout({
             <BackToTop />
           </div>
         </LanguageProvider>
+        {umamiSrc && umamiWebsiteId && (
+          <UmamiScript src={umamiSrc} websiteId={umamiWebsiteId} />
+        )}
       </body>
     </html>
   );
