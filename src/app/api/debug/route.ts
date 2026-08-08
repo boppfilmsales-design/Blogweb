@@ -6,7 +6,7 @@ export async function GET() {
   const dbUrl = process.env.DATABASE_URL;
   return NextResponse.json({
     hasDatabaseUrl: !!dbUrl,
-    dbUrlPrefix: dbUrl ? dbUrl.substring(0, 50) + '...' : 'not set',
+    dbUrlPrefix: dbUrl ? dbUrl.substring(0, 80) : 'not set',
     nodeEnv: process.env.NODE_ENV,
   });
 }
