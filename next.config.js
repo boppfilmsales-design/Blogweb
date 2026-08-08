@@ -4,9 +4,9 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  // Ensure Prisma client and its native engine are bundled with serverless functions (Next 14)
+  // Ensure @libsql/client native binding is external (not bundled) for serverless
   experimental: {
-    serverComponentsExternalPackages: ['@prisma/client', '.prisma/client'],
+    serverComponentsExternalPackages: ['@libsql/client'],
   },
 }
 

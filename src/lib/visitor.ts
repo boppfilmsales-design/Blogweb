@@ -1,13 +1,6 @@
-import { PrismaClient } from '@prisma/client';
-
-let prisma: PrismaClient | null = null;
-
-function getPrisma(): PrismaClient {
-  if (!prisma) {
-    prisma = new PrismaClient();
-  }
-  return prisma;
-}
+// Visitor tracking: deprecated Prisma dependency removed.
+// Kept as no-op stubs so /api/visitors still builds and runs without a DB table.
+// If you later want visitor analytics on Turso, implement here with @libsql/client.
 
 export interface Visitor {
   id: string;
@@ -25,7 +18,6 @@ export interface Visitor {
 
 function parseUserAgent(ua: string): { browser?: string; os?: string; device?: string } {
   const result: { browser?: string; os?: string; device?: string } = {};
-
   if (ua.includes('Firefox')) result.browser = 'Firefox';
   else if (ua.includes('Edg')) result.browser = 'Edge';
   else if (ua.includes('Chrome')) result.browser = 'Chrome';
@@ -51,44 +43,15 @@ export async function recordVisitor(
   referer: string,
   page: string
 ): Promise<void> {
-  const client = getPrisma();
-  const uaInfo = parseUserAgent(userAgent);
-
-  await client.visitor.create({
-    data: {
-      ip,
-      userAgent,
-      referer: referer || '',
-      page,
-      browser: uaInfo.browser,
-      os: uaInfo.os,
-      device: uaInfo.device,
-    },
-  });
+  // No-op: visitor analytics disabled (no DB table). Safe to call.
+  void parseUserAgent(userAgent);
+  void ip; void referer; void page;
 }
 
 export async function getVisitors(): Promise<Visitor[]> {
-  const client = getPrisma();
-  const visitors = await client.visitor.findMany({
-    orderBy: { timestamp: 'desc' },
-    take: 500,
-  });
-  return visitors.map(v => ({
-    id: v.id,
-    ip: v.ip,
-    userAgent: v.userAgent,
-    referer: v.referer || undefined,
-    page: v.page,
-    country: v.country || undefined,
-    city: v.city || undefined,
-    browser: v.browser || undefined,
-    os: v.os || undefined,
-    device: v.device || undefined,
-    timestamp: v.timestamp.toISOString(),
-  }));
+  return [];
 }
 
 export async function clearVisitors(): Promise<void> {
-  const client = getPrisma();
-  await client.visitor.deleteMany();
+  // No-op
 }

@@ -1,0 +1,1 @@
+postgresql://postgres:bRY%24SDXZmKEyRe6@db.pfiqxrnbvksoztjxvhim.supabase.co:6543/postgres?pgbouncer=true&sslmode=require
