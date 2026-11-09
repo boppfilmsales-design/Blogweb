@@ -26,9 +26,37 @@ const defaultHero: HeroContent = {
   ctaTextZh: '浏览产品',
 };
 
+const R2_PUBLIC = 'https://pub-39b7138db749493793fdbe2a9e90d150.r2.dev';
+
+interface HeroSlide {
+  src: string;
+  alt: string;
+  captionEn: string;
+  captionZh: string;
+}
+
+// 首页右侧轮播：白底膜卷影棚图 + 生产线大卷实拍（R2 blogweb-images 桶，2026-11-10 上线预览）
+const heroSlides: HeroSlide[] = [
+  { src: `${R2_PUBLIC}/hero/mg-3943.jpg`, alt: 'Gold metallized BOPP film roll', captionEn: 'Gold Metallized BOPP Film', captionZh: '金色镀铝 BOPP 膜' },
+  { src: `${R2_PUBLIC}/hero/mg-4031.jpg`, alt: 'Metallized BOPP film rolls in gold, copper and silver', captionEn: 'Metallized BOPP Film Rolls', captionZh: '镀铝 BOPP 膜卷' },
+  { src: `${R2_PUBLIC}/hero/mg-4053.jpg`, alt: 'BOPP film rolls in assorted colors', captionEn: 'BOPP Film Roll Family', captionZh: 'BOPP 膜卷系列' },
+  { src: `${R2_PUBLIC}/hero/jumboroll-factory.jpg`, alt: 'Jumbo film rolls on the production line', captionEn: 'Jumbo Rolls on the Production Line', captionZh: '生产线上的膜卷' },
+];
+
 const Hero = () => {
   const [heroContent, setHeroContent] = useState<HeroContent>(defaultHero);
   const [locale, setLocale] = useState('en');
+  const [slide, setSlide] = useState(0);
+  const [paused, setPaused] = useState(false);
+
+  // 轮播：每 4 秒淡入淡出切一张；鼠标悬停暂停
+  useEffect(() => {
+    if (paused) return;
+    const timer = setInterval(() => {
+      setSlide((prev) => (prev + 1) % heroSlides.length);
+    }, 4000);
+    return () => clearInterval(timer);
+  }, [paused]);
 
   useEffect(() => {
     // 首先从localStorage加载
@@ -147,14 +175,41 @@ const Hero = () => {
           {/* Visual Element */}
           <div className="relative">
             <div className="relative z-10">
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20">
-                <div className="aspect-video bg-gradient-to-br from-blue-400/20 to-blue-600/20 rounded-lg flex items-center justify-center">
-                  <div className="text-center">
-                    <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <span className="text-white font-bold text-3xl">A</span>
-                    </div>
-                    <p className="text-white font-medium">AEC Group</p>
-                    <p className="text-blue-200 text-sm">Professional Packaging Film Supplier</p>
+              <div
+                className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20"
+                onMouseEnter={() => setPaused(true)}
+                onMouseLeave={() => setPaused(false)}
+              >
+                {/* 图片轮播：图片铺满卡片，淡入淡出切换 */}
+                <div className="relative aspect-video rounded-lg overflow-hidden bg-white/10">
+                  {heroSlides.map((s, i) => (
+                    <img
+                      key={s.src}
+                      src={s.src}
+                      alt={s.alt}
+                      loading={i === 0 ? 'eager' : 'lazy'}
+                      className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${
+                        i === slide ? 'opacity-100' : 'opacity-0'
+                      }`}
+                    />
+                  ))}
+                  {/* 底部说明 */}
+                  <div className="absolute bottom-3 left-3 bg-black/45 backdrop-blur-sm text-white text-xs sm:text-sm font-medium px-3 py-1.5 rounded-full">
+                    {locale === 'zh' ? heroSlides[slide].captionZh : heroSlides[slide].captionEn}
+                  </div>
+                  {/* 圆点指示，可点切换 */}
+                  <div className="absolute bottom-3 right-3 flex items-center gap-2">
+                    {heroSlides.map((s, i) => (
+                      <button
+                        key={s.src}
+                        type="button"
+                        aria-label={`Go to slide ${i + 1}`}
+                        onClick={() => setSlide(i)}
+                        className={`h-2 rounded-full transition-all duration-300 ${
+                          i === slide ? 'w-6 bg-white' : 'w-2 bg-white/50 hover:bg-white/80'
+                        }`}
+                      />
+                    ))}
                   </div>
                 </div>
               </div>
