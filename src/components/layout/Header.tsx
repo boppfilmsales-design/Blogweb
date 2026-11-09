@@ -4,6 +4,13 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/context/LanguageContext';
 import { FiMenu, FiX, FiGlobe, FiSearch, FiChevronDown, FiSun, FiMoon } from 'react-icons/fi';
+import { CATEGORY_GROUPS } from '@/lib/categories';
+import { getFamilyLabel } from '@/components/products/productUtils';
+
+// Product families for the dropdown, derived from the canonical category list
+// so every link actually has products (the old hard-coded list contained ids
+// with no products at all, leading to empty results).
+const productFamilies = Object.keys(CATEGORY_GROUPS);
 
 const Header = () => {
   const { locale, setLocale, t } = useLanguage();
@@ -32,7 +39,7 @@ const Header = () => {
     // 然后从API加载（API可能有更新的数据，但localStorage优先）
     fetch('/api/pages')
       .then((res) => res.json())
-      .then((data) => {
+      .then((data: any) => {
         // 只使用API数据填充localStorage中没有的字段
         if (data.header) {
           setHeaderContent(prev => ({
@@ -61,27 +68,6 @@ const Header = () => {
     { code: 'pt', name: 'Português', flag: '🇧🇷' },
   ];
 
-  const categories = [
-    { id: 'bopp-gloss', en: 'BOPP Gloss', zh: 'BOPP光膜' },
-    { id: 'bopp-matte', en: 'BOPP Matte', zh: 'BOPP哑膜' },
-    { id: 'bopp-metalized', en: 'BOPP Metalized', zh: 'BOPP镀铝膜' },
-    { id: 'bopp-heatseal', en: 'BOPP Heat Seal', zh: 'BOPP热封膜' },
-    { id: 'boppfilm-cigarette', en: 'BOPP Cigarette', zh: 'BOPP烟膜' },
-    { id: 'boppfilm-printing', en: 'BOPP Printing', zh: 'BOPP印刷膜' },
-    { id: 'bopp-tape-jumbo', en: 'BOPP Tape', zh: 'BOPP胶带' },
-    { id: 'bopet-clear', en: 'BOPET Clear', zh: 'BOPET透明膜' },
-    { id: 'bopet-thermal', en: 'BOPET Thermal', zh: 'BOPET热敏膜' },
-    { id: 'bopa-12mic', en: 'BOPA Film', zh: 'BOPA薄膜' },
-    { id: 'bops-glossy', en: 'BOPS Film', zh: 'BOPS薄膜' },
-    { id: 'cpp', en: 'CPP Film', zh: 'CPP薄膜' },
-    { id: 'pof-central', en: 'POF Film', zh: 'POF薄膜' },
-    { id: 'pe-stretch', en: 'PE Stretch', zh: 'PE拉伸膜' },
-    { id: 'tear-tape', en: 'Tear Tape', zh: '撕裂胶带' },
-    { id: 'labels-rolls', en: 'Labels', zh: '标签' },
-    { id: 'bags-sheets-group', en: 'Bags & Sheets', zh: '包装袋与片材' },
-    { id: 'printing-machines', en: 'Machines', zh: '机械设备' },
-  ];
-
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
@@ -100,8 +86,9 @@ const Header = () => {
 
   return (
     <header className={`sticky top-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-lg' : 'bg-white dark:bg-gray-900'}`}>
-      {/* Top Bar */}
-      <div className="bg-blue-600 text-white text-xs py-1">
+      {/* Top Bar — collapses once the page is scrolled so the sticky header
+          stays slim and stops covering page content below it */}
+      <div className={`bg-blue-600 text-white text-xs overflow-hidden transition-all duration-300 ${isScrolled ? 'max-h-0' : 'max-h-8 py-1'}`}>
         <div className="max-w-7xl mx-auto px-4 flex justify-between items-center">
           <div className="flex items-center space-x-4">
             <span>📧 {headerContent.email || 'sale@boppfilmsale.com'}</span>
@@ -161,14 +148,14 @@ const Header = () => {
                       {locale === 'zh' ? '产品分类' : 'Product Categories'}
                     </h3>
                     <div className="grid grid-cols-2 gap-2">
-                      {categories.map((cat) => (
+                      {productFamilies.map((family) => (
                         <Link
-                          key={cat.id}
-                          href={`/products?category=${cat.id}`}
+                          key={family}
+                          href={`/products?group=${encodeURIComponent(family)}`}
                           className="text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 py-1 px-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                           onClick={() => setIsProductsOpen(false)}
                         >
-                          {locale === 'zh' ? cat.zh : cat.en}
+                          {getFamilyLabel(family, locale)}
                         </Link>
                       ))}
                     </div>
@@ -199,11 +186,6 @@ const Header = () => {
             {/* Contact */}
             <Link href="/contact" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors">
               {t.nav.contact}
-            </Link>
-
-            {/* Admin Link */}
-            <Link href="/admin" className="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-sm">
-              {locale === 'zh' ? '管理' : 'Admin'}
             </Link>
           </nav>
 
@@ -302,9 +284,6 @@ const Header = () => {
             </Link>
             <Link href="/contact" className="block py-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium">
               {t.nav.contact}
-            </Link>
-            <Link href="/admin" className="block py-2 text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 text-sm">
-              {locale === 'zh' ? '管理后台' : 'Admin'}
             </Link>
           </nav>
         </div>

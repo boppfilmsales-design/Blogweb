@@ -38,7 +38,7 @@ const About = () => {
     // 然后从API加载
     fetch('/api/pages')
       .then((res) => res.json())
-      .then((data) => {
+      .then((data: any) => {
         if (data.about) {
           setAboutContent(prev => ({
             titleEn: prev.titleEn || data.about.titleEn || '',

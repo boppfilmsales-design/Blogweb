@@ -2,11 +2,12 @@ import { NextRequest, NextResponse } from 'next/server';
 import { importProducts } from '@/lib/db';
 
 export const dynamic = 'force-dynamic';
+export const runtime = 'edge';
 
 // POST import products from JSON
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
+    const body: any = await request.json();
     const products = Array.isArray(body) ? body : body.products;
 
     if (!Array.isArray(products)) {

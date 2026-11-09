@@ -196,7 +196,7 @@ export default function AdminPage() {
   const loadUploadedFiles = async () => {
     try {
       const res = await fetch('/api/upload');
-      const data = await res.json();
+      const data: any = await res.json();
       if (data.files) {
         setUploadedFiles(data.files.map((f: any) => f.url));
       }
@@ -303,7 +303,7 @@ export default function AdminPage() {
 
       // 然后从API加载（API可能有更新的数据）
       const res = await fetch('/api/pages');
-      const apiData = await res.json();
+      const apiData: any = await res.json();
 
       // 合并数据：localStorage优先，然后是API，最后是默认值
       const mergedData: PageContent = {
@@ -470,7 +470,7 @@ export default function AdminPage() {
 
       try {
         const res = await fetch('/api/upload', { method: 'POST', body: formData });
-        const data = await res.json();
+        const data: any = await res.json();
         if (data.url) {
           uploadedUrls.push(data.url);
           console.log('Image uploaded successfully:', files[i].name);

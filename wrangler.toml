@@ -1,0 +1,43 @@
+# Blogweb — Cloudflare Pages configuration (next-on-pages build).
+# The Workers/OpenNext route is no longer used from this copy.
+# Deploy preview with:
+#   npx wrangler pages deploy --project-name blogweb --branch preview
+# (the output directory comes from pages_build_output_dir below; wrangler
+# detects the .vercel/output layout — static/ + functions/ — only when the
+# config file is used. Deploying the directory directly uploads it verbatim
+# and attaches no Function.)
+# See README.md for the full setup sequence.
+
+name = "blogweb"
+compatibility_date = "2026-11-01"
+compatibility_flags = ["nodejs_compat"]
+pages_build_output_dir = ".vercel/output"
+
+# D1 database for products + visitors.
+# Create first, then paste the real database_id here:
+#   npx wrangler d1 create blogweb-db
+[[d1_databases]]
+binding = "DB"
+database_name = "blogweb-db"
+database_id = "8a5522a9-c171-41fa-8448-866a130c5a04"
+
+# R2 bucket for uploaded product images.
+# Create with: npx wrangler r2 bucket create blogweb-images
+[[r2_buckets]]
+binding = "IMAGES"
+bucket_name = "blogweb-images"
+
+# Optional: public base URL of the R2 bucket (the r2.dev domain you get when
+# enabling public access, or a custom domain such as https://img.boppfilmsale.com).
+# When set, /api/upload returns this URL for uploaded files.
+# When unset, uploads are served through the built-in /api/images proxy route.
+# Uncomment and fill in after the bucket's public access is enabled:
+# [vars]
+# R2_PUBLIC_URL = "https://pub-xxxxxxxxxxxxxxxx.r2.dev"
+
+# Custom domain — attach AFTER the first successful deploy (see MIGRATION.md).
+# Uncomment, then run `npm run deploy` again. Cloudflare creates the DNS
+# record automatically because the boppfilmsale.com zone is on Cloudflare.
+# routes = [
+#   { pattern = "blog.boppfilmsale.com", custom_domain = true },
+# ]

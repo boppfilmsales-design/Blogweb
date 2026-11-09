@@ -57,14 +57,14 @@ export async function deleteProduct(id: string): Promise<void> {
 }
 
 // Import products
-export async function importProducts(products: Partial<Product>[]) {
+export async function importProducts(products: Partial<Product>[]): Promise<{ created: number; updated: number; failed: number }> {
   const res = await fetch(`${API_BASE}/products/import`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ products }),
   });
   if (!res.ok) throw new Error('Failed to import products');
-  return res.json();
+  return res.json() as Promise<{ created: number; updated: number; failed: number }>;
 }
 
 // Export products (client-side helper)

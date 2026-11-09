@@ -4,10 +4,9 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  // Ensure @libsql/client native binding is external (not bundled) for serverless
-  experimental: {
-    serverComponentsExternalPackages: ['@libsql/client'],
-  },
 }
 
+// Cloudflare Pages build (@cloudflare/next-on-pages).
+// The previous OpenNext dev init (initOpenNextCloudflareForDev) was removed:
+// it only applies to the Workers/OpenNext route, not to Pages.
 module.exports = nextConfig

@@ -22,7 +22,7 @@ const CTASection = () => {
   useEffect(() => {
     fetch('/api/pages')
       .then((res) => res.json())
-      .then((data) => {
+      .then((data: any) => {
         if (data.cta) {
           setCtaContent({
             titleEn: data.cta.titleEn || 'Ready to Get Started?',

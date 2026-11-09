@@ -1,15 +1,7 @@
-// Visitor tracking with Prisma
-import { PrismaClient } from '@prisma/client';
-
-const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
-
-function getPrisma() {
-  return globalForPrisma.prisma || new PrismaClient();
-}
-
-if (process.env.NODE_ENV !== 'production') {
-  globalForPrisma.prisma = getPrisma();
-}
+// Visitor tracking with Cloudflare D1 (SQLite).
+// Replaces the previous Prisma + PostgreSQL (Supabase) implementation.
+// Exported function names and signatures are unchanged.
+import { getDB } from './cloudflare-env';
 
 export interface Visitor {
   id: string;
@@ -53,20 +45,27 @@ export async function recordVisitor(
   page: string
 ): Promise<void> {
   try {
-    const prisma = getPrisma();
+    const db = await getDB();
     const parsed = parseUserAgent(userAgent);
-    
-    await prisma.visitor.create({
-      data: {
+
+    await db
+      .prepare(
+        'INSERT INTO visitors (id, ip, userAgent, referer, page, country, city, browser, os, device, timestamp) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+      )
+      .bind(
+        crypto.randomUUID(),
         ip,
         userAgent,
-        referer,
+        referer || null,
         page,
-        browser: parsed.browser,
-        os: parsed.os,
-        device: parsed.device,
-      }
-    });
+        null,
+        null,
+        parsed.browser ?? null,
+        parsed.os ?? null,
+        parsed.device ?? null,
+        new Date().toISOString()
+      )
+      .run();
   } catch (error) {
     console.error('Failed to record visitor:', error);
   }
@@ -74,13 +73,12 @@ export async function recordVisitor(
 
 export async function getVisitors(): Promise<Visitor[]> {
   try {
-    const prisma = getPrisma();
-    const visitors = await prisma.visitor.findMany({
-      orderBy: { timestamp: 'desc' },
-      take: 100
-    });
-    
-    return visitors.map(v => ({
+    const db = await getDB();
+    const { results } = await db
+      .prepare('SELECT * FROM visitors ORDER BY timestamp DESC LIMIT 100')
+      .all();
+
+    return (results || []).map((v: any) => ({
       id: v.id,
       ip: v.ip,
       userAgent: v.userAgent,
@@ -91,7 +89,7 @@ export async function getVisitors(): Promise<Visitor[]> {
       browser: v.browser || undefined,
       os: v.os || undefined,
       device: v.device || undefined,
-      timestamp: v.timestamp.toISOString(),
+      timestamp: v.timestamp,
     }));
   } catch (error) {
     console.error('Failed to get visitors:', error);
@@ -101,8 +99,8 @@ export async function getVisitors(): Promise<Visitor[]> {
 
 export async function clearVisitors(): Promise<void> {
   try {
-    const prisma = getPrisma();
-    await prisma.visitor.deleteMany();
+    const db = await getDB();
+    await db.prepare('DELETE FROM visitors').run();
   } catch (error) {
     console.error('Failed to clear visitors:', error);
   }

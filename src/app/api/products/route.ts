@@ -2,11 +2,11 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getProducts as dbGetProducts, createProduct, updateProduct, deleteProduct, importProducts } from '@/lib/db';
 
 export const dynamic = 'force-dynamic';
+export const runtime = 'edge';
 
 // GET all products
 export async function GET() {
   try {
-    console.log('DATABASE_URL:', process.env.DATABASE_URL ? 'set' : 'not set');
     const products = await dbGetProducts();
     return NextResponse.json(products);
   } catch (error: any) {
@@ -18,7 +18,7 @@ export async function GET() {
 // POST create new product
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
+    const body: any = await request.json();
     const product = await createProduct(body);
     return NextResponse.json(product, { status: 201 });
   } catch (error: any) {

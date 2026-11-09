@@ -31,7 +31,7 @@ export default function ContactPage() {
   useEffect(() => {
     fetch('/api/pages')
       .then((res) => res.json())
-      .then((data) => {
+      .then((data: any) => {
         if (data.contact) {
           setContactContent(data.contact);
         }

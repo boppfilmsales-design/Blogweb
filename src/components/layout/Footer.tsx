@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/context/LanguageContext';
 import { FiMail, FiPhone, FiMapPin, FiFacebook, FiTwitter, FiLinkedin, FiInstagram } from 'react-icons/fi';
+import { getCategoryDisplayName } from '@/components/products/productUtils';
 
 const FooterSection = () => {
   const { t, isRTL, locale } = useLanguage();
@@ -36,7 +37,7 @@ const FooterSection = () => {
     // 然后从API加载（API可能有更新的数据，但localStorage优先）
     fetch('/api/pages')
       .then((res) => res.json())
-      .then((data) => {
+      .then((data: any) => {
         // 只使用API数据填充localStorage中没有的字段
         if (data.footer) {
           setFooterContent(prev => ({
@@ -65,19 +66,28 @@ const FooterSection = () => {
   ];
 
   const productCategories = [
-    { href: '/products?category=boppfilm-printing', label: locale === 'zh' ? 'BOPP印刷膜' : 'BOPP Printing Film' },
-    { href: '/products?category=boppfilm-cigarette', label: locale === 'zh' ? 'BOPP烟膜' : 'BOPP Cigarette Film' },
-    { href: '/products?category=boppfilm-metallized', label: locale === 'zh' ? 'BOPP镀铝膜' : 'BOPP Metallized Film' },
-    { href: '/products?category=bopet-clear', label: locale === 'zh' ? 'BOPET透明膜' : 'BOPET Clear Film' },
-    { href: '/products?category=bopet-thermal', label: locale === 'zh' ? 'BOPET热敏膜' : 'BOPET Thermal Film' },
-    { href: '/products?category=bopa-12mic', label: locale === 'zh' ? 'BOPA薄膜' : 'BOPA Film' },
-    { href: '/products?category=bops-glossy', label: locale === 'zh' ? 'BOPS光膜' : 'BOPS Glossy Film' },
-    { href: '/products?category=cpp', label: locale === 'zh' ? 'CPP薄膜' : 'CPP Film' },
-    { href: '/products?category=pof-central', label: locale === 'zh' ? 'POF薄膜' : 'POF Film' },
-    { href: '/products?category=tear-tape', label: locale === 'zh' ? '撕裂胶带' : 'Tear Tape' },
-    { href: '/products?category=labels-rolls', label: locale === 'zh' ? '标签' : 'Labels' },
-    { href: '/products?category=bags-sheets-group', label: locale === 'zh' ? '包装袋与片材' : 'Bags & Sheets' },
+    { href: '/products?category=boppfilm-printing', id: 'boppfilm-printing' },
+    { href: '/products?category=boppfilm-cigarette', id: 'boppfilm-cigarette' },
+    { href: '/products?category=boppfilm-metallized', id: 'boppfilm-metallized' },
+    { href: '/products?category=bopet-clear', id: 'bopet-clear' },
+    { href: '/products?category=bopet-thermal', id: 'bopet-thermal' },
+    { href: '/products?category=bopa-12mic', id: 'bopa-12mic' },
+    { href: '/products?category=bops-glossy', id: 'bops-glossy' },
+    { href: '/products?category=cpp', id: 'cpp' },
+    { href: '/products?category=pof-central', id: 'pof-central' },
+    { href: '/products?category=tear-tape', id: 'tear-tape' },
+    { href: '/products?category=labels-rolls', id: 'labels-rolls' },
+    { href: '/products?category=bags-sheets-group', id: 'bags-sheets-group' },
   ];
+
+  // Copyright line: normalise the CMS value so the sentence always reads
+  // "© 2026 AEC Group. All Rights Reserved." with exactly one space after the period.
+  const copyrightText =
+    (footerContent.copyright || '').trim().replace(/^\.+/, '').trim() || t.footer.copyright;
+  const companyDesc =
+    (locale === 'zh' ? footerContent.companyDescZh : footerContent.companyDescEn) || t.footer.companyDesc;
+  const contactEmail = footerContent.email || 'sale@boppfilmsale.com';
+  const contactPhone = footerContent.phone || '86-551-64687285';
 
   const socialLinks = [
     { icon: FiFacebook, href: footerContent.facebook || '#', label: 'Facebook' },
@@ -88,6 +98,8 @@ const FooterSection = () => {
 
   return (
     <div className="bg-gray-900 text-white" role="contentinfo">
+      {/* Brand accent */}
+      <div className="h-1 bg-gradient-to-r from-blue-700 via-blue-500 to-blue-700" />
       {/* Main Footer */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -99,7 +111,7 @@ const FooterSection = () => {
                 <h3 className="text-xl font-bold">AEC Group</h3>
               </div>
             </div>
-            <p className="text-gray-400 mb-4 text-sm">{locale === 'zh' ? footerContent.companyDescZh : footerContent.companyDescEn}</p>
+            <p className="text-gray-400 mb-4 text-sm">{companyDesc}</p>
             <div className="flex space-x-3">
               {socialLinks.map((social, index) => (
                 <a
@@ -135,7 +147,7 @@ const FooterSection = () => {
               {productCategories.map((category, index) => (
                 <li key={index}>
                   <Link href={category.href} className="text-gray-400 hover:text-white transition-colors text-sm">
-                    {category.label}
+                    {getCategoryDisplayName(category.id, locale)}
                   </Link>
                 </li>
               ))}
@@ -146,17 +158,19 @@ const FooterSection = () => {
           <div>
             <h4 className="text-lg font-semibold mb-4">{t.footer.contact}</h4>
             <ul className="space-y-3">
-              <li className="flex items-start space-x-3">
-                <FiMapPin className="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0" />
-                <span className="text-gray-400 text-sm">{footerContent.address}</span>
-              </li>
+              {footerContent.address && (
+                <li className="flex items-start space-x-3">
+                  <FiMapPin className="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0" />
+                  <span className="text-gray-400 text-sm">{footerContent.address}</span>
+                </li>
+              )}
               <li className="flex items-center space-x-3">
                 <FiPhone className="w-5 h-5 text-blue-400 flex-shrink-0" />
-                <span className="text-gray-400 text-sm">{footerContent.phone}</span>
+                <span className="text-gray-400 text-sm">{contactPhone}</span>
               </li>
               <li className="flex items-center space-x-3">
                 <FiMail className="w-5 h-5 text-blue-400 flex-shrink-0" />
-                <span className="text-gray-400 text-sm">{footerContent.email}</span>
+                <span className="text-gray-400 text-sm">{contactEmail}</span>
               </li>
             </ul>
             {/* Friend Links */}
@@ -183,7 +197,7 @@ const FooterSection = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-gray-400 text-sm">
-              © 2026 AEC Group. {footerContent.copyright}
+              © 2026 AEC Group. {copyrightText}
             </p>
             <div className="flex space-x-6 mt-4 md:mt-0">
               <Link href="/privacy" className="text-gray-400 hover:text-white text-sm transition-colors">

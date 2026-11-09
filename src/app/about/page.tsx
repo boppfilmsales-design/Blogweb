@@ -26,7 +26,7 @@ export default function AboutPage() {
     // 从API加载About页面内容
     fetch('/api/pages')
       .then((res) => res.json())
-      .then((data) => {
+      .then((data: any) => {
         if (data.about) {
           setAboutContent({
             introEn: data.about.intro?.contentEn || '',

@@ -1,14 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 export const dynamic = 'force-dynamic';
+export const runtime = 'edge';
 
 // POST - Validate admin password
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
+    const body: any = await request.json();
     const password = body.password || '';
 
-    const expectedPassword = process.env.ADMIN_PASSWORD || 'aecgroup2024';
+    const expectedPassword = process.env.ADMIN_PASSWORD;
 
     if (password === expectedPassword) {
       return NextResponse.json({ success: true });

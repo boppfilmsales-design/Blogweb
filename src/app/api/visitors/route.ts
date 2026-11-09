@@ -2,11 +2,12 @@ import { NextRequest, NextResponse } from 'next/server';
 import { recordVisitor, getVisitors, clearVisitors } from '@/lib/visitor';
 
 export const dynamic = 'force-dynamic';
+export const runtime = 'edge';
 
 // POST - Record a new visitor
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
+    const body: any = await request.json();
     const userAgent = request.headers.get('user-agent') || '';
     const referer = request.headers.get('referer') || '';
     

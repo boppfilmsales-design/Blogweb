@@ -36,6 +36,12 @@ coverage/
 prisma/dev.db
 prisma/dev.db-journal
 
+# Cloudflare / OpenNext
+.open-next/
+.wrangler/
+# Generated D1 seed SQL (regenerable with `npm run seed:d1`)
+seed-d1-*.sql
+
 # Misc
 *.log
 *.pid

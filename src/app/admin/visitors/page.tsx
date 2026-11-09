@@ -35,7 +35,7 @@ export default function VisitorsPage() {
   const loadVisitors = async () => {
     try {
       const res = await fetch('/api/visitors');
-      const data = await res.json();
+      const data: any = await res.json();
       setVisitors(data);
     } catch (error) {
       console.error('Failed to load visitors:', error);

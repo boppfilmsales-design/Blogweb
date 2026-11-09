@@ -1,15 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'fs';
-import { join } from 'path';
 
-// 使用tmp目录存储运行时数据（Vercel Serverless可写）
-const DATA_DIR = '/tmp/aec-data';
-const PAGES_FILE = join(DATA_DIR, 'pages.json');
+export const dynamic = 'force-dynamic';
+export const runtime = 'edge';
 
-// 确保目录存在
-if (!existsSync(DATA_DIR)) {
-  mkdirSync(DATA_DIR, { recursive: true });
-}
+// Pages runs on Cloudflare Pages (Edge Runtime): no writable filesystem,
+// so page content is served from the built-in defaults below and admin
+// edits are NOT persisted on this deployment. (The old code read/wrote
+// /tmp/aec-data/pages.json, which only worked with a writable local filesystem.)
 
 // 默认页面内容
 const defaultPages = {
@@ -101,23 +98,12 @@ const defaultPages = {
 };
 
 function loadPages() {
-  try {
-    if (existsSync(PAGES_FILE)) {
-      const data = readFileSync(PAGES_FILE, 'utf-8');
-      return JSON.parse(data);
-    }
-  } catch (error) {
-    console.error('Failed to load pages:', error);
-  }
   return defaultPages;
 }
 
-function savePages(pages: typeof defaultPages): void {
-  try {
-    writeFileSync(PAGES_FILE, JSON.stringify(pages, null, 2), 'utf-8');
-  } catch (error) {
-    console.error('Failed to save pages:', error);
-  }
+function savePages(_pages: typeof defaultPages): void {
+  // No-op on Pages: there is no writable filesystem to persist to.
+  console.warn('savePages: page edits are not persisted on this Pages deployment');
 }
 
 // GET - 获取页面内容
@@ -133,7 +119,7 @@ export async function GET() {
 // POST - 更新页面内容
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
+    const body: any = await request.json();
     const pages = loadPages();
 
     // 更新页面内容

@@ -1,202 +1,121 @@
-# BOPP Films Sale - Multi-language Commercial Website
+# Blogweb — AEC Group Product Blog & Catalogue
 
-A professional multi-language commercial website for BOPP film products, built with Next.js and optimized for international trade.
+Product catalogue and blog website for **Anhui Eastern Communication Imp. & Exp. Co., Ltd. (AEC GROUP)** — BOPP, BOPET, CPP, POF and other packaging films.
+
+- **Live site:** https://blog.boppfilmsale.com
+- **Preview:** https://preview.blogweb-43o.pages.dev (latest preview deployment)
+- **Products:** 167, bilingual (English / Chinese)
+
+## Tech stack
+
+- **Next.js 14** (App Router) + **React 18** + **Tailwind CSS 3** + `next-intl`
+- **Cloudflare D1** (`blogweb-db`) — product data, visitors, page content
+- **Cloudflare R2** (`blogweb-images`) — product images
+- **@cloudflare/next-on-pages** — builds the app for Cloudflare Pages
 
 ## Features
 
-### 🌐 Multi-Language Support
-- **Chinese (中文)** - 简体中文
-- **English** - English
-- **Arabic (العربية)** - العربية (RTL support)
-- **Español** - Spanish
-- **Português** - Portuguese
+- Product catalogue: pagination (20 per page), 12 product series + category filtering, search
+- Product detail pages: image gallery, specifications, features and applications lists
+- Bilingual content (English / Chinese)
+- Admin panel at `/admin` — product management, bulk import, visitor statistics
+- Contact / inquiry form
+- JSON API: `GET /api/products`, `GET /api/products/[id]`
+- SEO meta tags
 
-### 📱 Responsive Design
-- Mobile-first approach
-- Tablet and desktop optimized
-- RTL layout support for Arabic
-
-### 🛍️ Product Management
-- Comprehensive product catalog
-- Detailed product pages with specifications
-- Category filtering
-- Search functionality
-- Featured products showcase
-
-### 📧 Inquiry System
-- Contact forms with validation
-- Product-specific inquiries
-- Professional inquiry management
-
-### 🎨 Modern UI/UX
-- Clean, professional design
-- Smooth animations
-- Intuitive navigation
-- Professional color scheme
-
-### 📊 SEO Optimization
-- Meta tags optimization
-- Structured data
-- Sitemap generation
-- Multi-language SEO
-
-### 🔧 Admin Features
-- Product management interface
-- Import/Export functionality (JSON & CSV)
-- Content management system
-
-## Project Structure
+## Project structure
 
 ```
-blogWeb/
 ├── src/
-│   ├── app/                    # Next.js App Router pages
-│   │   ├── layout.tsx         # Root layout
-│   │   ├── page.tsx           # Homepage
-│   │   ├── products/          # Product pages
-│   │   │   ├── page.tsx       # Products listing
-│   │   │   └── [slug]/        # Individual product pages
-│   │   ├── about/             # About page
-│   │   ├── contact/           # Contact page
-│   │   └── admin/             # Admin dashboard
-│   ├── components/            # Reusable components
-│   │   ├── layout/            # Layout components
-│   │   ├── home/              # Homepage components
-│   │   ├── products/          # Product components
-│   │   └── contact/           # Contact components
-│   ├── context/               # React context providers
-│   ├── data/                  # Static data
-│   ├── locales/               # Translation files
-│   ├── styles/                # CSS styles
-│   └── utils/                 # Utility functions
-├── public/                    # Static assets
-└── package.json              # Dependencies
+│   ├── app/                  # Next.js App Router pages & API routes
+│   │   ├── products/         # Catalogue + product detail pages
+│   │   ├── admin/            # Admin panel
+│   │   └── api/              # API routes (products, upload, images, visitors, …)
+│   ├── components/           # UI components (layout, home, products)
+│   └── lib/                  # D1 access (db.ts), Cloudflare env, R2 URL helpers
+├── scripts/
+│   ├── seed-d1.mjs           # Seed D1 from products_mapped.json
+│   └── upload-images-to-r2.mjs  # Upload product images to R2
+├── d1-schema.sql             # D1 table definitions (products, visitors)
+├── wrangler.toml             # Pages project config + D1/R2 bindings
+├── .npmrc                    # legacy-peer-deps=true (required for install)
+└── products_mapped.json      # Base catalogue data used for seeding
 ```
 
-## Getting Started
+## Getting started
 
 ### Prerequisites
-- Node.js 16+
-- npm or yarn
 
-### Installation
+- Node.js 18+
+- npm
+- `wrangler` (for D1 / R2 work)
 
-1. **Install dependencies:**
-   ```bash
-   cd blogWeb
-   npm install
-   ```
-
-2. **Run development server:**
-   ```bash
-   npm run dev
-   ```
-
-3. **Open in browser:**
-   ```
-   http://localhost:3000
-   ```
-
-### Build for Production
+### Local development
 
 ```bash
-npm run build
-npm start
+npm install        # .npmrc sets legacy-peer-deps=true; plain install otherwise fails
+npm run dev        # http://localhost:3000
 ```
 
-### Static Export
+Local data (D1 runs locally through Wrangler):
 
 ```bash
-npm run export
+npx wrangler d1 execute blogweb-db --local --file=d1-schema.sql
+npm run seed:d1    # seeds from products_mapped.json in the repo root
 ```
 
-This will generate a static site in the `out` folder that can be deployed to any static hosting service.
+### Build
 
-## Deployment Options
+```bash
+npm run build      # next build
+```
 
-### GitHub Pages
-1. Push code to GitHub
-2. Enable GitHub Pages in repository settings
-3. Set source to `/docs` folder after running `npm run export`
+## Deployment — Cloudflare Pages (direct upload)
 
-### Vercel
-1. Connect GitHub repository to Vercel
-2. Set build command: `npm run build`
-3. Set output directory: `.next`
+This repo deploys **only** to Cloudflare Pages. There is no Vercel deployment:
+the old Vercel deployment (`blogweb-green.vercel.app`) stopped working when its
+free quota was exhausted and is not recoverable, so all Vercel configuration
+(`vercel.json`, the Vercel deploy workflow) has been removed from this repo.
 
-### Netlify
-1. Connect GitHub repository to Netlify
-2. Set build command: `npm run build`
-3. Set publish directory: `.next`
+Build for Pages, then deploy the static output directory:
 
-### Traditional Hosting
-1. Run `npm run build`
-2. Upload `.next` folder to your server
-3. Configure server to run Next.js
+```bash
+npx @cloudflare/next-on-pages
+# Preview:
+npx wrangler pages deploy .vercel/output/static --project-name blogweb --branch preview
+# Production:
+npx wrangler pages deploy .vercel/output/static --project-name blogweb
+```
 
-## Customization
+Deploy **`.vercel/output/static`**, not `.vercel/output` itself — deploying the
+parent directory uploads it verbatim, attaches no Function, and the site 404s.
 
-### Adding Languages
-1. Create new translation file in `src/locales/`
-2. Update `next.config.js` to include new locale
-3. Update language selector in Header component
+### Bindings (Pages dashboard → project `blogweb` → Settings → Bindings)
 
-### Adding Products
-1. Edit `src/data/products.ts`
-2. Add new product object with all required fields
-3. Include translations for all supported languages
+Set these for **both Production and Preview**:
 
-### Styling
-- Uses Tailwind CSS for styling
-- Custom styles in `src/styles/globals.css`
-- Component-specific styles using Tailwind classes
+| Type | Variable / binding | Value |
+| --- | --- | --- |
+| D1 database | `DB` | `blogweb-db` |
+| R2 bucket | `IMAGES` | `blogweb-images` |
+| Variable | `R2_PUBLIC_URL` | public URL of the `blogweb-images` bucket |
+| Compatibility flag | — | `nodejs_compat` |
 
-### Content Management
-- Access admin panel at `/admin`
-- Use import/export for bulk updates
-- Edit product data in `src/data/products.ts`
+### Admin password
 
-## Key Features Explained
+Set `ADMIN_PASSWORD` as an **environment variable in the Pages dashboard**
+(same place as the bindings, Production and Preview). The code has **no
+default password**: until this variable is set, `/admin/login` cannot log in.
+Never commit a password to this repo.
 
-### Multi-Language System
-- Automatic language detection based on browser settings
-- Manual language switching with persistence
-- RTL support for Arabic language
-- Complete translation coverage
+## Data
 
-### Product Showcase
-- Grid and list view modes
-- Advanced filtering and search
-- Detailed product specifications
-- Related products suggestions
-- Product inquiry integration
-
-### SEO Optimization
-- Dynamic meta tags for each page
-- Structured data markup
-- Multi-language sitemap
-- Optimized page titles and descriptions
-
-### Admin Dashboard
-- Product management interface
-- Bulk import/export functionality
-- Content editing capabilities
-- Analytics integration ready
-
-## Browser Support
-
-- Chrome (latest)
-- Firefox (latest)
-- Safari (latest)
-- Edge (latest)
-
-## Performance
-
-- Static site generation for optimal performance
-- Image optimization
-- Code splitting
-- Lazy loading
-- Minimal JavaScript bundle
+- **Product copy lives in D1** (`blogweb-db`, 167 products). The repo's
+  `products_mapped.json` is the base catalogue used for seeding; the enriched
+  descriptions shown on the live site are stored in D1.
+- **Product images live in R2** (`blogweb-images`). To upload: `npm run upload:images`.
+- The admin panel's page-content edits are kept in memory only on this
+  deployment (not persisted to D1).
 
 ## Contributing
 
@@ -207,19 +126,4 @@ This will generate a static site in the `out` folder that can be deployed to any
 
 ## License
 
-MIT License - feel free to use this project for commercial purposes.
-
-## Support
-
-For support and questions, please contact:
-- Email: info@boppfilmsale.com
-- Website: https://boppfilmsale.com
-
----
-
-Built with ❤️ for the global packaging industry.
-"# Deploy trigger - update DATABASE_URL env"  
-""  
-""  
-""  
-""  
+MIT License.

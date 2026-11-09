@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getProductById, getProductBySlug, updateProduct, deleteProduct } from '@/lib/db';
 
 export const dynamic = 'force-dynamic';
+export const runtime = 'edge';
 
 // GET single product
 export async function GET(
@@ -30,7 +31,7 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   try {
-    const body = await request.json();
+    const body: any = await request.json();
     const product = await updateProduct(params.id, body);
     if (!product) {
       return NextResponse.json({ error: 'Product not found' }, { status: 404 });
