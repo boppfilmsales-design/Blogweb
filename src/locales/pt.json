@@ -2,98 +2,324 @@
   "nav": {
     "home": "Início",
     "products": "Produtos",
-    "about": "Sobre Nós",
+    "certifications": "Certificações",
+    "about": "Sobre nós",
     "contact": "Contato",
     "language": "Idioma",
-    "search": "Buscar produtos..."
+    "search": "Buscar produtos...",
+    "menu": "Menu",
+    "close": "Fechar",
+    "getQuote": "Pedir cotação"
+  },
+  "common": {
+    "viewAll": "Ver todos os produtos",
+    "viewDetails": "Ver detalhes",
+    "inquire": "Consultar agora",
+    "requestSample": "Pedir amostra",
+    "readMore": "Ler a história completa",
+    "learnMore": "Saiba mais",
+    "contactUs": "Fale conosco",
+    "sendInquiry": "Enviar consulta",
+    "backHome": "Voltar ao início",
+    "loading": "Carregando…",
+    "freeSample": "Amostras grátis",
+    "response24h": "Cotação em 24 horas"
   },
   "hero": {
-    "title": "Fornecedor Profissional de Filmes BOPP",
-    "subtitle": "Fornecendo Soluções de Filmes BOPP de Alta Qualidade para a Indústria de Embalagens Global",
-    "description": "Somos especializados na produção e exportação de filmes BOPP, amplamente utilizados em embalagens de alimentos, impressão, eletrônicos, tabaco e muitas outras indústrias. Com produtos de qualidade premium e serviço excelente, tornamo-nos um parceiro confiável para clientes em todo o mundo.",
-    "cta": "Explorar Produtos",
-    "contact": "Contate-nos"
+    "badge": "Direto da fábrica desde 2014 · Hefei, China",
+    "titleLead": "Filmes BOPP, BOPET e especiais,",
+    "titleHighlight": "fabricados e enviados direto da fábrica",
+    "subtitle": "10.000 toneladas de filme por ano, cortadas de 200 a 1600 mm e de 15 a 50 µm, entregues a transformadores em mais de 50 países.",
+    "description": "Você envia a especificação — espessura, largura, tratamento, tubete e palete. Confirmamos a cotação em 24 horas, enviamos amostras grátis e despachamos das nossas próprias linhas em Hefei. Sem camadas de intermediários, sem variação de gramatura inesperada.",
+    "ctaPrimary": "Pedir cotação",
+    "ctaSecondary": "Ver produtos",
+    "statSinceValue": "2014",
+    "statSinceLabel": "Fabricando desde",
+    "statCapacityValue": "10.000+",
+    "statCapacityLabel": "Toneladas por ano",
+    "statPassValue": "99,9%",
+    "statPassLabel": "Aprovação no controle de qualidade",
+    "statCountriesValue": "50+",
+    "statCountriesLabel": "Países atendidos",
+    "scrollHint": "Veja o que fabricamos e como cotamos"
+  },
+  "pain": {
+    "eyebrow": "Feito para compradores, não para catálogos",
+    "title": "O que costuma dar errado em pedidos de filme",
+    "subtitle": "A maioria dos problemas com filme de embalagem não é preço: é tolerância, documentação e quem atende o telefone quando o contêiner atrasa. Veja como tratamos cada ponto.",
+    "items": [
+      {
+        "title": "Espessura que varia entre bobinas",
+        "desc": "Uma ou duas micras de diferença mudam a laminação, o registro de impressão ou a força de selagem. Medimos cada bobina e mantemos a espessura dentro da tolerância do seu pedido."
+      },
+      {
+        "title": "Quatro cotações, quatro filmes",
+        "desc": "Intermediários renomeiam o mesmo grau. Você recebe a resina, o tratamento e o deslizamento que realmente produzimos, indicados na cotação."
+      },
+      {
+        "title": "Certificados que chegam depois do contêiner",
+        "desc": "A documentação FDA, RoHS, REACH e ISO é preparada com o embarque, para que o despachante e o QA do seu cliente a tenham antes da chegada."
+      },
+      {
+        "title": "Amostras que nunca chegam",
+        "desc": "Enviamos por courier amostras A4 e de bobina de graus em estoque em poucos dias, para sua linha testar o filme antes de fechar um contêiner."
+      },
+      {
+        "title": "Ninguém responde depois do sinal",
+        "desc": "Um contato único da cotação ao conhecimento de embarque, com fotos de produção e carregamento conforme o pedido avança."
+      }
+    ],
+    "solutionTitle": "Uma fábrica, um contato, uma especificação por escrito",
+    "solutionDesc": "A Anhui Eastern Communication (AEC Group) opera linhas de filme em Hefei desde 2014. Você trata com a planta que fabrica o filme, então cada mudança — largura, tubete, tratamento, metalização, impressão — é confirmada por quem opera a linha.",
+    "solutionPoints": [
+      "Especificação confirmada por escrito antes de produzir",
+      "Amostras grátis e cotação em 24 horas",
+      "Documentação ISO 9001, FDA, SGS, RoHS, REACH e ISO 14001"
+    ]
   },
   "features": {
-    "title": "Por Que Nos Escolher",
-    "quality": {
-      "title": "Qualidade Premium",
-      "desc": "Tecnologia de produção avançada e controle de qualidade rigoroso garantem que cada rolo atenda aos padrões internacionais"
-    },
-    "price": {
-      "title": "Preço Competitivo",
-      "desc": "Fornecimento direto de fábrica, eliminando intermediários para fornecer os preços mais competitivos"
-    },
-    "delivery": {
-      "title": "Entrega Rápida",
-      "desc": "Sistema completo de gestão de inventário e logística garante entrega pontual em todo o mundo"
-    },
-    "service": {
-      "title": "Serviço Profissional",
-      "desc": "Equipe técnica profissional fornece suporte abrangente desde a seleção do produto até a orientação de aplicação"
-    }
+    "title": "Por que os compradores ficam",
+    "subtitle": "Seis pontos que importam mais que uma foto de catálogo quando você organiza uma linha de produção em torno de uma entrega de filme.",
+    "items": [
+      {
+        "title": "Preço direto de fábrica",
+        "desc": "Você compra da planta que extrusa e corta o filme, sem margem comercial entre o seu custo e a nossa linha."
+      },
+      {
+        "title": "Espessura e largura sob medida",
+        "desc": "15 a 50 µm de espessura e corte de 200 a 1600 mm, com tubete, sentido de bobinamento e palete conforme sua linha."
+      },
+      {
+        "title": "Qualidade em 99,9%",
+        "desc": "Controle da resina recebida, medição de espessura em linha e inspeção bobina por bobina antes de embalar."
+      },
+      {
+        "title": "Amostras grátis e rápidas",
+        "desc": "Graus em estoque saem por courier para sua equipe imprimir, laminar ou selar antes do primeiro pedido."
+      },
+      {
+        "title": "Cotação em 24 horas",
+        "desc": "Envie espessura, largura, tratamento e volume; você recebe preço, prazo e opções de frete no próximo dia útil."
+      },
+      {
+        "title": "Documentação de exportação",
+        "desc": "CO, MSDS, declarações FDA e REACH preparadas com os documentos de embarque, sem correr atrás depois."
+      }
+    ]
+  },
+  "services": {
+    "eyebrow": "OEM e ODM",
+    "title": "Filme sob medida, conforme sua especificação",
+    "subtitle": "Corte, metalização, revestimento e impressão são feitos em casa, então um pedido personalizado é uma ordem de produção e não uma negociação entre três fornecedores.",
+    "items": [
+      {
+        "title": "Corte e rebobinamento",
+        "desc": "Largura final de 200 a 1600 mm, 15 a 50 µm, tubetes de 3 ou 6 polegadas, bobinamento externo ou interno."
+      },
+      {
+        "title": "Metalização e revestimento",
+        "desc": "BOPP, BOPET e CPP metalizados, além de tratamento antinévoa, antiestático, fosco e branco opaco."
+      },
+      {
+        "title": "Impressão e marca",
+        "desc": "Rotogravura para fita, etiquetas e filme de embalagem de marca, com acerto de cor ao seu arquivo."
+      },
+      {
+        "title": "OEM e marca própria",
+        "desc": "Sua marca na caixa, sua especificação na bobina, sua documentação no embarque."
+      }
+    ],
+    "specsTitle": "Capacidade em resumo",
+    "specs": [
+      { "label": "Espessura", "value": "15 – 50 µm" },
+      { "label": "Largura de corte", "value": "200 – 1600 mm" },
+      { "label": "Capacidade anual", "value": "10.000+ toneladas" },
+      { "label": "Tubete", "value": "3\" / 6\"" },
+      { "label": "Amostras", "value": "Grátis, por courier" },
+      { "label": "Cotação", "value": "Em 24 horas" }
+    ],
+    "processTitle": "Da consulta ao contêiner",
+    "process": [
+      { "title": "Envie a especificação", "desc": "Tipo de filme, espessura, largura, tratamento, tubete, volume e porto de destino." },
+      { "title": "Cotação e amostra", "desc": "Cotação por escrito em 24 horas e amostras grátis do grau em estoque mais próximo." },
+      { "title": "Teste e confirmação", "desc": "Você testa na sua linha; ajustamos tratamento, deslizamento ou largura e confirmamos." },
+      { "title": "Produção e qualidade", "desc": "Produção com medição em linha e inspeção bobina por bobina, com fotos do andamento." },
+      { "title": "Documentos e embarque", "desc": "Certificados, packing list e B/L preparados juntos, com reserva para o seu porto." }
+    ],
+    "cta": "Falar de um pedido personalizado"
   },
   "products": {
-    "title": "Séries de Produtos",
-    "subtitle": "Diversos produtos de filmes BOPP para atender diferentes necessidades da indústria",
-    "viewAll": "Ver Todos",
-    "viewDetails": "Ver Detalhes",
-    "inquire": "Consultar Agora",
+    "eyebrow": "Linha de produtos",
+    "title": "Filmes para embalagem, impressão e conversão",
+    "subtitle": "Graus BOPP, BOPET, BOPA, BOPS, CPP, POF e PE — além de fita, etiquetas e sacos — com a espessura e largura que sua linha usa.",
+    "viewAll": "Ver todos os produtos",
+    "viewDetails": "Ver detalhes",
+    "inquire": "Consultar agora",
+    "requestSample": "Pedir amostra",
     "specifications": "Especificações",
     "applications": "Aplicações",
-    "certifications": "Certificações",
     "features": "Características",
-    "relatedProducts": "Produtos Relacionados"
+    "certifications": "Certificações",
+    "relatedProducts": "Produtos relacionados",
+    "searchPlaceholder": "Buscar por tipo de filme, espessura ou aplicação…",
+    "showing": "Mostrando {start}–{end} de {total} produtos",
+    "noResults": "Nenhum produto corresponde a essa busca.",
+    "clearFilters": "Limpar todos os filtros",
+    "allProducts": "Todos os produtos",
+    "familyLabel": "Série",
+    "categoryLabel": "Categoria",
+    "specNote": "Outras espessuras e larguras são produzidas sob pedido — consulte sua especificação exata.",
+    "moqNote": "O mínimo depende do grau e da largura; confirmamos na sua cotação.",
+    "familiesTitle": "Famílias de produto",
+    "familiesSubtitle": "Seis famílias cobrem a maioria das aplicações de embalagem, rotulagem e fita."
   },
-  "category": {
-    "all": "Todos os Produtos",
-    "gloss": "Filme Brilhante",
-    "matte": "Filme Fosco",
-    "metalized": "Filme Metalizado",
-    "heatSeal": "Filme Termosselável",
-    "whiteOpaque": "Filme Branco Opaco",
-    "tape": "Fita Adesiva",
-    "printing": "Filme de Impressão"
+  "about": {
+    "eyebrow": "Sobre a AEC Group",
+    "title": "Uma fábrica de filmes em Hefei, atendendo transformadores no mundo todo",
+    "subtitle": "A Anhui Eastern Communication Imp. & Exp. Co., Ltd. fabrica e exporta filme de embalagem desde 2014.",
+    "storyTitle": "Nossa história",
+    "story": [
+      "A AEC Group começou em 2014 com uma constatação simples: transformadores compravam filme por camadas de intermediários, e cada camada acrescentava custo, atraso e uma resposta um pouco diferente sobre o que realmente havia na bobina.",
+      "Então construímos ao contrário. Nossa planta no distrito industrial de Baohe, em Hefei, opera linhas BOPP, BOPET, BOPS, CPP e POF, com corte, metalização, revestimento e impressão sob o mesmo teto. Quando um comprador pede 18 µm por 640 mm com tubete de 3 polegadas e tratamento corona em um lado, quem responde é quem ajusta a linha — não um escritório comercial a três fusos de distância.",
+      "Doze anos depois, embarcamos mais de 10.000 toneladas por ano para transformadores, impressoras e fabricantes de fita em mais de 50 países. O que não mudou é o método: especificação por escrito antes de produzir, amostra antes do contêiner e um contato com nome que responde enquanto o pedido corre."
+    ],
+    "factsTitle": "Os números por trás da história",
+    "facts": [
+      { "label": "Fundação", "value": "2014" },
+      { "label": "Capacidade anual", "value": "10.000+ t" },
+      { "label": "Aprovação QC", "value": "99,9%" },
+      { "label": "Mercados", "value": "50+ países" }
+    ],
+    "valuesTitle": "Como trabalhamos",
+    "values": [
+      { "title": "Especificação primeiro", "desc": "Nada entra na linha até espessura, largura, tratamento, tubete e embalagem estarem escritos e acordados." },
+      { "title": "Medir, não prometer", "desc": "A medição em linha e a inspeção bobina por bobina decidem se uma bobina embarca, não o cronograma." },
+      { "title": "Responder ao comprador", "desc": "Um contato com nome da cotação ao conhecimento de embarque, no seu horário comercial." },
+      { "title": "Construir o pedido longo", "desc": "Preferimos ajustar uma especificação e manter um transformador por dez anos a ganhar um contêiner e perder a conta." }
+    ],
+    "facilityTitle": "Dentro da fábrica",
+    "facilityDesc": "Extrusão, metalização, corte e impressão em uma única planta em Hefei, Anhui — por isso uma largura ou tratamento especial é mudança de produção, não subcontratação.",
+    "ctaTitle": "Quer ver a fábrica antes de pedir?",
+    "ctaDesc": "Recebemos visitas de compradores e fazemos tours em vídeo das linhas, do armazém e da bancada de qualidade. Peça para agendarmos.",
+    "ctaButton": "Agendar uma visita"
+  },
+  "cases": {
+    "eyebrow": "Casos em destaque",
+    "title": "Os pedidos que cotamos toda semana",
+    "subtitle": "Três perfis de comprador que concentram a maior parte do nosso volume — e o que realmente entregamos a eles.",
+    "items": [
+      {
+        "sector": "Tabaco e embalagem de cigarros",
+        "challenge": "Transformadores de filme para cigarros precisam de espessura e deslizamento constantes para o maço rodar em alta velocidade sem rasgar.",
+        "solution": "Filme BOPP para cigarros de 18 a 22 µm, cortado na largura do transformador, com tratamento e deslizamento fixados por pedido.",
+        "spec": "18–22 µm · corte 200–1600 mm · documentação ISO 9001 e FDA"
+      },
+      {
+        "sector": "Embalagem flexível de alimentos",
+        "challenge": "Laminadores precisam de filmes metalizados e transparentes que colem de forma confiável e passem nos testes de contato com alimentos.",
+        "solution": "BOPP e BOPET metalizados, mais BOPP transparente para laminação impressa, com declarações REACH e FDA.",
+        "spec": "12–45 µm · metalizado ou transparente · REACH, FDA, RoHS"
+      },
+      {
+        "sector": "Fita, etiqueta e envoltório floral",
+        "challenge": "Fabricantes de fita e etiqueta compram bobinas jumbo e precisam do mesmo grau, mês após mês, com preço estável.",
+        "solution": "Filme BOPP para fita, filme perolado e floral em bobinas jumbo, com preço de reposição mantido na temporada.",
+        "spec": "Bobinas jumbo · 23–40 µm · preço de reposição"
+      }
+    ]
+  },
+  "faq": {
+    "eyebrow": "Dúvidas de compradores",
+    "title": "Mínimo, prazo, amostras e documentação",
+    "subtitle": "As cinco perguntas de todo comprador novo — respondidas antes de você enviar a consulta.",
+    "items": [
+      {
+        "q": "Qual é o pedido mínimo?",
+        "a": "O mínimo depende do grau e da largura: graus em estoque podem sair de uma única bobina jumbo, enquanto pedidos metalizados, revestidos ou impressos são cotados por ordem. Informe filme, espessura, largura e volume mensal e escreveremos o mínimo exato na sua cotação."
+      },
+      {
+        "q": "Quanto tempo levam produção e entrega?",
+        "a": "Graus em estoque normalmente ficam prontos para carregar 7–15 dias após o sinal; corte, metalização ou impressão sob medida costumam levar mais e são confirmados por escrito na fatura proforma. O trânsito marítimo depende do seu porto — cotamos FOB e CIF para você comparar."
+      },
+      {
+        "q": "Posso receber amostras antes de pedir?",
+        "a": "Sim. Folhas A4 e amostras de bobina de graus em estoque são grátis; o courier fica por sua conta se preferir sua própria conta. As amostras normalmente saem de Hefei em poucos dias úteis e podemos igualar uma amostra enviada por você."
+      },
+      {
+        "q": "Quais certificações e documentos acompanham o filme?",
+        "a": "A planta trabalha com ISO 9001 e ISO 14001, e os filmes são fornecidos com documentação FDA, SGS, RoHS e REACH conforme o grau. Certificados, MSDS, packing list e certificado de origem são preparados com os documentos de embarque."
+      },
+      {
+        "q": "Quais são as condições de pagamento e envio?",
+        "a": "Aceitamos T/T e L/C à vista, com as condições exatas na fatura proforma. Embarcamos FOB de portos chineses ou CIF para o seu, e podemos preparar a especificação de palete para o seu armazém."
+      },
+      {
+        "q": "Vocês produzem conforme nossa especificação ou marca?",
+        "a": "Sim — é a maior parte do que fazemos. Largura, espessura, tubete, sentido de bobinamento, tratamento, metalização e impressão são definidos por pedido, e caixas OEM/marca própria levam sua marca e documentação."
+      }
+    ],
+    "note": "Ainda comparando? Envie sua especificação e respondemos com preço, prazo e oferta de amostra.",
+    "cta": "Fazer uma pergunta"
+  },
+  "cta": {
+    "title": "Envie sua especificação de filme e receba preço em 24 horas",
+    "subtitle": "Espessura, largura, tratamento, volume e porto de destino é tudo o que precisamos. Se o grau servir, seguem amostras grátis.",
+    "primary": "Solicitar cotação",
+    "secondary": "Falar no WhatsApp",
+    "note": "Segunda a sábado, 09:00–18:00 horário da China (GMT+8)"
   },
   "contact": {
-    "title": "Contate-nos",
-    "subtitle": "Obtenha consulta profissional de produtos e cotação",
-    "name": "Seu Nome",
-    "email": "Endereço de Email",
-    "phone": "Número de Telefone",
-    "company": "Nome da Empresa",
-    "country": "País/Região",
-    "product": "Produto de Interesse",
-    "message": "Mensagem",
-    "send": "Enviar Consulta",
-    "success": "Consulta enviada com sucesso! Entraremos em contato em breve.",
-    "error": "Falha ao enviar, por favor tente novamente mais tarde.",
+    "title": "Fale com a fábrica",
+    "subtitle": "Envie uma especificação, peça uma amostra ou agende um tour em vídeo pelas linhas.",
+    "formTitle": "Enviar consulta",
+    "formSubtitle": "Toda consulta é respondida por uma pessoa, normalmente em um dia útil.",
+    "name": "Seu nome",
+    "email": "E-mail",
+    "phone": "Telefone / WhatsApp",
+    "company": "Empresa",
+    "country": "País",
+    "product": "Produto de interesse",
+    "productPlaceholder": "Selecione uma família de produto",
+    "message": "Sua necessidade",
+    "messagePlaceholder": "Tipo de filme, espessura (µm), largura (mm), tratamento, quantidade e porto de destino.",
+    "send": "Enviar consulta",
+    "sending": "Preparando seu e-mail…",
+    "success": "Seu aplicativo de e-mail deve estar aberto com a consulta preenchida.",
+    "successNote": "Se nada abriu, escreva para sale@boppfilmsale.com ou pelo WhatsApp — chega à mesma equipe.",
+    "error": "Não funcionou. Escreva diretamente para sale@boppfilmsale.com.",
+    "infoTitle": "Fábrica e escritório",
     "address": "Endereço",
-    "addressDetail": "Av. Huizhou 1158, Distrito Industrial Baohe, Hefei, Anhui, China",
-    "phone": "Telefone",
-    "email": "Email",
-    "whatsapp": "WhatsApp",
-    "businessHours": "Horário de Funcionamento",
-    "businessHoursDetail": "Segunda - Sexta 9:00-18:00"
+    "addressDetail": "No.1158 Huizhou Ave., distrito industrial de Baohe, 230051, Hefei, Anhui, R.P. China",
+    "phoneLabel": "Telefone",
+    "emailLabel": "E-mail",
+    "whatsappLabel": "WhatsApp",
+    "hoursLabel": "Horário",
+    "hoursDetail": "Segunda a sábado, 09:00–18:00 (GMT+8)",
+    "responseNote": "Cotação em 24 horas · amostras grátis · atendimento em inglês, chinês, espanhol e árabe",
+    "privacyNote": "Usamos seus dados apenas para responder esta consulta."
   },
   "footer": {
-    "company": "Perfil da Empresa",
-    "companyDesc": "Fabricante e exportador profissional de filmes BOPP, comprometido em fornecer soluções de embalagens de alta qualidade para clientes globais.",
-    "quickLinks": "Links Rápidos",
-    "products": "Séries de Produtos",
-    "contact": "Informações de Contato",
-    "copyright": "Todos os Direitos Reservados",
-    "privacy": "Política de Privacidade",
-    "terms": "Termos de Uso"
+    "tagline": "Filme de embalagem fabricado em Hefei desde 2014 e enviado direto da fábrica a transformadores em mais de 50 países.",
+    "quickLinks": "Empresa",
+    "productsTitle": "Produtos",
+    "contactTitle": "Contato",
+    "certificationsTitle": "Certificações",
+    "rights": "Todos os direitos reservados.",
+    "privacy": "Privacidade",
+    "terms": "Termos",
+    "specTitle": "Especificação típica",
+    "specValue": "15–50 µm · 200–1600 mm"
   },
   "seo": {
-    "homeTitle": "Fornecedor de Filmes BOPP | Fabricante Profissional de BOPP | BOPP Films Sale",
-    "homeDesc": "Fornecedor profissional de filmes BOPP oferecendo filmes brilhantes, foscos, metalizados, termosseláveis e mais. Fornecimento direto de fábrica, garantia de qualidade, exportação global.",
-    "productsTitle": "Produtos de Filmes BOPP | Filmes Brilhantes Foscos Metalizados | BOPP Films Sale",
-    "productsDesc": "Explore nossa série de produtos de filmes BOPP incluindo filmes brilhantes, foscos, metalizados, termosseláveis e mais. Adequados para embalagens de alimentos, impressão, eletrônicos e muitas outras indústrias.",
-    "aboutTitle": "Sobre Nós | Fabricante Profissional de BOPP",
-    "aboutDesc": "Conheça a BOPP Films Sale, somos um fabricante profissional de filmes BOPP com anos de experiência em exportação atendendo clientes em todo o mundo.",
-    "contactTitle": "Contate-nos | Consulta de Filmes BOPP",
-    "contactDesc": "Contate-nos para obter cotações de produtos de filmes BOPP. Equipe profissional fornece informações detalhadas do produto e dicas de aplicação."
+    "homeTitle": "Fabricante e fornecedor de filme BOPP | Filmes de embalagem direto da fábrica | AEC Group",
+    "homeDesc": "A AEC Group fabrica filmes de embalagem BOPP, BOPET, BOPS, CPP e POF em Hefei, China: 15–50 µm, corte 200–1600 mm, mais de 10.000 t/ano, ISO 9001, FDA, SGS, RoHS e REACH. Amostras grátis e cotação em 24 horas.",
+    "productsTitle": "Produtos de filme de embalagem — BOPP, BOPET, BOPS, CPP, POF | AEC Group",
+    "productsDesc": "Veja filmes BOPP, BOPET, BOPA, BOPS, CPP, POF e PE com espessura, largura e aplicações. Direto da fábrica em Hefei, China, com amostras grátis e cotação em 24 horas.",
+    "aboutTitle": "Sobre a AEC Group — fabricante de filme de embalagem desde 2014",
+    "aboutDesc": "A Anhui Eastern Communication (AEC Group) fabrica filme de embalagem BOPP, BOPET, BOPS, CPP e POF em Hefei desde 2014 e envia mais de 10.000 toneladas por ano a transformadores em mais de 50 países.",
+    "contactTitle": "Contato AEC Group — cotações, amostras e especificações de filme",
+    "contactDesc": "Envie sua especificação de filme à AEC Group e receba cotação direta de fábrica em 24 horas. Amostras grátis e documentação ISO 9001, FDA, SGS, RoHS e REACH.",
+    "certTitle": "Certificações — ISO 9001, FDA, SGS, RoHS, REACH, ISO 14001 | AEC Group",
+    "certDesc": "As certificações de qualidade, contato com alimentos, meio ambiente e conformidade de materiais por trás dos filmes da AEC Group, e o que cada uma cobre."
   }
 }

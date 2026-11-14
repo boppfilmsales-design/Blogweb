@@ -1,18 +1,24 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getProducts as dbGetProducts, createProduct, updateProduct, deleteProduct, importProducts } from '@/lib/db';
+import { staticProducts } from '@/lib/catalog';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'edge';
 
-// GET all products
+// GET all products.
+// If D1 is unavailable (binding missing, query error) the bundled catalogue is
+// returned with HTTP 200 instead of a 500: the site's product pages must never
+// fail just because the database is having a bad day.
 export async function GET() {
   try {
     const products = await dbGetProducts();
-    return NextResponse.json(products);
+    if (products.length > 0) {
+      return NextResponse.json(products);
+    }
   } catch (error: any) {
-    console.error('API Error:', error);
-    return NextResponse.json({ error: 'Failed to fetch products', details: error.message }, { status: 500 });
+    console.error('API products: falling back to bundled catalogue:', error?.message || error);
   }
+  return NextResponse.json(staticProducts());
 }
 
 // POST create new product

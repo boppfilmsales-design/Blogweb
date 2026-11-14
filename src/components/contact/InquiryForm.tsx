@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useLanguage } from '@/context/LanguageContext';
-import { FiSend, FiCheck, FiAlertCircle } from 'react-icons/fi';
+import { FiSend, FiCheck, FiAlertCircle, FiMessageCircle } from 'react-icons/fi';
+import { FAMILIES, SITE, WHATSAPP_URL } from '@/lib/site';
 
 interface FormData {
   name: string;
@@ -17,206 +18,242 @@ interface FormData {
 
 interface InquiryFormProps {
   productSlug?: string;
+  productName?: string;
 }
 
-const InquiryForm: React.FC<InquiryFormProps> = ({ productSlug }) => {
-  const { t, isRTL } = useLanguage();
-  const [isSubmitting, setIsSubmitting] = useState(false);
+const InquiryForm: React.FC<InquiryFormProps> = ({ productSlug, productName }) => {
+  const { t, locale } = useLanguage();
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [draft, setDraft] = useState<FormData | null>(null);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
-  } = useForm<FormData>();
+  } = useForm<FormData>({
+    defaultValues: {
+      product: productName ? 'other' : '',
+      message: productName ? `${t.contact.message}: ${productName}` : '',
+    },
+  });
 
-  const onSubmit = async (data: FormData) => {
-    setIsSubmitting(true);
-    setSubmitStatus('idle');
+  // A product link on /products or a product page carries ?product=<slug>.
+  // Reflect it in the form heading instead of silently dropping it.
+  const [fromUrl, setFromUrl] = useState('');
+  useEffect(() => {
+    if (productName) {
+      setFromUrl(productName);
+      return;
+    }
+    const params = new URLSearchParams(window.location.search);
+    const reference = params.get('product');
+    if (reference) setFromUrl(reference.replace(/[-_]+/g, ' ').trim());
+  }, [productName]);
 
+  const onSubmit = (data: FormData) => {
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const reference = productName || fromUrl || data.product || '';
+      const subject = `Film inquiry${reference ? ` — ${reference}` : ''}`;
+      const bodyLines = [
+        `${t.contact.name}: ${data.name}`,
+        `${t.contact.email}: ${data.email}`,
+        data.phone ? `${t.contact.phone}: ${data.phone}` : '',
+        data.company ? `${t.contact.company}: ${data.company}` : '',
+        data.country ? `${t.contact.country}: ${data.country}` : '',
+        reference ? `${t.contact.product}: ${reference}` : '',
+        '',
+        data.message,
+        '',
+        `— Sent from ${SITE.url}`,
+      ].filter(Boolean);
 
-      console.log('Inquiry submitted:', data);
+      const mailto = `mailto:${SITE.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
+        bodyLines.join('\n'),
+      )}`;
+
+      setDraft(data);
       setSubmitStatus('success');
-      reset();
-    } catch (error) {
+      window.location.href = mailto;
+    } catch {
       setSubmitStatus('error');
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
-  const productOptions = [
-    { value: 'gloss-bopp-film', label: 'Glossy BOPP Film' },
-    { value: 'matte-bopp-film', label: 'Matte BOPP Film' },
-    { value: 'metalized-bopp-film', label: 'Metalized BOPP Film' },
-    { value: 'heat-sealable-bopp-film', label: 'Heat Sealable BOPP Film' },
-    { value: 'white-opaque-bopp-film', label: 'White Opaque BOPP Film' },
-    { value: 'tape-bopp-film', label: 'Tape BOPP Film' },
-  ];
+  const whatsappText = encodeURIComponent(
+    `Hello ${SITE.name}, I would like a quotation.` +
+      (productName || fromUrl ? ` Product: ${productName || fromUrl}.` : ''),
+  );
+
+  const fieldClass =
+    'w-full rounded-lg border border-slate-300 bg-white px-3.5 py-3 text-[15px] text-slate-900 placeholder:text-slate-400 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-100';
+  const labelClass = 'mb-1.5 block text-sm font-medium text-slate-700';
+  const errorClass = 'mt-1 flex items-center gap-1 text-sm text-red-600';
 
   return (
-    <div className="bg-white rounded-xl shadow-lg p-8">
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Name */}
+    <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-7">
+      <h2 className="text-xl font-bold text-slate-900">{t.contact.formTitle}</h2>
+      <p className="mt-1.5 text-sm text-slate-600">{t.contact.formSubtitle}</p>
+      {fromUrl && (
+        <p className="mt-3 inline-flex rounded-lg bg-blue-50 px-3 py-1.5 text-xs font-medium text-blue-800">
+          {t.contact.product}: {fromUrl}
+        </p>
+      )}
+
+      <form onSubmit={handleSubmit(onSubmit)} className="mt-5 space-y-4" noValidate>
+        <div className="grid gap-4 sm:grid-cols-2">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className={labelClass} htmlFor="inq-name">
               {t.contact.name} *
             </label>
             <input
+              id="inq-name"
               type="text"
-              {...register('name', { required: 'Name is required' })}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-              placeholder={t.contact.name}
+              autoComplete="name"
+              className={fieldClass}
+              {...register('name', { required: true })}
             />
             {errors.name && (
-              <p className="mt-1 text-sm text-red-600 flex items-center">
-                <FiAlertCircle className="w-4 h-4 mr-1" />
-                {errors.name.message}
+              <p className={errorClass}>
+                <FiAlertCircle className="h-4 w-4" aria-hidden /> {t.contact.name}
               </p>
             )}
           </div>
 
-          {/* Email */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className={labelClass} htmlFor="inq-email">
               {t.contact.email} *
             </label>
             <input
+              id="inq-email"
               type="email"
+              autoComplete="email"
+              className={fieldClass}
               {...register('email', {
-                required: 'Email is required',
-                pattern: {
-                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                  message: 'Invalid email address',
-                },
+                required: true,
+                pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
               })}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-              placeholder={t.contact.email}
             />
             {errors.email && (
-              <p className="mt-1 text-sm text-red-600 flex items-center">
-                <FiAlertCircle className="w-4 h-4 mr-1" />
-                {errors.email.message}
+              <p className={errorClass}>
+                <FiAlertCircle className="h-4 w-4" aria-hidden /> {t.contact.email}
               </p>
             )}
           </div>
 
-          {/* Phone */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className={labelClass} htmlFor="inq-phone">
               {t.contact.phone}
             </label>
-            <input
-              type="tel"
-              {...register('phone')}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-              placeholder={t.contact.phone}
-            />
+            <input id="inq-phone" type="tel" autoComplete="tel" className={fieldClass} {...register('phone')} />
           </div>
 
-          {/* Company */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className={labelClass} htmlFor="inq-company">
               {t.contact.company}
             </label>
             <input
+              id="inq-company"
               type="text"
+              autoComplete="organization"
+              className={fieldClass}
               {...register('company')}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-              placeholder={t.contact.company}
             />
           </div>
 
-          {/* Country */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className={labelClass} htmlFor="inq-country">
               {t.contact.country}
             </label>
             <input
+              id="inq-country"
               type="text"
+              autoComplete="country-name"
+              className={fieldClass}
               {...register('country')}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-              placeholder={t.contact.country}
             />
           </div>
 
-          {/* Product Interest */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className={labelClass} htmlFor="inq-product">
               {t.contact.product}
             </label>
-            <select
-              {...register('product')}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-            >
-              <option value="">Select a product</option>
-              {productOptions.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
+            <select id="inq-product" className={fieldClass} {...register('product')}>
+              <option value="">{t.contact.productPlaceholder}</option>
+              {FAMILIES.map((family) => (
+                <option key={family.name} value={family.name}>
+                  {locale === 'zh' ? family.zh : family.en}
                 </option>
               ))}
+              <option value="other">{locale === 'zh' ? '其他 / 定制' : 'Other / custom'}</option>
             </select>
           </div>
         </div>
 
-        {/* Message */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className={labelClass} htmlFor="inq-message">
             {t.contact.message} *
           </label>
           <textarea
-            rows={4}
-            {...register('message', { required: 'Message is required' })}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors resize-none"
-            placeholder={t.contact.message}
+            id="inq-message"
+            rows={5}
+            placeholder={t.contact.messagePlaceholder}
+            className={`${fieldClass} resize-y`}
+            {...register('message', { required: true })}
           />
           {errors.message && (
-            <p className="mt-1 text-sm text-red-600 flex items-center">
-              <FiAlertCircle className="w-4 h-4 mr-1" />
-              {errors.message.message}
+            <p className={errorClass}>
+              <FiAlertCircle className="h-4 w-4" aria-hidden /> {t.contact.message}
             </p>
           )}
         </div>
 
-        {/* Submit Button */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
           <button
             type="submit"
-            disabled={isSubmitting}
-            className="inline-flex items-center px-8 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-xl bg-blue-700 px-6 text-base font-semibold text-white hover:bg-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
           >
-            {isSubmitting ? (
-              <>
-                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                Sending...
-              </>
-            ) : (
-              <>
-                <FiSend className="w-5 h-5 mr-2" />
-                {t.contact.send}
-              </>
-            )}
+            <FiSend className="h-5 w-5" aria-hidden />
+            {t.contact.send}
           </button>
 
-          {/* Status Messages */}
-          {submitStatus === 'success' && (
-            <div className="flex items-center text-green-600">
-              <FiCheck className="w-5 h-5 mr-2" />
-              {t.contact.success}
-            </div>
-          )}
-          {submitStatus === 'error' && (
-            <div className="flex items-center text-red-600">
-              <FiAlertCircle className="w-5 h-5 mr-2" />
-              {t.contact.error}
-            </div>
-          )}
+          <a
+            href={`${WHATSAPP_URL.split('?')[0]}?text=${whatsappText}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-xl border border-green-600 px-5 text-base font-semibold text-green-700 hover:bg-green-50"
+          >
+            <FiMessageCircle className="h-5 w-5" aria-hidden />
+            {t.cta.secondary}
+          </a>
         </div>
+
+        <p className="text-xs leading-relaxed text-slate-500">{t.contact.privacyNote}</p>
+
+        {submitStatus === 'success' && (
+          <div role="status" className="rounded-xl border border-green-200 bg-green-50 p-4 text-sm text-green-900">
+            <p className="flex items-start gap-2 font-medium">
+              <FiCheck className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
+              {t.contact.success}
+            </p>
+            <p className="mt-1 ps-6 text-green-800">{t.contact.successNote}</p>
+            {draft && (
+              <p className="mt-2 ps-6 text-xs text-green-800">
+                {SITE.email} · {SITE.mobileDisplay}
+              </p>
+            )}
+          </div>
+        )}
+        {submitStatus === 'error' && (
+          <div role="alert" className="flex items-start gap-2 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
+            <FiAlertCircle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
+            <span>
+              {t.contact.error}{' '}
+              <a className="font-semibold underline" href={`mailto:${SITE.email}`}>
+                {SITE.email}
+              </a>
+            </span>
+          </div>
+        )}
       </form>
     </div>
   );

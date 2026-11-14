@@ -2,98 +2,324 @@
   "nav": {
     "home": "首页",
     "products": "产品中心",
+    "certifications": "认证资质",
     "about": "关于我们",
     "contact": "联系我们",
     "language": "语言",
-    "search": "搜索产品..."
+    "search": "搜索产品...",
+    "menu": "菜单",
+    "close": "关闭",
+    "getQuote": "获取报价"
   },
-  "hero": {
-    "title": "专业BOPP薄膜供应商",
-    "subtitle": "为全球包装行业提供高品质BOPP薄膜解决方案",
-    "description": "我们专注于BOPP薄膜的生产和出口，产品广泛应用于食品包装、印刷、电子、烟草等多个行业。凭借优质的产品和完善的服务，我们已成为全球客户信赖的合作伙伴。",
-    "cta": "浏览产品",
-    "contact": "立即咨询"
-  },
-  "features": {
-    "title": "为什么选择我们",
-    "quality": {
-      "title": "优质品质",
-      "desc": "采用先进生产工艺，严格质量控制，确保每一卷薄膜都达到国际标准"
-    },
-    "price": {
-      "title": "竞争价格",
-      "desc": "工厂直供，省去中间环节，为客户提供最具竞争力的价格"
-    },
-    "delivery": {
-      "title": "快速交付",
-      "desc": "完善的库存管理和物流体系，确保按时交付全球各地"
-    },
-    "service": {
-      "title": "专业服务",
-      "desc": "专业技术团队提供全方位支持，从产品选择到应用指导"
-    }
-  },
-  "products": {
-    "title": "产品系列",
-    "subtitle": "多样化的BOPP薄膜产品，满足不同行业需求",
-    "viewAll": "查看全部",
+  "common": {
+    "viewAll": "查看全部产品",
     "viewDetails": "查看详情",
     "inquire": "立即询价",
+    "requestSample": "申请样品",
+    "readMore": "阅读完整故事",
+    "learnMore": "了解更多",
+    "contactUs": "联系我们",
+    "sendInquiry": "发送询价",
+    "backHome": "返回首页",
+    "loading": "加载中…",
+    "freeSample": "免费样品",
+    "response24h": "24小时内报价"
+  },
+  "hero": {
+    "badge": "工厂直供 · 2014年建厂 · 中国合肥",
+    "titleLead": "BOPP、BOPET 及特种薄膜，",
+    "titleHighlight": "工厂制造，直供终端",
+    "subtitle": "年产包装薄膜 10,000 吨，厚度 15–50 µm，分切宽度 200–1600 mm，服务 50 多个国家的包装与印刷企业。",
+    "description": "您给出规格——厚度、宽度、电晕处理、纸芯与托盘方式，我们 24 小时内确认报价，免费寄样，从合肥自有产线直接发货。没有中间贸易环节，也不会有厚度偏差的意外。",
+    "ctaPrimary": "获取报价",
+    "ctaSecondary": "浏览产品",
+    "statSinceValue": "2014",
+    "statSinceLabel": "建厂至今",
+    "statCapacityValue": "10,000+",
+    "statCapacityLabel": "吨/年产能",
+    "statPassValue": "99.9%",
+    "statPassLabel": "质检合格率",
+    "statCountriesValue": "50+",
+    "statCountriesLabel": "出口国家",
+    "scrollHint": "看看我们生产什么、如何报价"
+  },
+  "pain": {
+    "eyebrow": "为采购而建，不为目录而建",
+    "title": "薄膜订单最容易出问题的几件事",
+    "subtitle": "包装薄膜的问题大多不在价格，而在公差、单证，以及柜子迟到时还有没有人接电话。以下是我们逐条处理的方式。",
+    "items": [
+      {
+        "title": "卷与卷之间厚度漂移",
+        "desc": "差一两个微米，复合强度、套印和热封就会变。我们逐卷检测，并把厚度控制在订单写明的公差之内。"
+      },
+      {
+        "title": "四个报价，四种膜",
+        "desc": "贸易商把同一牌号换个说法。您拿到的是我们产线实际使用的树脂、处理方式和滑爽度，写进报价单，而不是猜出来的。"
+      },
+      {
+        "title": "证书比货柜晚到",
+        "desc": "FDA、RoHS、REACH、ISO 文件随货准备，报关行和您客户的品控在货到之前都能拿到。"
+      },
+      {
+        "title": "样品永远寄不到",
+        "desc": "常规牌号的 A4 样片和卷样几天内快递寄出，让您的产线在下大货前先试膜。"
+      },
+      {
+        "title": "付了定金就找不到人",
+        "desc": "从报价到提单由一位固定对接人负责，订单推进过程中发送生产与装柜照片。"
+      }
+    ],
+    "solutionTitle": "一个工厂、一个对接人、一份书面规格",
+    "solutionDesc": "安徽东渐进出口（AEC Group）自 2014 年起在合肥运行薄膜产线。您直接对接生产工厂，宽度、纸芯、处理、镀铝、印刷的每一次调整都由产线上的人确认。",
+    "solutionPoints": [
+      "生产前书面确认规格",
+      "免费样品与 24 小时报价",
+      "ISO 9001、FDA、SGS、RoHS、REACH、ISO 14001 全套文件"
+    ]
+  },
+  "features": {
+    "title": "客户长期合作的原因",
+    "subtitle": "当整条产线都在等一柜薄膜时，这六件事比目录照片重要得多。",
+    "items": [
+      {
+        "title": "工厂直供价格",
+        "desc": "您直接向拉膜和分切的工厂采购，您的成本与我们产线之间没有贸易差价。"
+      },
+      {
+        "title": "按您要求的厚度与宽度",
+        "desc": "15–50 µm 厚度、200–1600 mm 分切，纸芯尺寸、卷绕方向与托盘方式按您的产线设定。"
+      },
+      {
+        "title": "99.9% 的质量水平",
+        "desc": "原料进厂检验、在线测厚、逐卷检查合格后才包装出货。"
+      },
+      {
+        "title": "快速免费样品",
+        "desc": "常规牌号快递寄样，让您的团队先印刷、复合或热封验证，再下订单。"
+      },
+      {
+        "title": "24 小时内报价",
+        "desc": "提供厚度、宽度、处理方式与数量，下一个工作日即给出价格、交期与运输方案。"
+      },
+      {
+        "title": "出口单证齐全",
+        "desc": "CO、MSDS、FDA 与 REACH 声明随船务文件一并准备，不需要事后追单。"
+      }
+    ]
+  },
+  "services": {
+    "eyebrow": "OEM 与 ODM",
+    "title": "按您的规格定制薄膜",
+    "subtitle": "分切、镀铝、涂布与印刷全部在厂内完成，定制订单是一项生产指令，而不是三家供应商之间的扯皮。",
+    "items": [
+      {
+        "title": "分切与复卷",
+        "desc": "成品宽度 200–1600 mm，厚度 15–50 µm，3 英寸或 6 英寸纸芯，正卷或反卷。"
+      },
+      {
+        "title": "镀铝与涂布",
+        "desc": "BOPP、BOPET、CPP 镀铝，以及防雾、抗静电、哑光、珠光白等处理。"
+      },
+      {
+        "title": "印刷与品牌",
+        "desc": "胶带、标签及品牌包装膜的凹版印刷，按您的稿件对色。"
+      },
+      {
+        "title": "OEM 与贴牌",
+        "desc": "纸箱印您的品牌，膜卷按您的规格，随货附您的文件。"
+      }
+    ],
+    "specsTitle": "能力一览",
+    "specs": [
+      { "label": "厚度", "value": "15 – 50 µm" },
+      { "label": "分切宽度", "value": "200 – 1600 mm" },
+      { "label": "年产能", "value": "10,000+ 吨" },
+      { "label": "纸芯规格", "value": "3 英寸 / 6 英寸" },
+      { "label": "样品政策", "value": "免费，快递寄出" },
+      { "label": "报价时间", "value": "24 小时内" }
+    ],
+    "processTitle": "从询价到装柜",
+    "process": [
+      { "title": "提交规格", "desc": "膜种、厚度、宽度、处理方式、纸芯、数量与目的港。" },
+      { "title": "报价与样品", "desc": "24 小时内书面报价，并寄出最接近的常规牌号样品。" },
+      { "title": "试机与确认", "desc": "您在上机试用，我们调整处理、滑爽度或宽度并确认规格。" },
+      { "title": "生产与质检", "desc": "在线测厚与逐卷检查，生产过程中发送照片。" },
+      { "title": "单证与发运", "desc": "证书、装箱单与提单一起准备，订舱至您的港口。" }
+    ],
+    "cta": "沟通定制订单"
+  },
+  "products": {
+    "eyebrow": "产品范围",
+    "title": "包装、印刷与加工用薄膜",
+    "subtitle": "BOPP、BOPET、BOPA、BOPS、CPP、POF、PE 各牌号，以及胶带、标签和袋子，厚度与宽度按您的产线配置。",
+    "viewAll": "查看全部产品",
+    "viewDetails": "查看详情",
+    "inquire": "立即询价",
+    "requestSample": "申请样品",
     "specifications": "规格参数",
     "applications": "应用领域",
-    "certifications": "认证资质",
     "features": "产品特点",
-    "relatedProducts": "相关产品"
+    "certifications": "认证资质",
+    "relatedProducts": "相关产品",
+    "searchPlaceholder": "按膜种、厚度或用途搜索…",
+    "showing": "共 {total} 个产品，显示第 {start}–{end} 个",
+    "noResults": "没有找到匹配的产品。",
+    "clearFilters": "清除全部筛选",
+    "allProducts": "全部产品",
+    "familyLabel": "系列",
+    "categoryLabel": "分类",
+    "specNote": "其他厚度与宽度可按订单生产——告诉我们您的确切规格。",
+    "moqNote": "起订量取决于牌号与宽度，我们在报价单中确认。",
+    "familiesTitle": "产品系列",
+    "familiesSubtitle": "六大系列覆盖大多数包装、标签与胶带应用。"
   },
-  "categories": {
-    "all": "全部产品",
-    "gloss": "光膜",
-    "matte": "哑膜",
-    "metalized": "镀铝膜",
-    "heatSeal": "热封膜",
-    "whiteOpaque": "白膜",
-    "tape": "胶带膜",
-    "printing": "印刷膜"
+  "about": {
+    "eyebrow": "关于 AEC Group",
+    "title": "合肥的薄膜工厂，服务全球加工企业",
+    "subtitle": "安徽东渐进出口有限公司自 2014 年起生产并出口包装薄膜。",
+    "storyTitle": "我们的故事",
+    "story": [
+      "AEC Group 起步于 2014 年的一个观察：加工企业采购薄膜要经过层层贸易商，每一层都增加成本、延误，以及对“卷上到底是什么”略有不同的说法。",
+      "于是我们从反方向建厂。位于合肥包河工业区的工厂运行 BOPP、BOPET、BOPS、CPP 与 POF 产线，分切、镀铝、涂布与印刷在同一屋檐下。当客户要求 18 µm、640 mm、3 英寸纸芯、单面电晕处理时，给出答案的是设定产线的人，而不是隔着三个时区的销售办公室。",
+      "十二年来，我们每年向 50 多个国家的加工厂、印刷厂和胶带制造商发运超过 10,000 吨薄膜。没有改变的是工作方式：生产前有书面规格，装柜前有样品，订单执行期间有固定的对接人。"
+    ],
+    "factsTitle": "故事背后的数字",
+    "facts": [
+      { "label": "成立时间", "value": "2014" },
+      { "label": "年产能", "value": "10,000+ 吨" },
+      { "label": "质检合格率", "value": "99.9%" },
+      { "label": "出口市场", "value": "50+ 国家" }
+    ],
+    "valuesTitle": "我们的工作方式",
+    "values": [
+      { "title": "规格先行", "desc": "厚度、宽度、处理、纸芯与包装没有写清并确认之前，不安排上机。" },
+      { "title": "用测量的，不用承诺的", "desc": "决定一卷膜能否出货的是在线测厚和逐卷检查，不是排产表。" },
+      { "title": "回应客户", "desc": "从报价到提单由一位固定对接人负责，在您的工作时间回复。" },
+      { "title": "做长期订单", "desc": "我们更愿意调整规格、留住一个十年的客户，而不是赢一个柜子、丢掉一个账户。" }
+    ],
+    "facilityTitle": "工厂内部",
+    "facilityDesc": "拉膜、镀铝、分切与印刷集中在安徽合肥的同一厂区——所以定制宽度或处理是生产调整，而不是转包。",
+    "ctaTitle": "下单前想先看看工厂？",
+    "ctaDesc": "我们接待客户到厂参观，也可以视频带看产线、仓库和质检台。告诉我们时间即可安排。",
+    "ctaButton": "预约参观"
+  },
+  "cases": {
+    "eyebrow": "案例概览",
+    "title": "我们每周都在报的订单",
+    "subtitle": "三类客户构成我们的大部分销量，以及我们对他们实际交付的内容。",
+    "items": [
+      {
+        "sector": "烟草与卷烟包装",
+        "challenge": "烟膜加工企业需要稳定的厚度与滑爽度，保证高速包装不拉断、不起皱。",
+        "solution": "18–22 µm BOPP 烟膜，按加工企业宽度分切，处理方式与滑爽度逐单固定。",
+        "spec": "18–22 µm · 200–1600 mm 分切 · ISO 9001、FDA 文件"
+      },
+      {
+        "sector": "软包装食品",
+        "challenge": "复合厂需要复合稳定、食品接触检测无意外的镀铝膜与透明膜。",
+        "solution": "镀铝 BOPP 与 BOPET，加上印刷复合用透明 BOPP，随货提供 REACH 与 FDA 声明。",
+        "spec": "12–45 µm · 镀铝或透明 · REACH、FDA、RoHS"
+      },
+      {
+        "sector": "胶带、标签与花束包装",
+        "challenge": "胶带与标签生产商采购大卷，要求月月同一牌号、价格稳定。",
+        "solution": "BOPP 胶带膜、珠光膜与花卉膜大卷供应，返单价格在旺季内保持稳定。",
+        "spec": "大卷 · 23–40 µm · 返单价格锁定"
+      }
+    ]
+  },
+  "faq": {
+    "eyebrow": "采购常见问题",
+    "title": "起订量、交期、样品与单证",
+    "subtitle": "每个新客户都会问的五个问题，在您发询价之前先讲清楚。",
+    "items": [
+      {
+        "q": "起订量是多少？",
+        "a": "起订量取决于牌号与所需宽度：常规牌号可从一个 jumbo 大卷起订，定制的镀铝、涂布或印刷订单按单报价。告诉我们膜种、厚度、宽度和月用量，我们会在报价单中写明确切起订量。"
+      },
+      {
+        "q": "生产和交期多久？",
+        "a": "常规牌号通常在收到定金后 7–15 天内可装柜；定制分切、镀铝或印刷通常更久，并在形式发票上书面确认。海运时间取决于您的目的港，我们同时报 FOB 和 CIF 方便比较。"
+      },
+      {
+        "q": "下单前可以提供样品吗？",
+        "a": "可以。常规牌号的 A4 样片和卷样免费提供，您也可以指定到付账号。样品通常几个工作日内从合肥寄出，也可以按您寄来的样膜对样。"
+      },
+      {
+        "q": "随货有哪些认证和文件？",
+        "a": "工厂执行 ISO 9001 与 ISO 14001 体系，薄膜可按牌号提供 FDA、SGS、RoHS 与 REACH 文件。证书、MSDS、装箱单与原产地证随船务单据一并准备。"
+      },
+      {
+        "q": "付款与运输条件是什么？",
+        "a": "接受 T/T 与即期 L/C，具体条款写在形式发票上。可从中国港口 FOB 出运，也可 CIF 至您的港口，并可按您的仓库要求定制托盘。"
+      },
+      {
+        "q": "可以按我们的规格或品牌生产吗？",
+        "a": "可以，这是我们大部分的业务。宽度、厚度、纸芯、卷绕方向、处理、镀铝与印刷均按单设定，OEM/贴牌纸箱使用您的品牌和文件。"
+      }
+    ],
+    "note": "还在比较？把规格发给我们，回复会带上价格、交期和样品安排。",
+    "cta": "提问"
+  },
+  "cta": {
+    "title": "发来薄膜规格，24 小时内给价格",
+    "subtitle": "厚度、宽度、处理方式、数量与目的港就够了。若牌号合适，我们会寄出免费样品。",
+    "primary": "索取报价",
+    "secondary": "WhatsApp 咨询",
+    "note": "周一至周六 09:00–18:00（北京时间 GMT+8）"
   },
   "contact": {
-    "title": "联系我们",
-    "subtitle": "获取专业的产品咨询和报价",
+    "title": "直接联系工厂",
+    "subtitle": "发送规格、索取样品，或预约视频看厂。",
+    "formTitle": "发送询价",
+    "formSubtitle": "每封询价都由专人回复，通常在一个工作日内。",
     "name": "您的姓名",
     "email": "电子邮箱",
-    "phone": "联系电话",
+    "phone": "电话 / WhatsApp",
     "company": "公司名称",
-    "country": "国家/地区",
+    "country": "国家",
     "product": "感兴趣的产品",
-    "message": "留言内容",
+    "productPlaceholder": "选择产品系列",
+    "message": "您的需求",
+    "messagePlaceholder": "膜种、厚度（µm）、宽度（mm）、处理方式、数量与目的港。",
     "send": "发送询价",
-    "success": "询价已发送成功！我们会尽快与您联系。",
-    "error": "发送失败，请稍后重试。",
+    "sending": "正在准备邮件…",
+    "success": "邮件客户端已打开，询价内容已填好。",
+    "successNote": "如果没有弹出，请直接写信至 sale@boppfilmsale.com，或用 WhatsApp 联系我们——都是同一个团队。",
+    "error": "发送未成功，请直接发送邮件至 sale@boppfilmsale.com。",
+    "infoTitle": "工厂与办公室",
     "address": "地址",
-    "addressDetail": "中国安徽省合肥市包河工业区徽州大道1158号",
-    "phone": "电话",
-    "email": "邮箱",
-    "whatsapp": "WhatsApp",
-    "businessHours": "工作时间",
-    "businessHoursDetail": "周一至周五 9:00-18:00"
+    "addressDetail": "中国安徽省合肥市包河工业区徽州大道1158号，邮编230051",
+    "phoneLabel": "电话",
+    "emailLabel": "邮箱",
+    "whatsappLabel": "WhatsApp",
+    "hoursLabel": "工作时间",
+    "hoursDetail": "周一至周六 09:00–18:00（GMT+8）",
+    "responseNote": "24 小时内报价 · 免费样品 · 可中英文沟通",
+    "privacyNote": "您的信息仅用于回复本次询价。"
   },
   "footer": {
-    "company": "公司简介",
-    "companyDesc": "专业的BOPP薄膜制造商和出口商，致力于为全球客户提供优质的包装解决方案。",
-    "quickLinks": "快速链接",
-    "products": "产品系列",
-    "contact": "联系方式",
-    "copyright": "版权所有",
+    "tagline": "自 2014 年在合肥生产包装薄膜，工厂直供 50 多个国家的加工企业。",
+    "quickLinks": "公司",
+    "productsTitle": "产品",
+    "contactTitle": "联系",
+    "certificationsTitle": "认证",
+    "rights": "版权所有。",
     "privacy": "隐私政策",
-    "terms": "使用条款"
+    "terms": "使用条款",
+    "specTitle": "常规规格",
+    "specValue": "15–50 µm · 200–1600 mm"
   },
   "seo": {
-    "homeTitle": "BOPP薄膜供应商 | 专业BOPP薄膜生产厂家 | BOPP Films Sale",
-    "homeDesc": "专业的BOPP薄膜供应商，提供光膜、哑膜、镀铝膜、热封膜等多种产品。工厂直供，品质保证，全球出口。",
-    "productsTitle": "BOPP薄膜产品 | 光膜 哑膜 镀铝膜 | BOPP Films Sale",
-    "productsDesc": "浏览我们的BOPP薄膜产品系列，包括光膜、哑膜、镀铝膜、热封膜等。适用于食品包装、印刷、电子等多个行业。",
-    "aboutTitle": "关于我们 | BOPP薄膜专业制造商",
-    "aboutDesc": "了解BOPP Films Sale，我们是专业的BOPP薄膜制造商，拥有多年出口经验，服务全球客户。",
-    "contactTitle": "联系我们 | BOPP薄膜询价",
-    "contactDesc": "联系我们获取BOPP薄膜产品报价。专业团队为您提供详细的产品信息和应用建议。"
+    "homeTitle": "BOPP薄膜生产厂家 | 工厂直供包装薄膜 | AEC Group 安徽东渐",
+    "homeDesc": "AEC Group 在中国合肥生产 BOPP、BOPET、BOPS、CPP、POF 包装薄膜：厚度 15–50 µm，分切 200–1600 mm，年产能 10,000 吨以上，具备 ISO 9001、FDA、SGS、RoHS、REACH 认证。免费样品，24 小时报价。",
+    "productsTitle": "包装薄膜产品 — BOPP、BOPET、BOPS、CPP、POF | AEC Group",
+    "productsDesc": "浏览 BOPP、BOPET、BOPA、BOPS、CPP、POF、PE 薄膜的厚度、宽度与应用说明。中国合肥工厂直供，免费样品，24 小时报价。",
+    "aboutTitle": "关于 AEC Group — 自 2014 年的包装薄膜制造商",
+    "aboutDesc": "安徽东渐进出口（AEC Group）自 2014 年起在合肥生产 BOPP、BOPET、BOPS、CPP、POF 包装薄膜，年发货 10,000 吨以上，服务 50 多个国家的加工企业。",
+    "contactTitle": "联系 AEC Group — 薄膜报价、样品与规格确认",
+    "contactDesc": "把薄膜规格发给 AEC Group，24 小时内获得工厂直供报价。免费样品，提供 ISO 9001、FDA、SGS、RoHS、REACH 文件。",
+    "certTitle": "认证资质 — ISO 9001、FDA、SGS、RoHS、REACH、ISO 14001 | AEC Group",
+    "certDesc": "AEC Group 包装薄膜背后的质量、食品接触、环境与物质合规认证，以及每项认证覆盖的内容。"
   }
 }

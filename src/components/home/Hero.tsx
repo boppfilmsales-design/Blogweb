@@ -2,29 +2,9 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { FiArrowRight } from 'react-icons/fi';
-
-interface HeroContent {
-  titleEn: string;
-  titleZh: string;
-  subtitleEn: string;
-  subtitleZh: string;
-  descEn: string;
-  descZh: string;
-  ctaTextEn: string;
-  ctaTextZh: string;
-}
-
-const defaultHero: HeroContent = {
-  titleEn: 'Professional Packaging Film Supplier',
-  titleZh: '专业BOPP薄膜供应商',
-  subtitleEn: 'Providing High-Quality Packaging Film Solutions',
-  subtitleZh: '为全球包装行业提供高品质BOPP薄膜解决方案',
-  descEn: 'We specialize in the production and export of packaging films.',
-  descZh: '我们专注于BOPP薄膜的生产和出口。',
-  ctaTextEn: 'Browse Products',
-  ctaTextZh: '浏览产品',
-};
+import { FiArrowRight, FiCheckCircle, FiPlayCircle } from 'react-icons/fi';
+import { useLanguage } from '@/context/LanguageContext';
+import { PROOF, SITE } from '@/lib/site';
 
 const R2_PUBLIC = 'https://pub-39b7138db749493793fdbe2a9e90d150.r2.dev';
 
@@ -35,213 +15,226 @@ interface HeroSlide {
   captionZh: string;
 }
 
-// 首页右侧轮播：白底膜卷影棚图 + 生产线大卷实拍（R2 blogweb-images 桶，2026-11-10 上线预览）
-const heroSlides: HeroSlide[] = [
-  { src: `${R2_PUBLIC}/hero/mg-3943.jpg`, alt: 'Gold metallized BOPP film roll', captionEn: 'Gold Metallized BOPP Film', captionZh: '金色镀铝 BOPP 膜' },
-  { src: `${R2_PUBLIC}/hero/mg-4031.jpg`, alt: 'Metallized BOPP film rolls in gold, copper and silver', captionEn: 'Metallized BOPP Film Rolls', captionZh: '镀铝 BOPP 膜卷' },
-  { src: `${R2_PUBLIC}/hero/mg-4053.jpg`, alt: 'BOPP film rolls in assorted colors', captionEn: 'BOPP Film Roll Family', captionZh: 'BOPP 膜卷系列' },
-  { src: `${R2_PUBLIC}/hero/jumboroll-factory.jpg`, alt: 'Jumbo film rolls on the production line', captionEn: 'Jumbo Rolls on the Production Line', captionZh: '生产线上的膜卷' },
+const slides: HeroSlide[] = [
+  {
+    src: `${R2_PUBLIC}/hero/mg-3943.jpg`,
+    alt: 'Gold metallized BOPP film roll on a production pallet',
+    captionEn: 'Gold metallized BOPP film',
+    captionZh: '金色镀铝 BOPP 膜',
+  },
+  {
+    src: `${R2_PUBLIC}/hero/mg-4031.jpg`,
+    alt: 'Metallized BOPP film rolls in gold, copper and silver',
+    captionEn: 'Metallized film, three finishes',
+    captionZh: '三种色泽的镀铝膜',
+  },
+  {
+    src: `${R2_PUBLIC}/hero/mg-4053.jpg`,
+    alt: 'BOPP film rolls in assorted colours',
+    captionEn: 'Coloured and pearl BOPP',
+    captionZh: '彩色与珠光 BOPP',
+  },
+  {
+    src: `${R2_PUBLIC}/hero/jumboroll-factory.jpg`,
+    alt: 'Jumbo film rolls on the production line at the Hefei plant',
+    captionEn: 'Jumbo rolls on our line',
+    captionZh: '产线上的大卷膜',
+  },
 ];
 
 const Hero = () => {
-  const [heroContent, setHeroContent] = useState<HeroContent>(defaultHero);
-  const [locale, setLocale] = useState('en');
+  const { t, locale } = useLanguage();
   const [slide, setSlide] = useState(0);
   const [paused, setPaused] = useState(false);
 
-  // 轮播：每 4 秒淡入淡出切一张；鼠标悬停暂停
   useEffect(() => {
     if (paused) return;
-    const timer = setInterval(() => {
-      setSlide((prev) => (prev + 1) % heroSlides.length);
-    }, 4000);
+    const timer = setInterval(() => setSlide((prev) => (prev + 1) % slides.length), 4500);
     return () => clearInterval(timer);
   }, [paused]);
 
-  useEffect(() => {
-    // 首先从localStorage加载
-    const savedData = localStorage.getItem('aec-page-content');
-    if (savedData) {
-      try {
-        const data = JSON.parse(savedData);
-        if (data.hero) setHeroContent(data.hero);
-      } catch (e) {
-        console.error('Failed to parse saved hero data:', e);
-      }
-    }
+  const stats = [
+    { value: t.hero.statSinceValue, label: t.hero.statSinceLabel },
+    { value: t.hero.statCapacityValue, label: t.hero.statCapacityLabel },
+    { value: t.hero.statPassValue, label: t.hero.statPassLabel },
+    { value: t.hero.statCountriesValue, label: t.hero.statCountriesLabel },
+  ];
 
-    // 然后从API加载
-    fetch('/api/pages')
-      .then((res) => res.json())
-      .then((data: any) => {
-        if (data.hero) {
-          setHeroContent(prev => ({
-            titleEn: prev.titleEn || data.hero.titleEn || '',
-            titleZh: prev.titleZh || data.hero.titleZh || '',
-            subtitleEn: prev.subtitleEn || data.hero.subtitleEn || '',
-            subtitleZh: prev.subtitleZh || data.hero.subtitleZh || '',
-            descEn: prev.descEn || data.hero.descEn || '',
-            descZh: prev.descZh || data.hero.descZh || '',
-            ctaTextEn: prev.ctaTextEn || data.hero.ctaTextEn || '',
-            ctaTextZh: prev.ctaTextZh || data.hero.ctaTextZh || '',
-          }));
-        }
-      })
-      .catch((error) => console.error('Failed to load hero content:', error));
-
-    // 获取当前语言
-    const savedLocale = localStorage.getItem('locale') || 'en';
-    setLocale(savedLocale);
-  }, []);
-
-  const t = (en: string, zh: string) => (locale === 'zh' ? zh : en);
+  const badges = ['ISO 9001', 'FDA', 'SGS', 'REACH'];
 
   return (
-    <section className="relative bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 text-white overflow-hidden min-h-[600px] flex items-center">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-white/20 to-transparent"></div>
-        <svg className="absolute top-0 left-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+    <section className="relative overflow-hidden bg-slate-950 text-white">
+      {/* Background: soft light + engineering grid, no image so text always reads */}
+      <div className="pointer-events-none absolute inset-0" aria-hidden>
+        <div className="absolute -left-32 -top-32 h-[420px] w-[420px] rounded-full bg-blue-600/25 blur-3xl" />
+        <div className="absolute -bottom-40 right-0 h-[380px] w-[380px] rounded-full bg-cyan-500/10 blur-3xl" />
+        <svg className="absolute inset-0 h-full w-full opacity-[0.12]" aria-hidden>
           <defs>
-            <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
-              <path d="M 10 0 L 0 0 0 10" fill="none" stroke="white" strokeWidth="0.5" opacity="0.3"/>
+            <pattern id="hero-grid" width="48" height="48" patternUnits="userSpaceOnUse">
+              <path d="M 48 0 L 0 0 0 48" fill="none" stroke="white" strokeWidth="0.6" />
             </pattern>
           </defs>
-          <rect width="100" height="100" fill="url(#grid)" />
+          <rect width="100%" height="100%" fill="url(#hero-grid)" />
         </svg>
       </div>
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Content */}
-          <div className="text-center lg:text-left">
-            {/* English */}
-            <div className="mb-8">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 leading-tight">
-                {heroContent.titleEn}
-              </h1>
-              <p className="text-xl md:text-2xl text-blue-200 mb-4 font-medium">
-                {heroContent.subtitleEn}
-              </p>
-              <p className="text-lg text-blue-100 mb-6 max-w-2xl mx-auto lg:mx-0">
-                {heroContent.descEn}
-              </p>
-            </div>
+      <div className="relative mx-auto max-w-7xl px-4 pb-14 pt-12 sm:px-6 sm:pb-16 sm:pt-16 lg:px-8 lg:pb-20">
+        <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14">
+          {/* Copy */}
+          <div className="text-center lg:text-start">
+            <p className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-blue-100 sm:text-xs">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" aria-hidden />
+              {t.hero.badge}
+            </p>
 
-            {/* Chinese */}
-            <div className="mb-8 pb-8 border-b border-blue-700/50">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 leading-tight">
-                {heroContent.titleZh}
-              </h2>
-              <p className="text-lg text-blue-200 mb-4">
-                {heroContent.subtitleZh}
-              </p>
-            </div>
+            <h1 className="mt-5 text-[2rem] font-bold leading-[1.1] tracking-tight sm:text-4xl lg:text-[3.25rem]">
+              <span className="block text-white">{t.hero.titleLead}</span>
+              <span className="mt-1 block bg-gradient-to-r from-blue-300 via-sky-200 to-white bg-clip-text text-transparent">
+                {t.hero.titleHighlight}
+              </span>
+            </h1>
 
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-              <Link
-                href="/products"
-                className="inline-flex items-center justify-center px-8 py-4 bg-white text-blue-900 font-semibold rounded-lg hover:bg-blue-50 transition-colors group"
-              >
-                {heroContent.ctaTextEn}
-                <FiArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-              </Link>
+            <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-blue-100/90 sm:text-lg lg:mx-0">
+              {t.hero.subtitle}
+            </p>
+            <p className="mx-auto mt-3 hidden max-w-xl text-sm leading-relaxed text-slate-300 lg:mx-0 lg:block">
+              {t.hero.description}
+            </p>
+
+            {/* Dual CTA */}
+            <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:justify-center lg:justify-start">
               <Link
                 href="/contact"
-                className="inline-flex items-center justify-center px-8 py-4 border-2 border-white text-white font-semibold rounded-lg hover:bg-white hover:text-blue-900 transition-colors"
+                className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-xl bg-white px-6 text-base font-semibold text-slate-900 shadow-lg shadow-blue-950/40 transition hover:bg-blue-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
               >
-                {locale === 'zh' ? '联系我们' : 'Contact Us'}
+                {t.hero.ctaPrimary}
+                <FiArrowRight className="h-5 w-5" aria-hidden />
+              </Link>
+              <Link
+                href="/products"
+                className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-xl border border-white/30 px-6 text-base font-semibold text-white transition hover:border-white/60 hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
+              >
+                {t.hero.ctaSecondary}
               </Link>
             </div>
 
-            {/* Stats */}
-            <div className="grid grid-cols-3 gap-8 mt-12 pt-8 border-t border-blue-700">
-              <div className="text-center lg:text-left">
-                <div className="text-3xl font-bold text-white">10+</div>
-                <div className="text-blue-200 text-sm">{locale === 'zh' ? '年经验' : 'Years Experience'}</div>
-              </div>
-              <div className="text-center lg:text-left">
-                <div className="text-3xl font-bold text-white">500+</div>
-                <div className="text-blue-200 text-sm">{locale === 'zh' ? '全球客户' : 'Global Clients'}</div>
-              </div>
-              <div className="text-center lg:text-left">
-                <div className="text-3xl font-bold text-white">50+</div>
-                <div className="text-blue-200 text-sm">{locale === 'zh' ? '服务国家' : 'Countries Served'}</div>
-              </div>
-            </div>
+            <ul className="mt-5 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs text-blue-100/80 lg:justify-start">
+              {badges.map((badge) => (
+                <li key={badge} className="inline-flex items-center gap-1.5">
+                  <FiCheckCircle className="h-3.5 w-3.5 text-emerald-400" aria-hidden />
+                  {badge}
+                </li>
+              ))}
+              <li className="inline-flex items-center gap-1.5">
+                <FiCheckCircle className="h-3.5 w-3.5 text-emerald-400" aria-hidden />
+                {t.common.freeSample}
+              </li>
+            </ul>
           </div>
 
-          {/* Visual Element */}
+          {/* Visual */}
           <div className="relative">
-            <div className="relative z-10">
-              <div
-                className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20"
-                onMouseEnter={() => setPaused(true)}
-                onMouseLeave={() => setPaused(false)}
-              >
-                {/* 图片轮播：图片铺满卡片，淡入淡出切换 */}
-                <div className="relative aspect-video rounded-lg overflow-hidden bg-white/10">
-                  {heroSlides.map((s, i) => (
-                    <img
+            <div
+              className="relative overflow-hidden rounded-2xl border border-white/15 bg-white/5 shadow-2xl shadow-blue-950/50"
+              onMouseEnter={() => setPaused(true)}
+              onMouseLeave={() => setPaused(false)}
+              onFocus={() => setPaused(true)}
+              onBlur={() => setPaused(false)}
+            >
+              <div className="relative aspect-[4/3] w-full sm:aspect-[16/10]">
+                {slides.map((s, index) => (
+                  <img
+                    key={s.src}
+                    src={s.src}
+                    alt={s.alt}
+                    width={960}
+                    height={600}
+                    loading={index === 0 ? 'eager' : 'lazy'}
+                    fetchPriority={index === 0 ? 'high' : 'low'}
+                    decoding="async"
+                    className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
+                      index === slide ? 'opacity-100' : 'opacity-0'
+                    }`}
+                  />
+                ))}
+                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950/85 to-transparent p-4 pt-10">
+                  <p className="text-sm font-medium text-white">
+                    {locale === 'zh' ? slides[slide].captionZh : slides[slide].captionEn}
+                  </p>
+                  <p className="text-[11px] uppercase tracking-wider text-blue-200/80">
+                    {`${SITE.address.city}, ${locale === 'zh' ? '中国安徽' : 'Anhui, China'} · ${PROOF.thickness} · ${PROOF.width}`}
+                  </p>
+                </div>
+                <div className="absolute right-3 top-3 flex gap-1.5">
+                  {slides.map((s, index) => (
+                    <button
                       key={s.src}
-                      src={s.src}
-                      alt={s.alt}
-                      loading={i === 0 ? 'eager' : 'lazy'}
-                      className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${
-                        i === slide ? 'opacity-100' : 'opacity-0'
-                      }`}
-                    />
-                  ))}
-                  {/* 底部说明 */}
-                  <div className="absolute bottom-3 left-3 bg-black/45 backdrop-blur-sm text-white text-xs sm:text-sm font-medium px-3 py-1.5 rounded-full">
-                    {locale === 'zh' ? heroSlides[slide].captionZh : heroSlides[slide].captionEn}
-                  </div>
-                  {/* 圆点指示，可点切换 */}
-                  <div className="absolute bottom-3 right-3 flex items-center gap-2">
-                    {heroSlides.map((s, i) => (
-                      <button
-                        key={s.src}
-                        type="button"
-                        aria-label={`Go to slide ${i + 1}`}
-                        onClick={() => setSlide(i)}
-                        className={`h-2 rounded-full transition-all duration-300 ${
-                          i === slide ? 'w-6 bg-white' : 'w-2 bg-white/50 hover:bg-white/80'
+                      type="button"
+                      aria-label={`${locale === 'zh' ? '第' : 'Slide'} ${index + 1}`}
+                      aria-current={index === slide}
+                      onClick={() => setSlide(index)}
+                      className="h-8 w-8 rounded-full text-[0px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                    >
+                      <span
+                        className={`mx-auto block h-2 rounded-full transition-all ${
+                          index === slide ? 'w-6 bg-white' : 'w-2 bg-white/60'
                         }`}
                       />
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Floating Cards */}
-              <div className="absolute -top-4 -right-4 bg-white/90 backdrop-blur-sm rounded-lg p-4 shadow-xl">
-                <div className="flex items-center space-x-2">
-                  <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                  <span className="text-gray-800 font-medium text-sm">ISO 9001 Certified</span>
-                </div>
-              </div>
-
-              <div className="absolute -bottom-4 -left-4 bg-white/90 backdrop-blur-sm rounded-lg p-4 shadow-xl">
-                <div className="flex items-center space-x-2">
-                  <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-                  <span className="text-gray-800 font-medium text-sm">FDA Approved</span>
+                    </button>
+                  ))}
                 </div>
               </div>
             </div>
 
-            {/* Background Decoration */}
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl"></div>
+            {/* Floating proof card */}
+            <div className="absolute -bottom-5 end-4 hidden rounded-xl border border-slate-200 bg-white px-4 py-3 text-slate-900 shadow-xl sm:block">
+              <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">
+                {locale === 'zh' ? '年产能' : 'Annual capacity'}
+              </p>
+              <p className="text-xl font-bold leading-tight">
+                {PROOF.capacityTonnes.toLocaleString('en-US')}+ t
+              </p>
+            </div>
           </div>
+        </div>
+
+        {/* Stats — in normal flow, never covered by the divider */}
+        <dl className="mt-12 grid grid-cols-2 gap-3 rounded-2xl border border-white/15 bg-white/[0.06] p-4 backdrop-blur-sm sm:mt-14 sm:grid-cols-4 sm:gap-6 sm:p-6">
+          {stats.map((stat) => (
+            <div key={stat.label} className="px-1 text-center sm:px-2 sm:text-start">
+              <dt className="order-2 mt-1 text-[11px] font-medium uppercase tracking-wider text-blue-200/80 sm:text-xs">
+                {stat.label}
+              </dt>
+              <dd className="order-1 text-2xl font-bold leading-none text-white sm:text-3xl">{stat.value}</dd>
+            </div>
+          ))}
+        </dl>
+
+        <div className="mt-6 text-center lg:text-start">
+          <a
+            href="#what-we-make"
+            className="inline-flex min-h-[44px] items-center gap-2 text-sm font-medium text-blue-200 hover:text-white"
+          >
+            <FiPlayCircle className="h-4 w-4" aria-hidden />
+            {t.hero.scrollHint}
+          </a>
         </div>
       </div>
 
-      {/* Wave Divider */}
-      <div className="absolute bottom-0 left-0 w-full">
-        <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0 120L60 105C120 90 240 60 360 45C480 30 600 30 720 37.5C840 45 960 60 1080 67.5C1200 75 1320 75 1380 75L1440 75V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="white"/>
-        </svg>
-      </div>
+      {/* Divider into the white section. A block-level element in flow, so it
+          can never overlap the statistics the way the old absolute wave did. */}
+      <svg
+        className="block h-8 w-full text-white sm:h-12"
+        viewBox="0 0 1440 80"
+        preserveAspectRatio="none"
+        aria-hidden
+        focusable="false"
+      >
+        <path
+          d="M0 80V44c120 0 240-24 360-24s240 20 360 20 240-20 360-20 240 16 360 16v44H0Z"
+          fill="currentColor"
+        />
+      </svg>
     </section>
   );
 };

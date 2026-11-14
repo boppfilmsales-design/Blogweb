@@ -143,10 +143,42 @@ export function parseListField(value: string | null | undefined, maxItems = 12):
   return dedupeClean(items, maxItems);
 }
 
+// Product names arrive from the catalogue with inconsistent casing ("Bopp
+// Anti-Fog Film"). Whole-word film-chemistry acronyms are upper-cased for
+// display so cards and titles read like a film supplier wrote them.
+const NAME_ACRONYMS = new Set([
+  'bopp',
+  'bopet',
+  'bopa',
+  'bops',
+  'cpp',
+  'gcpp',
+  'vmcpp',
+  'pof',
+  'pe',
+  'pvc',
+  'pvdc',
+  'vmpet',
+  'ttr',
+  'cpet',
+  'pla',
+  'eva',
+]);
+
+export function prettifyProductName(value: string): string {
+  if (!value) return '';
+  const fixed = value.replace(/[A-Za-z]+/g, (word) => {
+    const lower = word.toLowerCase();
+    if (NAME_ACRONYMS.has(lower) && /^[A-Za-z]+$/.test(word)) return lower.toUpperCase();
+    return word;
+  });
+  return fixed.replace(/\s+/g, ' ').trim();
+}
+
 export function getProductName(product: Product, locale: string): string {
   const primary = locale === 'zh' ? product.nameZh : product.nameEn;
   const fallback = locale === 'zh' ? product.nameEn : product.nameZh;
-  return (primary || fallback || '').trim();
+  return prettifyProductName((primary || fallback || '').trim());
 }
 
 export function getProductDesc(product: Product, locale: string): string {
@@ -155,17 +187,12 @@ export function getProductDesc(product: Product, locale: string): string {
   return stripHtmlToText(primary || fallback);
 }
 
-/** Encode an image URL so filenames with spaces or brackets still load. */
-export function encodeImageUrl(url: string | null | undefined): string {
-  if (!url) return '';
-  const t = String(url).trim();
-  if (!t) return '';
-  try {
-    return encodeURI(t);
-  } catch {
-    return t;
-  }
-}
+/**
+ * Encode an image URL so filenames with spaces or brackets still load.
+ * Kept as a thin re-export: resolution of bucket-relative paths lives in
+ * src/lib/images.ts so every caller gets the same URL.
+ */
+export { encodeImageUrl } from '@/lib/images';
 
 // ---------------------------------------------------------------------------
 // Category filter grouping

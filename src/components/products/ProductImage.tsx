@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { encodeImageUrl } from './productUtils';
+import { encodeImageUrl } from '@/lib/images';
 
 interface ProductImageProps {
   src: string | null | undefined;
@@ -36,8 +36,9 @@ const ProductImage: React.FC<ProductImageProps> = ({
       {showImage ? (
         <img
           src={url}
-          alt={alt}
+          alt={alt || productName}
           loading={eager ? 'eager' : 'lazy'}
+          decoding="async"
           onError={() => setFailed(true)}
           className="w-full h-full object-cover"
         />

@@ -1,89 +1,53 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/context/LanguageContext';
 import ProductCard from '@/components/products/ProductCard';
-import { getProducts, Product } from '@/lib/api';
+import type { Product } from '@/lib/api-types';
 import { FiArrowRight } from 'react-icons/fi';
 
-const FeaturedProducts = () => {
-  const { t, isRTL } = useLanguage();
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
+interface FeaturedProductsProps {
+  products: Product[];
+}
 
-  useEffect(() => {
-    const loadProducts = async () => {
-      try {
-        // 从 localStorage 优先加载
-        const savedProducts = localStorage.getItem('aec-products');
-        if (savedProducts) {
-          try {
-            const localData = JSON.parse(savedProducts);
-            if (Array.isArray(localData) && localData.length > 0) {
-              setProducts(localData.filter((p: Product) => p.featured).slice(0, 6));
-              setLoading(false);
-              return;
-            }
-          } catch (e) {
-            console.error('Failed to parse saved products:', e);
-          }
-        }
+const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products }) => {
+  const { t } = useLanguage();
 
-        // 从 API 加载
-        const data = await getProducts();
-        const featured = data.filter(p => p.featured).slice(0, 6);
-        setProducts(featured.length > 0 ? featured : data.slice(0, 6));
-      } catch (error) {
-        console.error('Failed to load products:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    loadProducts();
-  }, []);
-
-  if (loading) {
-    return (
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-        </div>
-      </section>
-    );
-  }
+  if (products.length === 0) return null;
 
   return (
-    <section className="py-20 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            {t.products.title}
-          </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            {t.products.subtitle}
-          </p>
-          <div className="w-24 h-1 bg-blue-600 mx-auto mt-4"></div>
+    <section className="bg-slate-50 py-16 sm:py-20" id="what-we-make">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div className="max-w-2xl">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-blue-700">{t.products.eyebrow}</p>
+            <h2 className="mt-3 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl lg:text-4xl">
+              {t.products.title}
+            </h2>
+            <p className="mt-3 text-base leading-relaxed text-slate-600">{t.products.subtitle}</p>
+          </div>
+          <Link
+            href="/products"
+            className="inline-flex min-h-[44px] shrink-0 items-center gap-2 rounded-lg border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-800 hover:border-blue-600 hover:text-blue-700"
+          >
+            {t.products.viewAll}
+            <FiArrowRight className="h-4 w-4" aria-hidden />
+          </Link>
         </div>
 
-        {/* Products Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {products.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
 
-        {/* View All Button */}
-        <div className="text-center">
-          <Link
-            href="/products"
-            className="inline-flex items-center px-8 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors group"
-          >
-            {t.products.viewAll}
-            <FiArrowRight className={`w-5 h-5 ${isRTL ? 'mr-2 rotate-180' : 'ml-2'} group-hover:translate-x-1 transition-transform`} />
+        <p className="mt-6 text-sm text-slate-500">
+          {t.products.specNote}{' '}
+          <Link href="/contact" className="font-semibold text-blue-700 hover:underline">
+            {t.contact.formTitle} →
           </Link>
-        </div>
+        </p>
       </div>
     </section>
   );

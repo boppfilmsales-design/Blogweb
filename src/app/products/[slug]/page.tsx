@@ -1,329 +1,152 @@
-'use client';
-
-import React, { useEffect, useMemo, useState } from 'react';
-import { useParams } from 'next/navigation';
-import Link from 'next/link';
-import { useLanguage } from '@/context/LanguageContext';
-import { getProductBySlug, Product } from '@/lib/api';
-import { parseProductImages } from '@/lib/images';
-import InquiryForm from '@/components/contact/InquiryForm';
-import { FiCheck, FiArrowLeft } from 'react-icons/fi';
-import ProductImage from '@/components/products/ProductImage';
+import React from 'react';
+import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+import ProductDetail from './ProductDetail';
+import { requestProductBySlug } from '@/lib/catalog';
 import {
+  formatSpecValue,
   getCategoryDisplayName,
   getProductDesc,
-  getProductName,
-  parseListField,
-  specEntries,
+  prettifyProductName,
 } from '@/components/products/productUtils';
+import { parseProductImages } from '@/lib/images';
+import { SITE_URL } from '@/lib/site';
 
-// Cloudflare Pages renders this dynamic page on the Edge Runtime.
+// Rendered on Cloudflare's edge at request time. The data layer falls back to
+// the bundled catalogue if D1 is unavailable, so a crawler always gets a full
+// page instead of an error.
 export const runtime = 'edge';
+export const dynamic = 'force-dynamic';
 
-export default function ProductDetailPage() {
-  const params = useParams();
-  const slug = params.slug as string;
-  const { locale, t } = useLanguage();
+interface PageProps {
+  params: { slug: string };
+}
 
-  const [product, setProduct] = useState<Product | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [selectedImage, setSelectedImage] = useState(0);
+function clamp(text: string, max: number): string {
+  const value = text.replace(/\s+/g, ' ').trim();
+  if (value.length <= max) return value;
+  const cut = value.slice(0, max - 1);
+  const lastSpace = cut.lastIndexOf(' ');
+  return `${(lastSpace > max * 0.6 ? cut.slice(0, lastSpace) : cut).trimEnd()}…`;
+}
 
-  useEffect(() => {
-    setSelectedImage(0);
-    const loadProduct = async () => {
-      try {
-        // 首先尝试从localStorage加载最新数据
-        const savedProducts = localStorage.getItem('aec-products');
-        if (savedProducts) {
-          try {
-            const products: Product[] = JSON.parse(savedProducts);
-            const localProduct = products.find((p) => p.slug === slug);
-            if (localProduct) {
-              setProduct(localProduct);
-            }
-          } catch (e) {
-            console.error('Failed to parse saved products:', e);
-          }
-        }
-
-        // 然后从API加载（可能更新localStorage中没有的数据）
-        const data = await getProductBySlug(slug);
-        if (data) {
-          setProduct(data);
-        }
-      } catch (error) {
-        console.error('Failed to load product:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    loadProduct();
-  }, [slug]);
-
-  const images = useMemo(
-    () => (product ? parseProductImages(product.images) : []),
-    [product],
-  );
-  const mainImage = images.length > 0 ? images[Math.min(selectedImage, images.length - 1)] : null;
-
-  const specs = useMemo(() => (product ? specEntries(product) : []), [product]);
-
-  // Features / applications / certifications: current locale first, other locale as fallback.
-  // Legacy rows store plain lines or raw HTML blobs; the parser drops table junk and
-  // boilerplate, so an empty result means the whole section stays hidden.
-  const features = useMemo(() => {
-    if (!product) return [];
-    const primary = parseListField(locale === 'zh' ? product.featuresZh : product.featuresEn);
-    if (primary.length > 0) return primary;
-    return parseListField(locale === 'zh' ? product.featuresEn : product.featuresZh);
-  }, [product, locale]);
-
-  const applications = useMemo(() => {
-    if (!product) return [];
-    const primary = parseListField(locale === 'zh' ? product.applicationsZh : product.applicationsEn);
-    if (primary.length > 0) return primary;
-    return parseListField(locale === 'zh' ? product.applicationsEn : product.applicationsZh);
-  }, [product, locale]);
-
-  const certifications = useMemo(() => {
-    if (!product) return [];
-    const primary = parseListField(product.certifications);
-    return primary;
-  }, [product]);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600 dark:text-gray-300">Loading product...</p>
-        </div>
-      </div>
-    );
-  }
-
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const product = await requestProductBySlug(params.slug);
   if (!product) {
-    return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Product not found</h1>
-          <Link href="/products" className="text-blue-600 hover:text-blue-700">
-            ← Back to Products
-          </Link>
-        </div>
-      </div>
-    );
+    return {
+      title: 'Product not found',
+      robots: { index: false, follow: false },
+    };
   }
 
-  const name = getProductName(product, locale);
-  const desc = getProductDesc(product, locale);
-  const otherLocale = locale === 'zh' ? 'en' : 'zh';
-  const otherName = getProductName(product, otherLocale);
-  const otherDesc = getProductDesc(product, otherLocale);
-  const showOtherLang = (otherName && otherName !== name) || !!otherDesc;
-  const categoryLabel = getCategoryDisplayName(product.category, locale);
+  const category = getCategoryDisplayName(product.category, 'en');
+  const spec = [product.thickness, formatSpecValue(product.width)]
+    .filter(Boolean)
+    .join(' · ');
+  const displayName = prettifyProductName(product.nameEn);
+  // Keep the <title> short enough that Google shows it whole; the site name is
+  // appended by the root template.
+  const title = clamp(`${displayName}${spec ? ` — ${spec}` : ''}`, 58);
+  const description = clamp(
+    (getProductDesc(product, 'en') ||
+      `${displayName} from AEC Group: factory-direct packaging film with free samples and 24-hour quotation.`) +
+      (spec ? ` Specifications: ${spec}.` : ''),
+    158,
+  );
+  const firstImage = parseProductImages(product.images)[0];
+  const image = firstImage
+    ? firstImage.startsWith('http')
+      ? firstImage
+      : `https://pub-39b7138db749493793fdbe2a9e90d150.r2.dev/${firstImage.replace(/^\/+/, '')}`
+    : undefined;
+
+  return {
+    title,
+    description,
+    alternates: { canonical: `${SITE_URL}/products/${product.slug}/` },
+    openGraph: {
+      type: 'website',
+      url: `${SITE_URL}/products/${product.slug}/`,
+      title,
+      description,
+      images: image ? [{ url: image, alt: displayName }] : undefined,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: image ? [image] : undefined,
+    },
+  };
+}
+
+export default async function ProductPage({ params }: PageProps) {
+  const product = await requestProductBySlug(params.slug);
+  if (!product) notFound();
+
+  const spec = [product.thickness, product.width].filter(Boolean).join(', ');
+  const productJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: prettifyProductName(product.nameEn),
+    alternateName: product.nameZh || undefined,
+    description: clamp(getProductDesc(product, 'en') || product.nameEn, 320),
+    sku: product.slug,
+    category: getCategoryDisplayName(product.category, 'en') || undefined,
+    brand: { '@type': 'Brand', name: 'AEC Group' },
+    manufacturer: { '@id': `${SITE_URL}/#organization` },
+    image: parseProductImages(product.images)
+      .slice(0, 3)
+      .map((image) =>
+        image.startsWith('http')
+          ? image
+          : `https://pub-39b7138db749493793fdbe2a9e90d150.r2.dev/${image.replace(/^\/+/, '')}`,
+      ),
+    additionalProperty: [
+      product.thickness ? { '@type': 'PropertyValue', name: 'Thickness', value: product.thickness } : null,
+      product.width ? { '@type': 'PropertyValue', name: 'Width', value: product.width } : null,
+      product.material ? { '@type': 'PropertyValue', name: 'Material', value: product.material } : null,
+    ].filter(Boolean),
+    offers: {
+      '@type': 'Offer',
+      availability: 'https://schema.org/InStock',
+      priceCurrency: 'USD',
+      priceSpecification: {
+        '@type': 'PriceSpecification',
+        valueAddedTaxIncluded: false,
+        description: `Quoted per order${spec ? ` for ${spec}` : ''}. Request a quotation for current pricing.`,
+      },
+      url: `${SITE_URL}/products/${product.slug}/`,
+      seller: { '@id': `${SITE_URL}/#organization` },
+    },
+  };
+
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE_URL}/` },
+      { '@type': 'ListItem', position: 2, name: 'Products', item: `${SITE_URL}/products/` },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: prettifyProductName(product.nameEn),
+        item: `${SITE_URL}/products/${product.slug}/`,
+      },
+    ],
+  };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Breadcrumb */}
-      <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 scroll-mt-28">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <nav className="flex items-center space-x-2 text-sm min-w-0">
-            <Link href="/" className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 shrink-0">
-              Home
-            </Link>
-            <span className="text-gray-400 shrink-0">/</span>
-            <Link href="/products" className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 shrink-0">
-              Products
-            </Link>
-            <span className="text-gray-400 shrink-0">/</span>
-            <span className="text-gray-900 dark:text-white truncate">{name}</span>
-          </nav>
-        </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Back Button */}
-        <Link href="/products" className="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 mb-6">
-          <FiArrowLeft className="w-5 h-5 mr-2" />
-          {locale === 'zh' ? '查看全部产品' : 'View All Products'}
-        </Link>
-
-        <div className="grid lg:grid-cols-2 gap-10 lg:gap-12">
-          {/* Product Images */}
-          <div className="space-y-4">
-            <ProductImage
-              key={mainImage || 'placeholder'}
-              src={mainImage}
-              alt={name}
-              productName={name}
-              categoryLabel={categoryLabel}
-              className="aspect-square w-full rounded-xl shadow-sm"
-              eager
-            />
-            {/* Thumbnail images — click to switch the main photo */}
-            {images.length > 1 && (
-              <div className="flex gap-2 flex-wrap">
-                {images.slice(0, 5).map((img, idx) => (
-                  <button
-                    key={`${img}-${idx}`}
-                    type="button"
-                    onClick={() => setSelectedImage(idx)}
-                    className={`w-20 h-20 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800 transition-all ${
-                      idx === selectedImage
-                        ? 'ring-2 ring-blue-600 ring-offset-2 dark:ring-offset-gray-900'
-                        : 'opacity-70 hover:opacity-100'
-                    }`}
-                    aria-label={`${name} — ${locale === 'zh' ? '图片' : 'photo'} ${idx + 1}`}
-                  >
-                    <img
-                      src={img}
-                      alt=""
-                      loading="lazy"
-                      onError={(e) => {
-                        (e.currentTarget as HTMLImageElement).style.visibility = 'hidden';
-                      }}
-                      className="w-full h-full object-cover"
-                    />
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* Product Info */}
-          <div className="space-y-6">
-            <div>
-              {categoryLabel && (
-                <span className="text-sm text-blue-600 dark:text-blue-400 font-semibold tracking-wide uppercase">
-                  {categoryLabel}
-                </span>
-              )}
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-white mt-2 leading-tight">{name}</h1>
-              {desc && <p className="text-gray-600 dark:text-gray-300 mt-4 leading-relaxed whitespace-pre-line">{desc}</p>}
-            </div>
-
-            {/* Other language name + description */}
-            {showOtherLang && (
-              <div className="border-t border-gray-200 dark:border-gray-700 pt-5">
-                {otherName && otherName !== name && (
-                  <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100">{otherName}</h2>
-                )}
-                {otherDesc && (
-                  <p className="text-gray-500 dark:text-gray-400 mt-3 leading-relaxed text-[15px] whitespace-pre-line">
-                    {otherDesc}
-                  </p>
-                )}
-              </div>
-            )}
-
-            {/* Key specs — only non-empty values */}
-            {specs.length > 0 && (
-              <dl className="flex flex-wrap gap-2">
-                {specs.map((s) => (
-                  <div
-                    key={s.labelEn}
-                    className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-3.5 py-2 text-sm flex items-center gap-2 min-w-0 flex-wrap"
-                  >
-                    <dt className="text-gray-500 dark:text-gray-400">
-                      {locale === 'zh' ? s.labelZh : s.labelEn}
-                    </dt>
-                    <dd className="text-gray-900 dark:text-white font-semibold break-words">{s.value}</dd>
-                  </div>
-                ))}
-              </dl>
-            )}
-
-            {/* Features — hidden entirely when empty */}
-            {features.length > 0 && (
-              <section>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
-                  {t.products.features}
-                </h3>
-                <ul className="space-y-2">
-                  {features.map((f, i) => (
-                    <li key={i} className="flex items-start gap-2">
-                      <FiCheck className="w-5 h-5 text-green-500 shrink-0 mt-0.5" />
-                      <span className="text-gray-700 dark:text-gray-200">{f}</span>
-                    </li>
-                  ))}
-                </ul>
-              </section>
-            )}
-
-            {/* Applications — hidden entirely when empty */}
-            {applications.length > 0 && (
-              <section>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
-                  {t.products.applications}
-                </h3>
-                <ul className="space-y-2">
-                  {applications.map((a, i) => (
-                    <li key={i} className="flex items-start gap-2">
-                      <FiCheck className="w-5 h-5 text-green-500 shrink-0 mt-0.5" />
-                      <span className="text-gray-700 dark:text-gray-200">{a}</span>
-                    </li>
-                  ))}
-                </ul>
-              </section>
-            )}
-
-            {/* Certifications — hidden entirely when empty */}
-            {certifications.length > 0 && (
-              <section>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
-                  {t.products.certifications}
-                </h3>
-                <div className="flex flex-wrap gap-2">
-                  {certifications.map((c, i) => (
-                    <span key={i} className="px-3 py-1.5 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-full text-sm">
-                      {c}
-                    </span>
-                  ))}
-                </div>
-              </section>
-            )}
-
-            {/* Actions */}
-            <div className="flex space-x-4 pt-2">
-              <Link
-                href={`/contact?product=${product.slug}`}
-                className="flex-1 bg-blue-600 text-white text-center py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors font-medium"
-              >
-                {t.products.inquire}
-              </Link>
-            </div>
-          </div>
-        </div>
-
-        {/* Specifications table — only non-empty values; hidden when none exist */}
-        {specs.length > 0 && (
-          <div className="mt-14 bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 sm:p-8 scroll-mt-28">
-            <h3 className="text-2xl font-semibold text-gray-900 dark:text-white mb-6">
-              {t.products.specifications}
-            </h3>
-            <dl className="grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-5">
-              {specs.map((s) => (
-                <div key={s.labelEn}>
-                  <dt className="text-sm text-gray-500 dark:text-gray-400 mb-1">
-                    {locale === 'zh' ? s.labelZh : s.labelEn}
-                  </dt>
-                  <dd className="font-medium text-gray-900 dark:text-white break-words">{s.value}</dd>
-                </div>
-              ))}
-            </dl>
-          </div>
-        )}
-
-        {/* Inquiry Form */}
-        <div id="inquiry" className="mt-14 scroll-mt-28">
-          <h3 className="text-2xl font-semibold text-gray-900 dark:text-white mb-8">
-            {locale === 'zh' ? '联系我们' : 'Contact Us'}
-          </h3>
-          <InquiryForm productSlug={product.slug} />
-        </div>
-      </div>
-    </div>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <ProductDetail product={product} />
+    </>
   );
 }

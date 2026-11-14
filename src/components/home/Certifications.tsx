@@ -1,105 +1,71 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
+import Link from 'next/link';
+import { FiAward, FiArrowRight } from 'react-icons/fi';
 import { useLanguage } from '@/context/LanguageContext';
-import { FiAward, FiCheck } from 'react-icons/fi';
+import { CERTIFICATIONS, PROOF } from '@/lib/site';
 
 const Certifications = () => {
-  const { locale } = useLanguage();
-  const [isVisible, setIsVisible] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (ref.current) {
-      observer.observe(ref.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
-
-  const certifications = [
-    { name: 'ISO 9001', descEn: 'Quality Management System', descZh: '质量管理体系' },
-    { name: 'FDA', descEn: 'Food and Drug Administration', descZh: '美国食品药品监督管理局' },
-    { name: 'SGS', descEn: 'Testing and Certification', descZh: '测试与认证' },
-    { name: 'RoHS', descEn: 'Restriction of Hazardous Substances', descZh: '有害物质限制指令' },
-    { name: 'REACH', descEn: 'Registration, Evaluation, Authorization', descZh: '注册、评估、授权' },
-    { name: 'ISO 14001', descEn: 'Environmental Management', descZh: '环境管理体系' },
-  ];
+  const { t, locale } = useLanguage();
 
   return (
-    <section className="py-20 bg-gray-50" ref={ref}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className={`text-center mb-16 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            {locale === 'zh' ? '认证资质' : 'Certifications & Quality'}
-          </h2>
-          <div className="w-24 h-1 bg-blue-600 mx-auto"></div>
-          <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
-            {locale === 'zh'
-              ? '我们的产品符合国际标准和认证要求，确保产品质量和安全。'
-              : 'Our products meet international standards and certification requirements, ensuring quality and safety.'}
-          </p>
-        </div>
+    <section className="bg-white py-16 sm:py-20" id="certifications">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center lg:gap-16">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-blue-700">
+              {locale === 'zh' ? '质量与合规' : 'Quality & compliance'}
+            </p>
+            <h2 className="mt-3 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl lg:text-4xl">
+              {locale === 'zh' ? '认证不是墙上的证书' : 'Paperwork that arrives with the goods'}
+            </h2>
+            <p className="mt-4 text-base leading-relaxed text-slate-600">
+              {locale === 'zh'
+                ? 'AEC Group 的薄膜按 ISO 9001 与 ISO 14001 体系生产，并按牌号提供 FDA、SGS、RoHS 与 REACH 文件。客户与报关需要的证书随货准备，不需要事后追单。'
+                : 'AEC Group runs to ISO 9001 and ISO 14001, and supplies FDA, SGS, RoHS and REACH documentation with the grade. Certificates travel with the shipment, so your broker and your customer are never waiting.'}
+            </p>
 
-        {/* Certifications Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-          {certifications.map((cert, index) => (
-            <div
-              key={index}
-              className={`bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-500 text-center ${
-                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-              }`}
-              style={{ transitionDelay: `${index * 100}ms` }}
+            <div className="mt-6 flex items-center gap-6 rounded-2xl border border-slate-200 bg-slate-50 p-5">
+              <div>
+                <p className="text-3xl font-bold text-slate-900">{PROOF.passRate}</p>
+                <p className="mt-1 text-xs font-medium uppercase tracking-wider text-slate-500">
+                  {locale === 'zh' ? '质检合格率' : 'QC pass rate'}
+                </p>
+              </div>
+              <div className="h-12 w-px bg-slate-200" aria-hidden />
+              <div>
+                <p className="text-3xl font-bold text-slate-900">{PROOF.clients}+</p>
+                <p className="mt-1 text-xs font-medium uppercase tracking-wider text-slate-500">
+                  {locale === 'zh' ? '全球客户' : 'Buyers worldwide'}
+                </p>
+              </div>
+            </div>
+
+            <Link
+              href="/certifications"
+              className="mt-6 inline-flex min-h-[44px] items-center gap-2 text-sm font-semibold text-blue-700 hover:underline"
             >
-              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <FiAward className="w-8 h-8 text-blue-600" />
-              </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2">{cert.name}</h3>
-              <p className="text-gray-500 text-xs">
-                {locale === 'zh' ? cert.descZh : cert.descEn}
-              </p>
-            </div>
-          ))}
-        </div>
-
-        {/* Quality Commitment */}
-        <div className={`mt-12 bg-white rounded-2xl p-8 shadow-lg transition-all duration-1000 delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-          <div className="grid md:grid-cols-2 gap-8 items-center">
-            <div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                {locale === 'zh' ? '质量承诺' : 'Quality Commitment'}
-              </h3>
-              <ul className="space-y-3">
-                {[
-                  { en: 'Strict quality control at every production stage', zh: '每个生产阶段严格的质量控制' },
-                  { en: 'Advanced testing equipment and methods', zh: '先进的测试设备和方法' },
-                  { en: 'Continuous improvement and innovation', zh: '持续改进和创新' },
-                  { en: 'Customer satisfaction guarantee', zh: '客户满意度保证' },
-                ].map((item, index) => (
-                  <li key={index} className="flex items-center space-x-3">
-                    <FiCheck className="w-5 h-5 text-green-500 flex-shrink-0" />
-                    <span className="text-gray-600">{locale === 'zh' ? item.zh : item.en}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="bg-gradient-to-br from-blue-100 to-blue-200 rounded-xl p-6">
-              <div className="text-center">
-                <div className="text-5xl font-bold text-blue-600 mb-2">99.9%</div>
-                <div className="text-gray-600">{locale === 'zh' ? '产品合格率' : 'Product Pass Rate'}</div>
-              </div>
-            </div>
+              {t.nav.certifications}
+              <FiArrowRight className="h-4 w-4" aria-hidden />
+            </Link>
           </div>
+
+          <ul className="grid gap-3 sm:grid-cols-2">
+            {CERTIFICATIONS.map((cert) => (
+              <li key={cert.name} className="rounded-xl border border-slate-200 p-4">
+                <div className="flex items-center gap-2">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-50 text-blue-700">
+                    <FiAward className="h-4 w-4" aria-hidden />
+                  </span>
+                  <span className="text-sm font-bold text-slate-900">{cert.name}</span>
+                </div>
+                <p className="mt-2 text-xs leading-relaxed text-slate-600">
+                  {locale === 'zh' ? cert.scopeZh : cert.scopeEn}
+                </p>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </section>

@@ -1,175 +1,74 @@
 'use client';
 
-import React, { useEffect, useState, useRef } from 'react';
-import { FiCheck, FiUsers, FiGlobe, FiAward } from 'react-icons/fi';
+import React from 'react';
+import Link from 'next/link';
+import { FiArrowRight } from 'react-icons/fi';
+import { useLanguage } from '@/context/LanguageContext';
+import { PROOF } from '@/lib/site';
 
-interface AboutContent {
-  titleEn: string;
-  titleZh: string;
-  contentEn: string;
-  contentZh: string;
-}
-
-const defaultAbout: AboutContent = {
-  titleEn: 'About AEC Group',
-  titleZh: '关于我们',
-  contentEn: 'AEC Group was established in 2014.',
-  contentZh: 'AEC集团成立于2014年。',
-};
+const FACTORY_IMAGE = 'https://pub-39b7138db749493793fdbe2a9e90d150.r2.dev/hero/jumboroll-factory.jpg';
 
 const About = () => {
-  const [aboutContent, setAboutContent] = useState<AboutContent>(defaultAbout);
-  const [locale, setLocale] = useState('en');
-  const [isVisible, setIsVisible] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    // 首先从localStorage加载
-    const savedData = localStorage.getItem('aec-page-content');
-    if (savedData) {
-      try {
-        const data = JSON.parse(savedData);
-        if (data.about) setAboutContent(data.about);
-      } catch (e) {
-        console.error('Failed to parse saved about data:', e);
-      }
-    }
-
-    // 然后从API加载
-    fetch('/api/pages')
-      .then((res) => res.json())
-      .then((data: any) => {
-        if (data.about) {
-          setAboutContent(prev => ({
-            titleEn: prev.titleEn || data.about.titleEn || '',
-            titleZh: prev.titleZh || data.about.titleZh || '',
-            contentEn: prev.contentEn || data.about.contentEn || '',
-            contentZh: prev.contentZh || data.about.contentZh || '',
-          }));
-        }
-      })
-      .catch((error) => console.error('Failed to load about content:', error));
-
-    const savedLocale = localStorage.getItem('locale') || 'en';
-    setLocale(savedLocale);
-  }, []);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (ref.current) {
-      observer.observe(ref.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
-
-  const stats = [
-    { icon: FiUsers, value: '500+', labelEn: 'Global Clients', labelZh: '全球客户' },
-    { icon: FiGlobe, value: '50+', labelEn: 'Countries Served', labelZh: '服务国家' },
-    { icon: FiAward, value: '10+', labelEn: 'Years Experience', labelZh: '年经验' },
-  ];
-
-  const values = [
-    {
-      titleEn: 'Quality First',
-      titleZh: '质量优先',
-      descEn: 'We maintain the highest quality standards in every product we manufacture.',
-      descZh: '我们在每个产品中保持最高的质量标准。',
-    },
-    {
-      titleEn: 'Customer Focus',
-      titleZh: '客户至上',
-      descEn: 'Our customers success is our success. We provide comprehensive support.',
-      descZh: '客户的成功就是我们的成功。我们提供全方位的支持。',
-    },
-    {
-      titleEn: 'Innovation',
-      titleZh: '创新驱动',
-      descEn: 'Continuous improvement and innovation drive our product development.',
-      descZh: '持续改进和创新推动我们的产品开发。',
-    },
-    {
-      titleEn: 'Sustainability',
-      titleZh: '可持续发展',
-      descEn: 'Committed to environmentally responsible manufacturing practices.',
-      descZh: '致力于环保的制造实践。',
-    },
-  ];
+  const { t } = useLanguage();
+  const story: string[] = t.about.story;
+  const facts: Array<{ label: string; value: string }> = t.about.facts;
 
   return (
-    <section className="py-20 bg-white" ref={ref}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className={`text-center mb-16 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            {locale === 'zh' ? aboutContent.titleZh : aboutContent.titleEn}
-          </h2>
-          <div className="w-24 h-1 bg-blue-600 mx-auto"></div>
-        </div>
-
-        {/* Company Story */}
-        <div className={`grid lg:grid-cols-2 gap-12 items-center mb-16 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-          <div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-4">
-              {locale === 'zh' ? '我们的故事' : 'Our Story'}
-            </h3>
-            <div className="space-y-4 text-gray-600 whitespace-pre-line">
-              {locale === 'zh' ? aboutContent.contentZh : aboutContent.contentEn}
+    <section className="bg-white py-16 sm:py-20" id="about">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-16">
+          <div className="relative order-2 lg:order-1">
+            <div className="overflow-hidden rounded-2xl">
+              <img
+                src={FACTORY_IMAGE}
+                alt="Jumbo BOPP film rolls on the production line at the AEC Group plant in Hefei"
+                width={960}
+                height={640}
+                loading="lazy"
+                decoding="async"
+                className="h-full w-full object-cover"
+              />
+            </div>
+            <div className="absolute -bottom-5 end-4 rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-lg">
+              <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">
+                {t.about.facts[1].label}
+              </p>
+              <p className="text-lg font-bold text-slate-900">{t.about.facts[1].value}</p>
             </div>
           </div>
-          <div className="bg-gradient-to-br from-blue-100 to-blue-200 rounded-xl p-8">
-            <div className="aspect-video bg-white/50 rounded-lg flex items-center justify-center">
-              <div className="text-center">
-                <div className="w-20 h-20 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span className="text-blue-600 font-bold text-3xl">A</span>
-                </div>
-                <p className="text-blue-600 font-medium">AEC Group</p>
-                <p className="text-blue-500 text-sm">Manufacturing Excellence</p>
-              </div>
-            </div>
-          </div>
-        </div>
 
-        {/* Stats */}
-        <div className={`grid grid-cols-1 md:grid-cols-3 gap-8 mb-16 transition-all duration-1000 delay-200 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-          {stats.map((stat, index) => (
-            <div key={index} className="bg-gray-50 rounded-xl p-6 text-center">
-              <div className="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <stat.icon className="w-6 h-6 text-white" />
-              </div>
-              <div className="text-3xl font-bold text-blue-600 mb-2">{stat.value}</div>
-              <div className="text-gray-600 text-sm">{locale === 'zh' ? stat.labelZh : stat.labelEn}</div>
-            </div>
-          ))}
-        </div>
+          <div className="order-1 lg:order-2">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-blue-700">{t.about.eyebrow}</p>
+            <h2 className="mt-3 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl lg:text-4xl">
+              {t.about.title}
+            </h2>
+            <p className="mt-4 text-base leading-relaxed text-slate-600">{t.about.subtitle}</p>
 
-        {/* Values */}
-        <div className={`transition-all duration-1000 delay-400 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-          <h3 className="text-2xl font-bold text-gray-900 mb-8 text-center">
-            {locale === 'zh' ? '我们的价值观' : 'Our Values'}
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {values.map((value, index) => (
-              <div key={index} className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow">
-                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
-                  <FiCheck className="w-6 h-6 text-blue-600" />
+            <div className="mt-5 space-y-3 text-sm leading-relaxed text-slate-600 sm:text-base">
+              {story.slice(0, 2).map((paragraph) => (
+                <p key={paragraph.slice(0, 24)}>{paragraph}</p>
+              ))}
+            </div>
+
+            <dl className="mt-6 grid grid-cols-2 gap-4 border-t border-slate-200 pt-6">
+              {facts.map((fact) => (
+                <div key={fact.label}>
+                  <dt className="text-xs font-medium uppercase tracking-wider text-slate-500">{fact.label}</dt>
+                  <dd className="mt-1 text-xl font-bold text-slate-900">{fact.value}</dd>
                 </div>
-                <h4 className="text-lg font-semibold text-gray-900 mb-2">
-                  {locale === 'zh' ? value.titleZh : value.titleEn}
-                </h4>
-                <p className="text-gray-600 text-sm">
-                  {locale === 'zh' ? value.descZh : value.descEn}
-                </p>
-              </div>
-            ))}
+              ))}
+            </dl>
+
+            <Link
+              href="/about"
+              className="mt-6 inline-flex min-h-[44px] items-center gap-2 text-sm font-semibold text-blue-700 hover:underline"
+            >
+              {t.common.readMore}
+              <FiArrowRight className="h-4 w-4" aria-hidden />
+            </Link>
+            <span className="sr-only">
+              {PROOF.founded} · {PROOF.capacityTonnes} t · {PROOF.countries} countries
+            </span>
           </div>
         </div>
       </div>

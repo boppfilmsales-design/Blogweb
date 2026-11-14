@@ -108,6 +108,41 @@ Set `ADMIN_PASSWORD` as an **environment variable in the Pages dashboard**
 default password**: until this variable is set, `/admin/login` cannot log in.
 Never commit a password to this repo.
 
+## Rendering, SEO and crawler behaviour (2026 revision)
+
+- **Every page is server-rendered in English.** The locale provider used to
+  return `null` until the browser mounted, which shipped an empty `<body>` to
+  crawlers. It now renders immediately and a saved language preference is
+  applied after hydration.
+- **Static where possible.** `/`, `/about`, `/products`, `/contact` and
+  `/certifications` are prerendered at build time from
+  `src/data/products-db.json`; `/products/[slug]` is rendered on the edge at
+  request time (`export const runtime = 'edge'`).
+- **Data fallback.** `src/lib/catalog.ts` reads D1 first and falls back to the
+  bundled catalogue, and `GET /api/products` returns the bundled catalogue with
+  HTTP 200 when D1 is unavailable — a database problem can no longer produce a
+  500 for a page or a crawler.
+- **SEO surface.** `metadataBase`, canonical URLs, Open Graph and Twitter cards
+  live in `src/app/layout.tsx` and each page's `metadata`; JSON-LD is emitted for
+  `Organization`, `WebSite`, `FAQPage`, `Product`, `BreadcrumbList` and
+  `ItemList`. `src/app/robots.ts` and `src/app/sitemap.ts` serve `/robots.txt`
+  and `/sitemap.xml` (all 167 product URLs, with trailing slashes).
+- **Refresh the snapshot** after catalogue changes in D1:
+  `curl -s https://blog.boppfilmsale.com/api/products > src/data/products-db.json`
+  then rebuild, so the server-rendered HTML and the sitemap match the database.
+
+### Cloudflare settings that affect indexing
+
+Two zone-level Cloudflare features can still keep crawlers out even when the
+code returns HTTP 200, and both live in the dashboard, not this repo:
+
+1. **Bots → Bot Fight Mode / managed challenge.** A non-browser user agent
+   (e.g. `bingbot`) currently receives a `403` "Just a moment…" challenge while
+   a browser user agent gets `200`. Add a WAF skip rule for verified bots, or
+   turn the challenge off, or Bing and other crawlers will see nothing.
+2. **Managed robots.txt (AI Crawl Control).** If enabled, Cloudflare serves its
+   own `/robots.txt` at the edge and this app's `robots.ts` is never reached.
+
 ## Data
 
 - **Product copy lives in D1** (`blogweb-db`, 167 products). The repo's

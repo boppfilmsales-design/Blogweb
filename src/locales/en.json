@@ -2,98 +2,324 @@
   "nav": {
     "home": "Home",
     "products": "Products",
+    "certifications": "Certifications",
     "about": "About Us",
     "contact": "Contact",
     "language": "Language",
-    "search": "Search products..."
+    "search": "Search products...",
+    "menu": "Menu",
+    "close": "Close",
+    "getQuote": "Get a Quote"
+  },
+  "common": {
+    "viewAll": "View all products",
+    "viewDetails": "View details",
+    "inquire": "Inquire now",
+    "requestSample": "Request a sample",
+    "readMore": "Read the full story",
+    "learnMore": "Learn more",
+    "contactUs": "Contact us",
+    "sendInquiry": "Send inquiry",
+    "backHome": "Back to home",
+    "loading": "Loading…",
+    "freeSample": "Free samples",
+    "response24h": "Quote within 24 hours"
   },
   "hero": {
-    "title": "Professional BOPP Film Supplier",
-    "subtitle": "Providing High-Quality BOPP Film Solutions for Global Packaging Industry",
-    "description": "We specialize in the production and export of BOPP films, widely used in food packaging, printing, electronics, tobacco and many other industries. With premium quality products and excellent service, we have become a trusted partner for customers worldwide.",
-    "cta": "Browse Products",
-    "contact": "Contact Us"
+    "badge": "Factory-direct since 2014 · Hefei, China",
+    "titleLead": "BOPP, BOPET and specialty films,",
+    "titleHighlight": "manufactured and shipped factory-direct",
+    "subtitle": "10,000 tonnes of packaging film a year, slit to 200–1600 mm and 15–50 µm, delivered to converters in 50+ countries.",
+    "description": "You send the spec — thickness, width, treatment, core and pallet. We confirm the quotation within 24 hours, run free samples, and ship from our own lines in Hefei. No trading layers, no surprise gauge variance.",
+    "ctaPrimary": "Get a quote",
+    "ctaSecondary": "Browse products",
+    "statSinceValue": "2014",
+    "statSinceLabel": "Manufacturing since",
+    "statCapacityValue": "10,000+",
+    "statCapacityLabel": "Tonnes per year",
+    "statPassValue": "99.9%",
+    "statPassLabel": "QC pass rate",
+    "statCountriesValue": "50+",
+    "statCountriesLabel": "Countries served",
+    "scrollHint": "See what we make and how we quote"
+  },
+  "pain": {
+    "eyebrow": "Built for buyers, not catalogues",
+    "title": "What usually goes wrong with film orders",
+    "subtitle": "Most packaging-film problems are not about price. They are about tolerance, documentation and who answers the phone when a container is late. Here is how we handle each one.",
+    "items": [
+      {
+        "title": "Gauge that drifts between rolls",
+        "desc": "A micron or two off and your lamination, print registration or seal strength changes. We measure every roll and hold thickness inside the tolerance written on your PO."
+      },
+      {
+        "title": "Four quotes, four different films",
+        "desc": "Traders re-label the same grade differently. You get the resin, treatment and slip level we actually run — stated on the quotation, not guessed at."
+      },
+      {
+        "title": "Certificates that arrive after the container",
+        "desc": "FDA, RoHS, REACH and ISO paperwork is prepared with the shipment, so your customs broker and your customer's QA both get it before the goods land."
+      },
+      {
+        "title": "Samples that never come",
+        "desc": "We courier free A4 and roll samples of stock grades within days, so your line can trial the film before you commit to a container."
+      },
+      {
+        "title": "Nobody answers after the deposit",
+        "desc": "One named contact from quotation to bill of lading, with production and loading photos sent as the order moves."
+      }
+    ],
+    "solutionTitle": "One factory, one contact, one written specification",
+    "solutionDesc": "Anhui Eastern Communication (AEC Group) has run film lines in Hefei since 2014. You deal with the plant that makes the film, so every change — width, core, treatment, metallizing, printing — is confirmed by the people running the line.",
+    "solutionPoints": [
+      "Spec confirmed in writing before production",
+      "Free samples and 24-hour quotations",
+      "ISO 9001, FDA, SGS, RoHS, REACH and ISO 14001 documentation"
+    ]
   },
   "features": {
-    "title": "Why Choose Us",
-    "quality": {
-      "title": "Premium Quality",
-      "desc": "Advanced production technology and strict quality control ensure every roll meets international standards"
-    },
-    "price": {
-      "title": "Competitive Price",
-      "desc": "Factory direct supply, eliminating middlemen to provide the most competitive prices"
-    },
-    "delivery": {
-      "title": "Fast Delivery",
-      "desc": "Complete inventory management and logistics system ensures timely delivery worldwide"
-    },
-    "service": {
-      "title": "Professional Service",
-      "desc": "Professional technical team provides comprehensive support from product selection to application guidance"
-    }
+    "title": "Why buyers stay with us",
+    "subtitle": "Six things that matter more than a catalogue photo when you are booking a production line around a film delivery.",
+    "items": [
+      {
+        "title": "Factory-direct pricing",
+        "desc": "You buy from the plant that casts and slits the film, so there is no trading margin between your cost and our line."
+      },
+      {
+        "title": "Gauge and width you specify",
+        "desc": "15–50 µm thickness and 200–1600 mm slitting, with core size, winding direction and pallet pattern set to your line."
+      },
+      {
+        "title": "Quality held to 99.9%",
+        "desc": "Incoming resin checks, in-line thickness scanning and roll-by-roll inspection before packing."
+      },
+      {
+        "title": "Free samples, fast",
+        "desc": "Stock grades ship as samples by courier so your team can print, laminate or seal before the first order."
+      },
+      {
+        "title": "Quotation in 24 hours",
+        "desc": "Send thickness, width, treatment and volume; you get price, lead time and freight options the next working day."
+      },
+      {
+        "title": "Export paperwork handled",
+        "desc": "CO, MSDS, FDA and REACH declarations prepared with the shipping documents, not chased afterwards."
+      }
+    ]
+  },
+  "services": {
+    "eyebrow": "OEM & ODM",
+    "title": "Custom film, run to your specification",
+    "subtitle": "Slitting, metallizing, coating and printing are done in-house, so a custom order is a production instruction rather than a negotiation between three suppliers.",
+    "items": [
+      {
+        "title": "Slitting & rewinding",
+        "desc": "200–1600 mm finished width, 15–50 µm, 3-inch or 6-inch cores, mill or reverse winding."
+      },
+      {
+        "title": "Metallizing & coating",
+        "desc": "Aluminum metallized BOPP, BOPET and CPP, plus anti-fog, anti-static, matte and white opaque treatments."
+      },
+      {
+        "title": "Printing & branding",
+        "desc": "Rotogravure printing for tape, labels and branded packaging film, with colour matching to your artwork."
+      },
+      {
+        "title": "OEM & private label",
+        "desc": "Your brand on the carton, your specification on the roll, your documentation in the shipment."
+      }
+    ],
+    "specsTitle": "Capability at a glance",
+    "specs": [
+      { "label": "Thickness", "value": "15 – 50 µm" },
+      { "label": "Slitting width", "value": "200 – 1600 mm" },
+      { "label": "Annual capacity", "value": "10,000+ tonnes" },
+      { "label": "Core size", "value": "3\" / 6\"" },
+      { "label": "Sample policy", "value": "Free, courier" },
+      { "label": "Quotation time", "value": "Within 24 hours" }
+    ],
+    "processTitle": "From inquiry to container",
+    "process": [
+      { "title": "Send the spec", "desc": "Film type, thickness, width, treatment, core, volume and destination port." },
+      { "title": "Quote and sample", "desc": "Written quotation within 24 hours, plus free samples of the closest stock grade." },
+      { "title": "Trial and confirm", "desc": "You test on your line; we adjust treatment, slip or width and confirm the specification." },
+      { "title": "Production and QC", "desc": "Run on our lines with in-line gauging and roll-by-roll inspection; photos as it moves." },
+      { "title": "Docs and shipping", "desc": "Certificates, packing list and B/L prepared together, then booked to your port." }
+    ],
+    "cta": "Discuss a custom run"
   },
   "products": {
-    "title": "Product Series",
-    "subtitle": "Diverse BOPP film products to meet different industry needs",
-    "viewAll": "View All",
-    "viewDetails": "View Details",
-    "inquire": "Inquire Now",
+    "eyebrow": "Product range",
+    "title": "Films for packaging, printing and converting",
+    "subtitle": "BOPP, BOPET, BOPA, BOPS, CPP, POF and PE grades — plus tape, labels and bags — with the thickness and width your line runs.",
+    "viewAll": "View all products",
+    "viewDetails": "View details",
+    "inquire": "Inquire now",
+    "requestSample": "Request sample",
     "specifications": "Specifications",
     "applications": "Applications",
-    "certifications": "Certifications",
     "features": "Features",
-    "relatedProducts": "Related Products"
+    "certifications": "Certifications",
+    "relatedProducts": "Related products",
+    "searchPlaceholder": "Search by film type, thickness or application…",
+    "showing": "Showing {start}–{end} of {total} products",
+    "noResults": "No products match that search.",
+    "clearFilters": "Clear all filters",
+    "allProducts": "All products",
+    "familyLabel": "Series",
+    "categoryLabel": "Category",
+    "specNote": "Other thicknesses and widths are produced to order — ask for your exact specification.",
+    "moqNote": "Minimum order depends on grade and width; we confirm it in your quotation.",
+    "familiesTitle": "Product families",
+    "familiesSubtitle": "Six core families cover most packaging, labelling and tape applications."
   },
-  "category": {
-    "all": "All Products",
-    "gloss": "Gloss Film",
-    "matte": "Matte Film",
-    "metalized": "Metalized Film",
-    "heatSeal": "Heat Sealable Film",
-    "whiteOpaque": "White Opaque Film",
-    "tape": "Tape Film",
-    "printing": "Printing Film"
+  "about": {
+    "eyebrow": "About AEC Group",
+    "title": "A film plant in Hefei, shipping to converters worldwide",
+    "subtitle": "Anhui Eastern Communication Imp. & Exp. Co., Ltd. has manufactured and exported packaging film since 2014.",
+    "storyTitle": "Our story",
+    "story": [
+      "AEC Group started in 2014 with a simple observation: packaging converters were buying film through layers of traders, and every layer added cost, delay and a slightly different answer about what was actually on the roll.",
+      "So we built the other way round. Our plant in the Baohe Industrial District of Hefei runs BOPP, BOPET, BOPS, CPP and POF lines, with slitting, metallizing, coating and printing under the same roof. When a buyer asks for 18 µm at 640 mm with a 3-inch core and corona treatment on one side, the answer comes from the people setting the line — not from a sales office three time zones away.",
+      "Twelve years on, we ship more than 10,000 tonnes a year to converters, printers and tape makers in more than 50 countries. What has not changed is the working method: a written specification before production, a sample before the container, and a named contact who answers while the order is running."
+    ],
+    "factsTitle": "The numbers behind the story",
+    "facts": [
+      { "label": "Founded", "value": "2014" },
+      { "label": "Annual capacity", "value": "10,000+ t" },
+      { "label": "QC pass rate", "value": "99.9%" },
+      { "label": "Export markets", "value": "50+ countries" }
+    ],
+    "valuesTitle": "How we work",
+    "values": [
+      { "title": "Specification first", "desc": "Nothing goes on a line until thickness, width, treatment, core and packing are written down and agreed." },
+      { "title": "Measure, don't promise", "desc": "In-line gauging and roll-by-roll inspection decide whether a roll ships — not a schedule." },
+      { "title": "Answer the buyer", "desc": "One named contact from quotation to bill of lading, in your working hours." },
+      { "title": "Build the long order", "desc": "We would rather adjust a spec and keep a converter for ten years than win one container and lose the account." }
+    ],
+    "facilityTitle": "Inside the plant",
+    "facilityDesc": "Casting, metallizing, slitting and printing in one facility in Hefei, Anhui — which is why a custom width or treatment is a production change, not a subcontract.",
+    "ctaTitle": "Want to see the plant before you order?",
+    "ctaDesc": "We host buyer visits and video walk-throughs of the lines, warehouse and QC bench. Ask us to arrange one.",
+    "ctaButton": "Arrange a visit"
+  },
+  "cases": {
+    "eyebrow": "Case highlights",
+    "title": "The orders we quote every week",
+    "subtitle": "Three buyer profiles that make up most of our volume — and what we actually deliver for them.",
+    "items": [
+      {
+        "sector": "Tobacco & cigarette packaging",
+        "challenge": "Cigarette-film converters need consistent gauge and slip so the pack runs without tearing at high speed.",
+        "solution": "BOPP cigarette film at 18–22 µm, slit to the converter's width, with treatment and slip level fixed per order.",
+        "spec": "18–22 µm · 200–1600 mm slit · ISO 9001, FDA paperwork"
+      },
+      {
+        "sector": "Flexible food packaging",
+        "challenge": "Laminators need metallized and clear films that bond reliably and pass food-contact checks without surprises.",
+        "solution": "Metallized BOPP and BOPET plus clear BOPP for print lamination, supplied with REACH and FDA declarations.",
+        "spec": "12–45 µm · metallized or clear · REACH, FDA, RoHS"
+      },
+      {
+        "sector": "Tape, label & flower wrap",
+        "challenge": "Tape and label producers buy jumbo rolls and need the same grade, month after month, at a stable price.",
+        "solution": "BOPP tape film, pearl and flower film on jumbo rolls, with repeat-order pricing held across the season.",
+        "spec": "Jumbo rolls · 23–40 µm · repeat-order pricing"
+      }
+    ]
+  },
+  "faq": {
+    "eyebrow": "Buyer questions",
+    "title": "MOQ, lead time, samples and paperwork",
+    "subtitle": "The five questions every new buyer asks — answered plainly, before you send an inquiry.",
+    "items": [
+      {
+        "q": "What is your minimum order quantity?",
+        "a": "MOQ depends on the grade and the width you need: stock grades can ship from a single jumbo roll, while custom metallized, coated or printed runs are quoted per order. Tell us the film, thickness, width and monthly volume and we will state the exact minimum in your quotation."
+      },
+      {
+        "q": "How long does production and delivery take?",
+        "a": "Stock grades are typically ready to load within 7–15 days of deposit; custom slitting, metallizing or printing usually takes longer and is confirmed in writing on the proforma invoice. Ocean transit then depends on your port — we quote both FOB and CIF so you can compare."
+      },
+      {
+        "q": "Can I get samples before ordering?",
+        "a": "Yes. A4 sheets and roll samples of stock grades are free; you cover the courier if you prefer your own account. Samples usually leave Hefei within a few working days, and we can match a sample you send us."
+      },
+      {
+        "q": "Which certifications and documents come with the film?",
+        "a": "The plant works to ISO 9001 and ISO 14001, and our films are supplied with FDA, SGS, RoHS and REACH documentation as applicable to the grade. Certificates, MSDS, packing list and certificate of origin are prepared with the shipping documents."
+      },
+      {
+        "q": "What are your payment and shipping terms?",
+        "a": "T/T and L/C at sight are both accepted, with the exact terms written on the proforma invoice. We ship FOB from Chinese ports or CIF to yours, and can arrange pallet specifications for your warehouse."
+      },
+      {
+        "q": "Can you produce to our own specification or brand?",
+        "a": "Yes — that is most of what we do. Width, thickness, core, winding direction, treatment, metallizing and printing are set per order, and OEM/private-label cartons carry your brand and documentation."
+      }
+    ],
+    "note": "Still deciding? Send your specification and we will answer with a price, a lead time and a sample offer.",
+    "cta": "Ask your question"
+  },
+  "cta": {
+    "title": "Send your film specification, get a price in 24 hours",
+    "subtitle": "Thickness, width, treatment, volume and destination port is all we need to start. Free samples follow if the grade is a fit.",
+    "primary": "Request a quotation",
+    "secondary": "Chat on WhatsApp",
+    "note": "Monday to Saturday, 09:00–18:00 China time (GMT+8)"
   },
   "contact": {
-    "title": "Contact Us",
-    "subtitle": "Get professional product consultation and quotation",
-    "name": "Your Name",
-    "email": "Email Address",
-    "phone": "Phone Number",
-    "company": "Company Name",
-    "country": "Country/Region",
-    "product": "Interested Product",
-    "message": "Message",
-    "send": "Send Inquiry",
-    "success": "Inquiry sent successfully! We will contact you soon.",
-    "error": "Failed to send, please try again later.",
+    "title": "Talk to the plant",
+    "subtitle": "Send a specification, ask for a sample, or book a video walk-through of the lines.",
+    "formTitle": "Send an inquiry",
+    "formSubtitle": "Every inquiry is answered by a person, usually within one working day.",
+    "name": "Your name",
+    "email": "Email address",
+    "phone": "Phone / WhatsApp",
+    "company": "Company",
+    "country": "Country",
+    "product": "Product of interest",
+    "productPlaceholder": "Select a product family",
+    "message": "Your requirement",
+    "messagePlaceholder": "Film type, thickness (µm), width (mm), treatment, quantity and destination port.",
+    "send": "Send inquiry",
+    "sending": "Preparing your email…",
+    "success": "Your email app should now be open with the inquiry filled in.",
+    "successNote": "If nothing opened, write to sale@boppfilmsale.com or message us on WhatsApp — both reach the same team.",
+    "error": "That did not work. Please email sale@boppfilmsale.com directly.",
+    "infoTitle": "Factory & office",
     "address": "Address",
-    "addressDetail": "No.1158 Huizhou Ave., Baohe Industrial District, Hefei, Anhui, China",
-    "phone": "Phone",
-    "email": "Email",
-    "whatsapp": "WhatsApp",
-    "businessHours": "Business Hours",
-    "businessHoursDetail": "Monday - Friday 9:00-18:00"
+    "addressDetail": "No.1158 Huizhou Ave., Baohe Industrial District, 230051, Hefei, Anhui, P.R. China",
+    "phoneLabel": "Phone",
+    "emailLabel": "Email",
+    "whatsappLabel": "WhatsApp",
+    "hoursLabel": "Business hours",
+    "hoursDetail": "Monday – Saturday, 09:00–18:00 (GMT+8)",
+    "responseNote": "Quotations within 24 hours · free samples · English, Chinese, Spanish and Arabic spoken",
+    "privacyNote": "We use your details only to answer this inquiry."
   },
   "footer": {
-    "company": "Company Profile",
-    "companyDesc": "Professional BOPP film manufacturer and exporter, committed to providing high-quality packaging solutions for global customers.",
-    "quickLinks": "Quick Links",
-    "products": "Product Series",
-    "contact": "Contact Info",
-    "copyright": "All Rights Reserved",
-    "privacy": "Privacy Policy",
-    "terms": "Terms of Use"
+    "tagline": "Packaging film manufactured in Hefei since 2014 and shipped factory-direct to converters in more than 50 countries.",
+    "quickLinks": "Company",
+    "productsTitle": "Products",
+    "contactTitle": "Contact",
+    "certificationsTitle": "Certifications",
+    "rights": "All rights reserved.",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "specTitle": "Typical specification",
+    "specValue": "15–50 µm · 200–1600 mm"
   },
   "seo": {
-    "homeTitle": "BOPP Film Supplier | Professional BOPP Film Manufacturer | BOPP Films Sale",
-    "homeDesc": "Professional BOPP film supplier offering gloss film, matte film, metalized film, heat sealable film and more. Factory direct supply, quality assurance, global export.",
-    "productsTitle": "BOPP Film Products | Gloss Matte Metalized Films | BOPP Films Sale",
-    "productsDesc": "Browse our BOPP film product series including gloss film, matte film, metalized film, heat sealable film and more. Suitable for food packaging, printing, electronics and many other industries.",
-    "aboutTitle": "About Us | Professional BOPP Film Manufacturer",
-    "aboutDesc": "Learn about BOPP Films Sale, we are a professional BOPP film manufacturer with years of export experience serving customers worldwide.",
-    "contactTitle": "Contact Us | BOPP Film Inquiry",
-    "contactDesc": "Contact us to get BOPP film product quotations. Professional team provides detailed product information and application advice."
+    "homeTitle": "BOPP Film Manufacturer & Supplier | Factory-Direct Packaging Films | AEC Group",
+    "homeDesc": "AEC Group manufactures BOPP, BOPET, BOPS, CPP and POF packaging films in Hefei, China: 15–50 µm, 200–1600 mm slitting, 10,000+ t/year, ISO 9001, FDA, SGS, RoHS and REACH. Free samples and 24-hour quotations.",
+    "productsTitle": "Packaging Film Products — BOPP, BOPET, BOPS, CPP, POF | AEC Group",
+    "productsDesc": "Browse BOPP, BOPET, BOPA, BOPS, CPP, POF and PE films with thickness, width and application details. Factory-direct from Hefei, China, with free samples and 24-hour quotations.",
+    "aboutTitle": "About AEC Group — Packaging Film Manufacturer Since 2014",
+    "aboutDesc": "Anhui Eastern Communication (AEC Group) has manufactured BOPP, BOPET, BOPS, CPP and POF packaging film in Hefei since 2014, shipping 10,000+ tonnes a year to converters in 50+ countries.",
+    "contactTitle": "Contact AEC Group — Film Quotations, Samples and Specifications",
+    "contactDesc": "Send your film specification to AEC Group for a factory-direct quotation within 24 hours. Free samples, ISO 9001, FDA, SGS, RoHS and REACH documentation.",
+    "certTitle": "Certifications — ISO 9001, FDA, SGS, RoHS, REACH, ISO 14001 | AEC Group",
+    "certDesc": "The quality, food-contact, environmental and material-compliance certifications behind AEC Group's packaging films, and what each one covers."
   }
 }
