@@ -96,12 +96,16 @@ export const CERTIFICATIONS: Certification[] = [
   },
 ];
 
-/** Product families shown in navigation and on the homepage. */
+/** Product families shown in navigation and on the homepage.
+ *  `name` must match a key of CATEGORY_GROUPS (src/lib/categories.ts), because
+ *  the links are /products?group=<name> and an unknown group filters to nothing. */
 export const FAMILIES = [
-  { name: 'BOPP', en: 'BOPP Films', zh: 'BOPP 薄膜', blurbEn: 'Clear, matte, metallized, pearl, cigarette and tape grades.', blurbZh: '透明、哑光、镀铝、珠光、烟膜与胶带膜。' },
+  { name: 'BOPP', en: 'BOPP Films', zh: 'BOPP 薄膜', blurbEn: 'Clear, matte, metallized, pearl, cigarette and capacitor grades.', blurbZh: '透明、哑光、镀铝、珠光、烟膜与电容膜。' },
   { name: 'BOPET', en: 'BOPET Films', zh: 'BOPET 薄膜', blurbEn: 'Clear, thermal, metallized and capacitor-grade polyester film.', blurbZh: '透明、热敏、镀铝及电容级聚酯薄膜。' },
   { name: 'BOPA', en: 'BOPA Films', zh: 'BOPA 薄膜', blurbEn: 'Nylon film for high-strength laminates and vacuum packs.', blurbZh: '用于高强度复合与真空包装的尼龙膜。' },
   { name: 'BOPS', en: 'BOPS Films', zh: 'BOPS 薄膜', blurbEn: 'Glossy, matte, shrink and food-grade polystyrene film.', blurbZh: '光面、哑光、收缩及食品级聚苯乙烯薄膜。' },
-  { name: 'CPP/POF/PE', en: 'CPP / POF / PE', zh: 'CPP / POF / PE', blurbEn: 'Cast polypropylene, shrink and stretch films.', blurbZh: '流延聚丙烯、收缩膜与拉伸膜。' },
-  { name: 'Tape & Labels', en: 'Tape & Labels', zh: '胶带与标签', blurbEn: 'Jumbo tape rolls, finished tape, labels and tear tape.', blurbZh: '胶带大卷、成品胶带、标签与撕裂带。' },
+  { name: 'CPP/POF/PE', en: 'CPP / POF / PE', zh: 'CPP / POF / PE', blurbEn: 'Cast polypropylene, shrink film and stretch film.', blurbZh: '流延聚丙烯、收缩膜与拉伸膜。' },
+  { name: 'Tear Tape', en: 'Tear Tape', zh: '撕裂带', blurbEn: 'Clear, printed, gold and laser tear tape for cigarette and food packs.', blurbZh: '用于烟包与食品包装的透明、印刷、金色及镭射撕裂带。' },
+  { name: 'Labels', en: 'Labels', zh: '标签', blurbEn: 'Label rolls and label sheets for printing and converting.', blurbZh: '用于印刷与加工的标签卷与标签片材。' },
+  { name: 'Packaging', en: 'Bags & Sheets', zh: '包装袋与片材', blurbEn: 'BOPP and PE bags, sheets and converted packaging.', blurbZh: 'BOPP 与 PE 袋子、片材及加工包装。' },
 ] as const;

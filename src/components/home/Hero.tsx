@@ -200,7 +200,7 @@ const Hero = () => {
         {/* Stats — in normal flow, never covered by the divider */}
         <dl className="mt-12 grid grid-cols-2 gap-3 rounded-2xl border border-white/15 bg-white/[0.06] p-4 backdrop-blur-sm sm:mt-14 sm:grid-cols-4 sm:gap-6 sm:p-6">
           {stats.map((stat) => (
-            <div key={stat.label} className="px-1 text-center sm:px-2 sm:text-start">
+            <div key={stat.label} className="flex flex-col px-1 text-center sm:px-2 sm:text-start">
               <dt className="order-2 mt-1 text-[11px] font-medium uppercase tracking-wider text-blue-200/80 sm:text-xs">
                 {stat.label}
               </dt>
