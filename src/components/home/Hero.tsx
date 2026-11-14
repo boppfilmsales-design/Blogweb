@@ -150,7 +150,6 @@ const Hero = () => {
                     width={960}
                     height={600}
                     loading={index === 0 ? 'eager' : 'lazy'}
-                    fetchPriority={index === 0 ? 'high' : 'low'}
                     decoding="async"
                     className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
                       index === slide ? 'opacity-100' : 'opacity-0'
