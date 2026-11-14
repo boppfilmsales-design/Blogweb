@@ -23,12 +23,14 @@ interface InquiryFormProps {
 
 const InquiryForm: React.FC<InquiryFormProps> = ({ productSlug, productName }) => {
   const { t, locale } = useLanguage();
-  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
   const [draft, setDraft] = useState<FormData | null>(null);
 
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<FormData>({
     defaultValues: {
@@ -50,30 +52,65 @@ const InquiryForm: React.FC<InquiryFormProps> = ({ productSlug, productName }) =
     if (reference) setFromUrl(reference.replace(/[-_]+/g, ' ').trim());
   }, [productName]);
 
-  const onSubmit = (data: FormData) => {
+  // Fallback used only when the server could not send the inquiry.
+  const buildMailto = (data: FormData) => {
+    const reference = productName || fromUrl || data.product || '';
+    const subject = `Film inquiry${reference ? ` — ${reference}` : ''}`;
+    const bodyLines = [
+      `${t.contact.name}: ${data.name}`,
+      `${t.contact.email}: ${data.email}`,
+      data.phone ? `${t.contact.phone}: ${data.phone}` : '',
+      data.company ? `${t.contact.company}: ${data.company}` : '',
+      data.country ? `${t.contact.country}: ${data.country}` : '',
+      reference ? `${t.contact.product}: ${reference}` : '',
+      '',
+      data.message,
+      '',
+      `— Sent from ${SITE.url}`,
+    ].filter(Boolean);
+
+    return `mailto:${SITE.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
+      bodyLines.join('\n'),
+    )}`;
+  };
+
+  // The server sends the notification email (and keeps a copy in D1); the
+  // visitor's own mail client is only the fallback when that fails.
+  const onSubmit = async (data: FormData) => {
+    setSubmitStatus('sending');
+    setErrorMessage('');
+    setDraft(data);
+
+    const reference = productName || fromUrl || data.product || '';
+    const page =
+      typeof window !== 'undefined' ? `${window.location.pathname}${window.location.search}` : '';
+
     try {
-      const reference = productName || fromUrl || data.product || '';
-      const subject = `Film inquiry${reference ? ` — ${reference}` : ''}`;
-      const bodyLines = [
-        `${t.contact.name}: ${data.name}`,
-        `${t.contact.email}: ${data.email}`,
-        data.phone ? `${t.contact.phone}: ${data.phone}` : '',
-        data.company ? `${t.contact.company}: ${data.company}` : '',
-        data.country ? `${t.contact.country}: ${data.country}` : '',
-        reference ? `${t.contact.product}: ${reference}` : '',
-        '',
-        data.message,
-        '',
-        `— Sent from ${SITE.url}`,
-      ].filter(Boolean);
+      const response = await fetch('/api/inquiry', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: data.name,
+          email: data.email,
+          phone: data.phone || '',
+          company: data.company || '',
+          country: data.country || '',
+          product: reference,
+          message: data.message,
+          page,
+        }),
+      });
 
-      const mailto = `mailto:${SITE.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
-        bodyLines.join('\n'),
-      )}`;
+      const payload: any = await response.json().catch(() => ({}));
 
-      setDraft(data);
-      setSubmitStatus('success');
-      window.location.href = mailto;
+      if (response.ok && payload?.success) {
+        setSubmitStatus('success');
+        reset({ product: '', message: '' });
+        return;
+      }
+
+      setErrorMessage(typeof payload?.error === 'string' ? payload.error : '');
+      setSubmitStatus('error');
     } catch {
       setSubmitStatus('error');
     }
@@ -210,10 +247,18 @@ const InquiryForm: React.FC<InquiryFormProps> = ({ productSlug, productName }) =
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
           <button
             type="submit"
-            className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-xl bg-blue-700 px-6 text-base font-semibold text-white hover:bg-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
+            disabled={submitStatus === 'sending'}
+            className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-xl bg-blue-700 px-6 text-base font-semibold text-white hover:bg-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 disabled:cursor-not-allowed disabled:opacity-70"
           >
-            <FiSend className="h-5 w-5" aria-hidden />
-            {t.contact.send}
+            {submitStatus === 'sending' ? (
+              <span
+                className="h-5 w-5 animate-spin rounded-full border-2 border-white/40 border-t-white"
+                aria-hidden
+              />
+            ) : (
+              <FiSend className="h-5 w-5" aria-hidden />
+            )}
+            {submitStatus === 'sending' ? t.contact.sending : t.contact.send}
           </button>
 
           <a
@@ -230,17 +275,15 @@ const InquiryForm: React.FC<InquiryFormProps> = ({ productSlug, productName }) =
         <p className="text-xs leading-relaxed text-slate-500">{t.contact.privacyNote}</p>
 
         {submitStatus === 'success' && (
-          <div role="status" className="rounded-xl border border-green-200 bg-green-50 p-4 text-sm text-green-900">
+          <div role="status" aria-live="polite" className="rounded-xl border border-green-200 bg-green-50 p-4 text-sm text-green-900">
             <p className="flex items-start gap-2 font-medium">
               <FiCheck className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
               {t.contact.success}
             </p>
             <p className="mt-1 ps-6 text-green-800">{t.contact.successNote}</p>
-            {draft && (
-              <p className="mt-2 ps-6 text-xs text-green-800">
-                {SITE.email} · {SITE.mobileDisplay}
-              </p>
-            )}
+            <p className="mt-2 ps-6 text-xs text-green-800">
+              {SITE.email} · {SITE.mobileDisplay}
+            </p>
           </div>
         )}
         {submitStatus === 'error' && (
@@ -248,9 +291,15 @@ const InquiryForm: React.FC<InquiryFormProps> = ({ productSlug, productName }) =
             <FiAlertCircle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
             <span>
               {t.contact.error}{' '}
-              <a className="font-semibold underline" href={`mailto:${SITE.email}`}>
+              <a
+                className="font-semibold underline"
+                href={draft ? buildMailto(draft) : `mailto:${SITE.email}`}
+              >
                 {SITE.email}
               </a>
+              {errorMessage ? (
+                <span className="mt-1 block text-xs text-red-700/80">{errorMessage}</span>
+              ) : null}
             </span>
           </div>
         )}

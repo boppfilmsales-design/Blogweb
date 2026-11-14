@@ -55,3 +55,22 @@ CREATE TABLE IF NOT EXISTS visitors (
 
 CREATE INDEX IF NOT EXISTS idx_visitors_timestamp ON visitors (timestamp);
 CREATE INDEX IF NOT EXISTS idx_visitors_ip ON visitors (ip);
+
+-- Inquiry notifications submitted from the public contact form.
+-- Written by POST /api/inquiry (best effort) so a lead is kept even when both
+-- email channels are unavailable.
+CREATE TABLE IF NOT EXISTS inquiries (
+  id TEXT PRIMARY KEY,
+  name TEXT NOT NULL,
+  email TEXT NOT NULL,
+  phone TEXT,
+  company TEXT,
+  country TEXT,
+  product TEXT,
+  message TEXT NOT NULL DEFAULT '',
+  page TEXT,
+  channels TEXT,
+  createdAt TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_inquiries_createdAt ON inquiries (createdAt);

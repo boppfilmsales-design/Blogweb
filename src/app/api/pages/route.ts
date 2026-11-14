@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { requireAdmin } from '@/lib/admin-auth';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'edge';
@@ -116,8 +117,11 @@ export async function GET() {
   }
 }
 
-// POST - 更新页面内容
+// POST - 更新页面内容（admin only）
 export async function POST(request: NextRequest) {
+  const denied = await requireAdmin(request);
+  if (denied) return denied;
+
   try {
     const body: any = await request.json();
     const pages = loadPages();

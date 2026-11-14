@@ -6,7 +6,8 @@ const fs = require('fs');
 const path = require('path');
 
 const API_URL = 'https://blogweb-green.vercel.app';
-const ADMIN_PASSWORD = 'aecgroup2024';
+// Never hardcode the admin password: export ADMIN_PASSWORD before running.
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || '';
 
 // Read backup data
 const backupPath = path.join(__dirname, '..', 'bopp-backup.json');

@@ -6,6 +6,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getEnv } from '@/lib/cloudflare-env';
 import { publicUrlForKey } from '@/lib/r2-url';
+import { requireAdmin } from '@/lib/admin-auth';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'edge';
@@ -18,7 +19,11 @@ function sanitizeFileName(name: string): string {
   return cleaned || 'upload';
 }
 
+// POST upload an image (admin only: uploads write to the R2 bucket)
 export async function POST(request: NextRequest) {
+  const denied = await requireAdmin(request);
+  if (denied) return denied;
+
   try {
     const formData = await request.formData();
     const file = formData.get('file') as File | null;
@@ -56,8 +61,11 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// 获取已上传文件列表（R2 中 images/ 前缀下的对象）
-export async function GET() {
+// 获取已上传文件列表（R2 中 images/ 前缀下的对象，admin only）
+export async function GET(request: NextRequest) {
+  const denied = await requireAdmin(request);
+  if (denied) return denied;
+
   try {
     const env = await getEnv();
     const listed = await env.IMAGES.list({ prefix: 'images/', limit: 100 });

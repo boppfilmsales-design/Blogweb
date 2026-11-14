@@ -48,6 +48,10 @@ seed-d1-*.sql
 *.seed
 *.pid.lock
 
+# Local database connection strings / secret dumps — never commit these
+# (db_url.txt used to sit here with a live Supabase password).
+db_url.txt
+
 /src/generated/prisma
 .vercel
 .env*

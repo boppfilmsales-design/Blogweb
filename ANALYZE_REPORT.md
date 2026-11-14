@@ -105,7 +105,7 @@ Blogweb/
 - Contact 页面默认显示苏州地址
 
 ### 7. 管理后台密码硬编码 ⚠️ 安全
-- `admin/login/page.tsx` 中硬编码 `aecgroup2024`
+- `admin/login/page.tsx` 中硬编码明文密码（已在 2026-11 的安全加固中移除）
 - `.env` 有 `ADMIN_PASSWORD` 但未在登录逻辑中使用
 
 ---

@@ -1,11 +1,16 @@
 // Health check for the D1 binding (replaces the old Prisma/Supabase check).
-import { NextResponse } from 'next/server';
+// Admin only: it reports deployment internals.
+import { NextRequest, NextResponse } from 'next/server';
 import { getDB } from '@/lib/cloudflare-env';
+import { requireAdmin } from '@/lib/admin-auth';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'edge';
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const denied = await requireAdmin(request);
+  if (denied) return denied;
+
   try {
     const db = await getDB();
 

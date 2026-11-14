@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getProductById, getProductBySlug, updateProduct, deleteProduct } from '@/lib/db';
+import { requireAdmin } from '@/lib/admin-auth';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'edge';
@@ -25,11 +26,14 @@ export async function GET(
   }
 }
 
-// PUT update product
+// PUT update product (admin only)
 export async function PUT(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
+  const denied = await requireAdmin(request);
+  if (denied) return denied;
+
   try {
     const body: any = await request.json();
     const product = await updateProduct(params.id, body);
@@ -42,11 +46,14 @@ export async function PUT(
   }
 }
 
-// DELETE product
+// DELETE product (admin only)
 export async function DELETE(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
+  const denied = await requireAdmin(request);
+  if (denied) return denied;
+
   try {
     const success = await deleteProduct(params.id);
     if (!success) {

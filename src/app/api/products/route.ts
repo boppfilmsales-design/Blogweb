@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getProducts as dbGetProducts, createProduct, updateProduct, deleteProduct, importProducts } from '@/lib/db';
+import { getProducts as dbGetProducts, createProduct } from '@/lib/db';
 import { staticProducts } from '@/lib/catalog';
+import { requireAdmin } from '@/lib/admin-auth';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'edge';
@@ -21,8 +22,11 @@ export async function GET() {
   return NextResponse.json(staticProducts());
 }
 
-// POST create new product
+// POST create new product (admin only)
 export async function POST(request: NextRequest) {
+  const denied = await requireAdmin(request);
+  if (denied) return denied;
+
   try {
     const body: any = await request.json();
     const product = await createProduct(body);

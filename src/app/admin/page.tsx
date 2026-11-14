@@ -196,6 +196,10 @@ export default function AdminPage() {
   const loadUploadedFiles = async () => {
     try {
       const res = await fetch('/api/upload');
+      if (res.status === 401) {
+        router.replace('/admin/login');
+        return;
+      }
       const data: any = await res.json();
       if (data.files) {
         setUploadedFiles(data.files.map((f: any) => f.url));
@@ -212,17 +216,33 @@ export default function AdminPage() {
     }
   }, [activeTab]);
 
+  // The admin session lives in an HttpOnly cookie, so ask the server whether
+  // this browser still holds a valid one instead of trusting client state.
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const loggedIn = sessionStorage.getItem('admin_logged_in');
-      if (loggedIn === 'true') {
-        setIsAuthenticated(true);
-        loadProducts();
-        loadPageContent();
-      } else {
-        router.push('/admin/login');
+    let cancelled = false;
+
+    const checkSession = async () => {
+      try {
+        const res = await fetch('/api/admin/auth', { cache: 'no-store' });
+        const data: any = await res.json().catch(() => ({}));
+        if (cancelled) return;
+        if (res.ok && data?.authenticated) {
+          setIsAuthenticated(true);
+          loadProducts();
+          loadPageContent();
+        } else {
+          router.replace('/admin/login');
+        }
+      } catch {
+        if (!cancelled) router.replace('/admin/login');
       }
-    }
+    };
+
+    checkSession();
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 
   const loadProducts = async () => {
@@ -351,9 +371,14 @@ export default function AdminPage() {
     }
   };
 
-  const handleLogout = () => {
-    if (typeof window !== 'undefined') sessionStorage.removeItem('admin_logged_in');
-    router.push('/admin/login');
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/admin/auth', { method: 'DELETE' });
+    } catch {
+      // Clearing the client-side session failed; the cookie may still be valid,
+      // but the login page re-checks with the server anyway.
+    }
+    router.replace('/admin/login');
   };
 
   const handleCreateProduct = () => {
@@ -470,6 +495,10 @@ export default function AdminPage() {
 
       try {
         const res = await fetch('/api/upload', { method: 'POST', body: formData });
+        if (res.status === 401) {
+          router.replace('/admin/login');
+          return;
+        }
         const data: any = await res.json();
         if (data.url) {
           uploadedUrls.push(data.url);
@@ -529,11 +558,16 @@ export default function AdminPage() {
     setSavingPage(true);
     try {
       // 保存到API
-      await fetch('/api/pages', {
+      const res = await fetch('/api/pages', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ [page]: pageContent[page] }),
       });
+      if (res.status === 401) {
+        setSavingPage(false);
+        router.replace('/admin/login');
+        return;
+      }
     } catch (error) {
       console.error('API save failed:', error);
     }
@@ -576,11 +610,15 @@ export default function AdminPage() {
     setPageContent({ ...pageContent, navigation: newNav });
 
     try {
-      await fetch('/api/pages', {
+      const res = await fetch('/api/pages', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ navigation: newNav }),
       });
+      if (res.status === 401) {
+        router.replace('/admin/login');
+        return;
+      }
       setEditingNav(null);
       alert('Navigation item saved!');
     } catch (error) {
@@ -593,11 +631,12 @@ export default function AdminPage() {
     const newNav = (pageContent.navigation || []).filter(n => n.id !== id);
     setPageContent({ ...pageContent, navigation: newNav });
     try {
-      await fetch('/api/pages', {
+      const res = await fetch('/api/pages', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ navigation: newNav }),
       });
+      if (res.status === 401) router.replace('/admin/login');
     } catch (error) {
       alert('Failed to delete');
     }
@@ -609,11 +648,12 @@ export default function AdminPage() {
     );
     setPageContent({ ...pageContent, navigation: newNav });
     try {
-      await fetch('/api/pages', {
+      const res = await fetch('/api/pages', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ navigation: newNav }),
       });
+      if (res.status === 401) router.replace('/admin/login');
     } catch (error) {
       console.error('Failed to toggle visibility');
     }

@@ -657,6 +657,12 @@ const products = [
 
 async function importProducts() {
   const API_URL = "https://blogweb-green.vercel.app/api/products/import";
+  // Never hardcode the admin password: export ADMIN_PASSWORD before running.
+  const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+  if (!ADMIN_PASSWORD) {
+    console.error("缺少 ADMIN_PASSWORD 环境变量");
+    return;
+  }
   
   console.log(`准备导入 ${products.length} 个产品...`);
   
@@ -665,7 +671,7 @@ async function importProducts() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "x-admin-password": "aecgroup2024",
+        Authorization: `Bearer ${ADMIN_PASSWORD}`,
       },
       body: JSON.stringify({ products }),
     });

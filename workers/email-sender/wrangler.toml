@@ -1,0 +1,26 @@
+# blogweb-email-sender — Cloudflare Worker that sends the site's inquiry emails.
+#
+# Pages Functions cannot hold a `send_email` binding, so the Pages project
+# (`blogweb`) gets a Service Binding named EMAIL_SENDER pointing at this Worker
+# and calls it at `https://email-sender/send`.
+#
+# Deploy (from this directory):
+#   npx wrangler deploy
+#
+# Before the first send: onboard the sending domain in the Cloudflare dashboard
+# (Compute > Email Service > Email Sending > Onboard Domain) and make sure the
+# recipient address is verified for Email Service in this account.
+name = "blogweb-email-sender"
+main = "src/index.ts"
+compatibility_date = "2026-11-01"
+
+# Reachable only through the service binding: no public workers.dev URL and no
+# route. Anyone able to reach the URL could otherwise send mail from the
+# onboarded domain.
+workers_dev = false
+
+[[send_email]]
+name = "EMAIL"
+# Optional hardening once the addresses are fixed on the account:
+#   allowed_sender_addresses = ["sale@apigcl.com"]
+#   destination_address = "message@boppfilmsale.com"

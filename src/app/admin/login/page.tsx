@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { FiLock, FiLogIn } from 'react-icons/fi';
 
@@ -9,6 +9,21 @@ export default function AdminLoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
+  // Already signed in? The session cookie is HttpOnly, so only the server can
+  // tell — ask it instead of keeping a copy in sessionStorage.
+  useEffect(() => {
+    let cancelled = false;
+    fetch('/api/admin/auth', { cache: 'no-store' })
+      .then(async (res) => {
+        const data: any = await res.json().catch(() => ({}));
+        if (!cancelled && res.ok && data?.authenticated) router.replace('/admin');
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,10 +38,15 @@ export default function AdminLoginPage() {
       });
 
       if (res.ok) {
-        if (typeof window !== 'undefined') {
-          sessionStorage.setItem('admin_logged_in', 'true');
-        }
-        router.push('/admin');
+        // The server set the HttpOnly aec_admin_session cookie; nothing to keep
+        // on the client.
+        setPassword('');
+        router.replace('/admin');
+        return;
+      }
+
+      if (res.status === 503) {
+        setError('后台尚未配置 ADMIN_PASSWORD，暂时无法登录');
       } else {
         setError('密码错误，请重试');
       }

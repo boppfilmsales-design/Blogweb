@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { recordVisitor, getVisitors, clearVisitors } from '@/lib/visitor';
+import { requireAdmin } from '@/lib/admin-auth';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'edge';
 
-// POST - Record a new visitor
+// POST - Record a new visitor (public: this is page-view tracking)
 export async function POST(request: NextRequest) {
   try {
     const body: any = await request.json();
@@ -24,8 +25,11 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// GET - Get all visitors
-export async function GET() {
+// GET - Get all visitors (admin only: visitor IPs are not public data)
+export async function GET(request: NextRequest) {
+  const denied = await requireAdmin(request);
+  if (denied) return denied;
+
   try {
     const visitors = await getVisitors();
     return NextResponse.json(visitors);
@@ -34,8 +38,11 @@ export async function GET() {
   }
 }
 
-// DELETE - Clear visitor logs
-export async function DELETE() {
+// DELETE - Clear visitor logs (admin only)
+export async function DELETE(request: NextRequest) {
+  const denied = await requireAdmin(request);
+  if (denied) return denied;
+
   try {
     await clearVisitors();
     return NextResponse.json({ success: true, message: 'Visitor logs cleared' });

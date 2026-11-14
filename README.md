@@ -99,14 +99,50 @@ Set these for **both Production and Preview**:
 | D1 database | `DB` | `blogweb-db` |
 | R2 bucket | `IMAGES` | `blogweb-images` |
 | Variable | `R2_PUBLIC_URL` | public URL of the `blogweb-images` bucket |
+| Variable (secret) | `ADMIN_PASSWORD` | the admin password |
+| Variable (secret, optional) | `ADMIN_SESSION_SECRET` | separate cookie-signing key (defaults to `ADMIN_PASSWORD`) |
+| Worker (service binding) | `EMAIL_SENDER` | `blogweb-email-sender` (see `workers/email-sender/`) |
+| Variable (secret, optional) | `RESEND_API_KEY` | fallback email channel |
 | Compatibility flag | — | `nodejs_compat` |
 
-### Admin password
+### Admin password and sessions
 
 Set `ADMIN_PASSWORD` as an **environment variable in the Pages dashboard**
 (same place as the bindings, Production and Preview). The code has **no
-default password**: until this variable is set, `/admin/login` cannot log in.
-Never commit a password to this repo.
+default password**: until this variable is set, `POST /api/admin/auth` answers
+`503` and every admin route answers `401`.
+
+A successful login sets an HttpOnly, `SameSite=Lax`, 7-day cookie
+`aec_admin_session` whose value is `<expiry>.<HMAC-SHA256>` signed with
+`ADMIN_SESSION_SECRET` (or `ADMIN_PASSWORD` when that is unset; add `Secure`
+over HTTPS). Protected routes accept either that cookie or
+`Authorization: Bearer <ADMIN_PASSWORD>` and are written with
+`requireAdmin(request)` from `src/lib/admin-auth.ts`:
+
+- `POST /api/products`, `PUT|DELETE /api/products/[id]`, `POST /api/products/import`
+- `GET|POST /api/upload`, `POST /api/pages`
+- `GET|DELETE /api/visitors` (`POST` stays public — it is page-view tracking)
+- `GET /api/debug`, `GET /api/test-db`
+
+Public reads (`GET /api/products`, `GET /api/products/[id]`, `GET /api/pages`,
+`GET /api/images/[...key]`) are unchanged, so the storefront never needs a
+session.
+
+### Inquiry notifications
+
+The contact form (`src/components/contact/InquiryForm.tsx`) posts to
+`POST /api/inquiry`, which emails `message@boppfilmsale.com` from
+`AEC Group Inquiry <sale@apigcl.com>` with the visitor's address as `Reply-To`.
+Delivery uses, in order:
+
+1. the `EMAIL_SENDER` service binding → `blogweb-email-sender` Worker →
+   Cloudflare Email Service `send_email` binding,
+2. Resend (`RESEND_API_KEY`) when the Worker is missing or fails.
+
+Every inquiry is also inserted into the D1 `inquiries` table (best effort). The
+route answers `200 { success: true, channels }` when at least one channel
+succeeded, otherwise `502` so the form can show its `mailto:` fallback. Setup
+for the Worker is in `workers/email-sender/README.md`.
 
 ## Rendering, SEO and crawler behaviour (2026 revision)
 

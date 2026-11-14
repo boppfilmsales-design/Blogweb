@@ -2,6 +2,17 @@ import { Product } from './api-types';
 
 const API_BASE = '/api';
 
+/**
+ * Admin session handling lives in an HttpOnly cookie, so a 401 from any admin
+ * endpoint means the session expired or was never valid: send the browser to
+ * the login page instead of leaving a half-broken dashboard on screen.
+ */
+function redirectIfUnauthorized(res: Response) {
+  if (res.status === 401 && typeof window !== 'undefined') {
+    window.location.assign('/admin/login');
+  }
+}
+
 // Fetch all products
 export async function getProducts(): Promise<Product[]> {
   const res = await fetch(`${API_BASE}/products`);
@@ -12,6 +23,7 @@ export async function getProducts(): Promise<Product[]> {
 // Fetch single product
 export async function getProduct(id: string): Promise<Product> {
   const res = await fetch(`${API_BASE}/products/${id}`);
+  redirectIfUnauthorized(res);
   if (!res.ok) throw new Error('Failed to fetch product');
   return res.json();
 }
@@ -33,6 +45,7 @@ export async function createProduct(product: Partial<Product>): Promise<Product>
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(product),
   });
+  redirectIfUnauthorized(res);
   if (!res.ok) throw new Error('Failed to create product');
   return res.json();
 }
@@ -44,6 +57,7 @@ export async function updateProduct(id: string, product: Partial<Product>): Prom
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(product),
   });
+  redirectIfUnauthorized(res);
   if (!res.ok) throw new Error('Failed to update product');
   return res.json();
 }
@@ -53,6 +67,7 @@ export async function deleteProduct(id: string): Promise<void> {
   const res = await fetch(`${API_BASE}/products/${id}`, {
     method: 'DELETE',
   });
+  redirectIfUnauthorized(res);
   if (!res.ok) throw new Error('Failed to delete product');
 }
 
@@ -63,6 +78,7 @@ export async function importProducts(products: Partial<Product>[]): Promise<{ cr
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ products }),
   });
+  redirectIfUnauthorized(res);
   if (!res.ok) throw new Error('Failed to import products');
   return res.json() as Promise<{ created: number; updated: number; failed: number }>;
 }

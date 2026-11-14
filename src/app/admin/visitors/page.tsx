@@ -22,19 +22,41 @@ export default function VisitorsPage() {
   const [loading, setLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
+  // The admin session is an HttpOnly cookie; the server decides whether this
+  // browser is still logged in.
   useEffect(() => {
-    const loggedIn = sessionStorage.getItem('admin_logged_in');
-    if (loggedIn === 'true') {
-      setIsAuthenticated(true);
-      loadVisitors();
-    } else {
-      router.push('/admin/login');
-    }
+    let cancelled = false;
+
+    const checkSession = async () => {
+      try {
+        const res = await fetch('/api/admin/auth', { cache: 'no-store' });
+        const data: any = await res.json().catch(() => ({}));
+        if (cancelled) return;
+        if (res.ok && data?.authenticated) {
+          setIsAuthenticated(true);
+          loadVisitors();
+        } else {
+          router.replace('/admin/login');
+        }
+      } catch {
+        if (!cancelled) router.replace('/admin/login');
+      }
+    };
+
+    checkSession();
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 
   const loadVisitors = async () => {
     try {
       const res = await fetch('/api/visitors');
+      if (res.status === 401) {
+        router.replace('/admin/login');
+        return;
+      }
       const data: any = await res.json();
       setVisitors(data);
     } catch (error) {
@@ -47,7 +69,11 @@ export default function VisitorsPage() {
   const handleClear = async () => {
     if (!confirm('Are you sure you want to clear all visitor logs?')) return;
     try {
-      await fetch('/api/visitors', { method: 'DELETE' });
+      const res = await fetch('/api/visitors', { method: 'DELETE' });
+      if (res.status === 401) {
+        router.replace('/admin/login');
+        return;
+      }
       setVisitors([]);
     } catch (error) {
       alert('Failed to clear visitor logs');
