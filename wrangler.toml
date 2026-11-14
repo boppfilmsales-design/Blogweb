@@ -27,6 +27,11 @@ database_id = "8a5522a9-c171-41fa-8448-866a130c5a04"
 binding = "IMAGES"
 bucket_name = "blogweb-images"
 
+# Service binding to the email-sender Worker (Cloudflare Email Sending).
+[[services]]
+binding = "EMAIL_SENDER"
+service = "blogweb-email-sender"
+
 # Optional: public base URL of the R2 bucket (the r2.dev domain you get when
 # enabling public access, or a custom domain such as https://img.boppfilmsale.com).
 # When set, /api/upload returns this URL for uploaded files.
